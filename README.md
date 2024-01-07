@@ -1,20 +1,22 @@
-# dilu 
+# dilu-all 
 
 ## 简介
 的卢，是golang下的一套web快速框架，系统基于gin+gorm封装，并实现了代码自动生成。
 - 前端基于vue3+element-plus[点我查看](https://github.com/baowk/dilu-admin)
 - [演示地址](http://dilu.youwan.art),系统做了saas化设计，主账号直接dilu登录，团队账户为tangtang，密码默认。
 
+dilu的完整版，包含了所有插件使用，配合[dilu-admin](https://github.com/baowk/dilu-admin)使用，能快速实现一个完整的后台管理系统。自己开发推荐[的卢简化版](https://github.com/baowk/dilu)。
+
 ## 安装使用
 
 - 获取项目代码
 ```bash
-git clone https://github.com/baowk/dilu.git
+git clone https://github.com/baowk/dilu-all.git
 ```
 
 - 安装依赖
 ```bash
-cd dilu
+cd dilu-all
 go mod tidy
 ```
 
