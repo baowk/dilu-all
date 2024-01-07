@@ -1,0 +1,17 @@
+server:
+  name: dilu-app      # 服务名称
+  remote-enable: true #是否开启远程配置
+  mode: dev         # 应用程序运行模式（dev开发环境、test测试环境、prod线上环境）
+  host: 0.0.0.0     # 服务器IP地址，默认使用0.0.0.0
+  port: 7888       # 服务端口号
+  read-timeout: 60    #读超时 单位秒 默认20
+  write-timeout: 60   #写超时 单位秒 默认20
+  fs-type: local    #文件服务
+remote:
+  provider: etcd #远程提供者 etcd etcd3 consul ...
+  endpoint: http://172.19.167.104:2379 #协议地址
+  path: /dilu/config #路径 key
+  secret-keyring: #加密 不填为非加密
+
+
+    
