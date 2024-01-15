@@ -11,10 +11,10 @@ import (
 //go:generate swag init --parseDependency --parseDepth=6
 
 // @title Dilu API
-// @version V0.0.1
+// @version v0.0.1
 // @description 致力于做一个开发快速，运行稳定的框架
 // @contact.name   baowk
-// @contact.url    https://github.com/baowk/dilu
+// @contact.url    https://github.com/baowk/dilu-all
 // @contact.email  baowk1024@gmail.com
 // @securityDefinitions.apikey Bearer
 // @in header
