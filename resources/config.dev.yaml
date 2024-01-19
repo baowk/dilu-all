@@ -72,5 +72,10 @@ extend:             # 扩展项（此处没有提供具体说明）
   ai:
     ali:
       sk: 
+  # mongodb链接配置
+  mongodb:
+    enable: false # 是否启用
+    url: mongodb://127.0.0.1:27017 # 链接地址
+    timeout: 600 # 超时时长
 
     
