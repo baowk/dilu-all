@@ -8,7 +8,7 @@ import (
 
 // SysMenuGetPageReq 列表或者搜索使用结构体
 type SysMenuGetPageReq struct {
-	base.ReqPage `search:"-"`
+	base.ReqPage `query:"-"`
 	Title        string `form:"title" search:"type:contains;column:title;table:sys_menu" comment:"菜单名称"` // 菜单名称
 	Hidden       int    `form:"hidden" search:"type:exact;column:hidden;table:sys_menu" comment:"显示状态"`  // 显示状态
 }

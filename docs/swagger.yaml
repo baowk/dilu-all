@@ -41,282 +41,6 @@ definitions:
         description: '`json:"请求id"`'
         type: string
     type: object
-  dilu_modules_tools_models.GenColumns:
-    properties:
-      columnComment:
-        type: string
-      columnId:
-        description: 主键
-        type: integer
-      columnName:
-        type: string
-      columnType:
-        type: string
-      createBy:
-        type: integer
-      createdAt:
-        description: 创建时间
-        type: string
-      dictType:
-        type: string
-      edit:
-        type: integer
-      fkLabelId:
-        type: string
-      fkLabelName:
-        type: string
-      fkTableName:
-        type: string
-      fkTableNameClass:
-        type: string
-      fkTableNamePackage:
-        type: string
-      goField:
-        type: string
-      goType:
-        type: string
-      htmlType:
-        type: string
-      increment:
-        type: integer
-      insert:
-        type: boolean
-      isEdit:
-        type: string
-      isIncrement:
-        type: string
-      isInsert:
-        type: string
-      isList:
-        type: string
-      isPk:
-        type: string
-      isQuery:
-        type: string
-      isRequired:
-        type: string
-      jsonField:
-        type: string
-      list:
-        type: string
-      pk:
-        type: boolean
-      query:
-        type: integer
-      queryType:
-        type: string
-      remark:
-        type: string
-      required:
-        type: boolean
-      sort:
-        type: integer
-      superColumn:
-        type: integer
-      tableId:
-        type: integer
-      tsType:
-        type: string
-      updateBy:
-        type: integer
-      updatedAt:
-        description: 最后更新时间
-        type: string
-      usableColumn:
-        type: integer
-    type: object
-  dilu_modules_tools_models.GenTables:
-    properties:
-      apiRoot:
-        type: string
-      businessName:
-        type: string
-      className:
-        type: string
-      columns:
-        items:
-          $ref: '#/definitions/dilu_modules_tools_models.GenColumns'
-        type: array
-      createBy:
-        description: 创建者
-        type: integer
-      createdAt:
-        description: 创建时间
-        type: string
-      crud:
-        type: boolean
-      dbName:
-        type: string
-      functionAuthor:
-        type: string
-      functionName:
-        type: string
-      isActions:
-        type: integer
-      isAuth:
-        type: integer
-      isDataScope:
-        type: integer
-      isLogicalDelete:
-        type: string
-      logicalDelete:
-        type: boolean
-      logicalDeleteColumn:
-        type: string
-      moduleFrontName:
-        description: 前端文件名
-        type: string
-      moduleName:
-        type: string
-      options:
-        type: string
-      packageName:
-        type: string
-      pkColumn:
-        type: string
-      pkGoField:
-        type: string
-      pkJsonField:
-        type: string
-      remark:
-        type: string
-      tableComment:
-        type: string
-      tableId:
-        description: 主键
-        type: integer
-      tableName:
-        type: string
-      tplCategory:
-        type: string
-      tree:
-        type: integer
-      treeCode:
-        type: string
-      treeName:
-        type: string
-      treeParentCode:
-        type: string
-      updateBy:
-        description: 更新者
-        type: integer
-      updatedAt:
-        description: 最后更新时间
-        type: string
-    type: object
-  dilu_modules_tools_service_dto.DBReq:
-    properties:
-      dbName:
-        type: string
-      page:
-        description: 页码
-        type: integer
-      pageSize:
-        description: 每页大小
-        type: integer
-      tableName:
-        type: string
-    type: object
-  dilu_modules_tools_service_dto.DbOption:
-    properties:
-      label:
-        type: string
-      value:
-        type: string
-    type: object
-  dilu_modules_tools_service_dto.GenCodeReq:
-    properties:
-      force:
-        type: boolean
-      tableId:
-        type: integer
-    type: object
-  dilu_modules_tools_service_dto.GenMenuReq:
-    properties:
-      menuId:
-        type: integer
-      tableId:
-        type: integer
-    type: object
-  dilu_modules_tools_service_dto.GenTablesGetPageReq:
-    properties:
-      dbName:
-        type: string
-      page:
-        description: 页码
-        type: integer
-      pageSize:
-        description: 每页大小
-        type: integer
-      tableName:
-        type: string
-    type: object
-  dilu_modules_tools_service_dto.ImpTablesReq:
-    properties:
-      dbName:
-        type: string
-      tables:
-        items:
-          type: string
-        type: array
-    type: object
-  dilu_modules_tools_utils.Cpu:
-    properties:
-      cores:
-        type: integer
-      cpus:
-        items:
-          type: number
-        type: array
-      usedPercent:
-        type: number
-    type: object
-  dilu_modules_tools_utils.Disk:
-    properties:
-      totalGb:
-        type: integer
-      totalMb:
-        type: integer
-      usedGb:
-        type: integer
-      usedMb:
-        type: integer
-      usedPercent:
-        type: integer
-    type: object
-  dilu_modules_tools_utils.Os:
-    properties:
-      compiler:
-        type: string
-      goVersion:
-        type: string
-      goos:
-        type: string
-      numCpu:
-        type: integer
-      numGoroutine:
-        type: integer
-    type: object
-  dilu_modules_tools_utils.Ram:
-    properties:
-      totalMb:
-        type: integer
-      usedMb:
-        type: integer
-      usedPercent:
-        type: integer
-    type: object
-  dilu_modules_tools_utils.Server:
-    properties:
-      cpu:
-        $ref: '#/definitions/dilu_modules_tools_utils.Cpu'
-      disk:
-        $ref: '#/definitions/dilu_modules_tools_utils.Disk'
-      os:
-        $ref: '#/definitions/dilu_modules_tools_utils.Os'
-      ram:
-        $ref: '#/definitions/dilu_modules_tools_utils.Ram'
-    type: object
   dto.AiMsg:
     properties:
       messages:
@@ -582,6 +306,26 @@ definitions:
         description: 用户id
         type: integer
     type: object
+  dto.DBReq:
+    properties:
+      dbName:
+        type: string
+      page:
+        description: 页码
+        type: integer
+      pageSize:
+        description: 每页大小
+        type: integer
+      tableName:
+        type: string
+    type: object
+  dto.DbOption:
+    properties:
+      label:
+        type: string
+      value:
+        type: string
+    type: object
   dto.DingCfgResp:
     properties:
       appid:
@@ -656,6 +400,33 @@ definitions:
         type: string
       username:
         description: 手机号|邮箱
+        type: string
+    type: object
+  dto.GenCodeReq:
+    properties:
+      force:
+        type: boolean
+      tableId:
+        type: integer
+    type: object
+  dto.GenMenuReq:
+    properties:
+      menuId:
+        type: integer
+      tableId:
+        type: integer
+    type: object
+  dto.GenTablesGetPageReq:
+    properties:
+      dbName:
+        type: string
+      page:
+        description: 页码
+        type: integer
+      pageSize:
+        description: 每页大小
+        type: integer
+      tableName:
         type: string
     type: object
   dto.IdentifyBillDto:
@@ -751,6 +522,15 @@ definitions:
       userId:
         description: 用户id
         type: integer
+    type: object
+  dto.ImpTablesReq:
+    properties:
+      dbName:
+        type: string
+      tables:
+        items:
+          type: string
+        type: array
     type: object
   dto.LoginDingReq:
     properties:
@@ -1608,7 +1388,7 @@ definitions:
       createdAtOrder:
         type: string
       deptId:
-        type: string
+        type: integer
       email:
         type: string
       id:
@@ -2090,6 +1870,169 @@ definitions:
       userId:
         description: 用户id
         type: integer
+    type: object
+  models.GenColumns:
+    properties:
+      columnComment:
+        type: string
+      columnId:
+        description: 主键
+        type: integer
+      columnName:
+        type: string
+      columnType:
+        type: string
+      createBy:
+        type: integer
+      createdAt:
+        description: 创建时间
+        type: string
+      dictType:
+        type: string
+      edit:
+        type: integer
+      fkLabelId:
+        type: string
+      fkLabelName:
+        type: string
+      fkTableName:
+        type: string
+      fkTableNameClass:
+        type: string
+      fkTableNamePackage:
+        type: string
+      goField:
+        type: string
+      goType:
+        type: string
+      htmlType:
+        type: string
+      increment:
+        type: integer
+      insert:
+        type: boolean
+      isEdit:
+        type: string
+      isIncrement:
+        type: string
+      isInsert:
+        type: string
+      isList:
+        type: string
+      isPk:
+        type: string
+      isQuery:
+        type: string
+      isRequired:
+        type: string
+      jsonField:
+        type: string
+      list:
+        type: string
+      pk:
+        type: boolean
+      query:
+        type: integer
+      queryType:
+        type: string
+      remark:
+        type: string
+      required:
+        type: boolean
+      sort:
+        type: integer
+      superColumn:
+        type: integer
+      tableId:
+        type: integer
+      tsType:
+        type: string
+      updateBy:
+        type: integer
+      updatedAt:
+        description: 最后更新时间
+        type: string
+      usableColumn:
+        type: integer
+    type: object
+  models.GenTables:
+    properties:
+      apiRoot:
+        type: string
+      businessName:
+        type: string
+      className:
+        type: string
+      columns:
+        items:
+          $ref: '#/definitions/models.GenColumns'
+        type: array
+      createBy:
+        description: 创建者
+        type: integer
+      createdAt:
+        description: 创建时间
+        type: string
+      crud:
+        type: boolean
+      dbName:
+        type: string
+      functionAuthor:
+        type: string
+      functionName:
+        type: string
+      isActions:
+        type: integer
+      isAuth:
+        type: integer
+      isDataScope:
+        type: integer
+      isLogicalDelete:
+        type: string
+      logicalDelete:
+        type: boolean
+      logicalDeleteColumn:
+        type: string
+      moduleFrontName:
+        description: 前端文件名
+        type: string
+      moduleName:
+        type: string
+      options:
+        type: string
+      packageName:
+        type: string
+      pkColumn:
+        type: string
+      pkGoField:
+        type: string
+      pkJsonField:
+        type: string
+      remark:
+        type: string
+      tableComment:
+        type: string
+      tableId:
+        description: 主键
+        type: integer
+      tableName:
+        type: string
+      tplCategory:
+        type: string
+      tree:
+        type: integer
+      treeCode:
+        type: string
+      treeName:
+        type: string
+      treeParentCode:
+        type: string
+      updateBy:
+        description: 更新者
+        type: integer
+      updatedAt:
+        description: 最后更新时间
+        type: string
     type: object
   models.PubNotice:
     properties:
@@ -2768,6 +2711,63 @@ definitions:
         description: 用户id
         type: integer
     type: object
+  utils.Cpu:
+    properties:
+      cores:
+        type: integer
+      cpus:
+        items:
+          type: number
+        type: array
+      usedPercent:
+        type: number
+    type: object
+  utils.Disk:
+    properties:
+      totalGb:
+        type: integer
+      totalMb:
+        type: integer
+      usedGb:
+        type: integer
+      usedMb:
+        type: integer
+      usedPercent:
+        type: integer
+    type: object
+  utils.Os:
+    properties:
+      compiler:
+        type: string
+      goVersion:
+        type: string
+      goos:
+        type: string
+      numCpu:
+        type: integer
+      numGoroutine:
+        type: integer
+    type: object
+  utils.Ram:
+    properties:
+      totalMb:
+        type: integer
+      usedMb:
+        type: integer
+      usedPercent:
+        type: integer
+    type: object
+  utils.Server:
+    properties:
+      cpu:
+        $ref: '#/definitions/utils.Cpu'
+      disk:
+        $ref: '#/definitions/utils.Disk'
+      os:
+        $ref: '#/definitions/utils.Os'
+      ram:
+        $ref: '#/definitions/utils.Ram'
+    type: object
   wechat.QrCodeResp:
     properties:
       expire_seconds:
@@ -2783,10 +2783,10 @@ info:
   contact:
     email: baowk1024@gmail.com
     name: baowk
-    url: https://github.com/baowk/dilu
+    url: https://github.com/baowk/dilu-all
   description: 致力于做一个开发快速，运行稳定的框架
   title: Dilu API
-  version: V0.0.1
+  version: v0.0.1
 paths:
   /api/v1/ai/chat:
     post:
@@ -6511,7 +6511,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dilu_modules_tools_service_dto.ImpTablesReq'
+          $ref: '#/definitions/dto.ImpTablesReq'
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -6531,7 +6531,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dilu_modules_tools_service_dto.GenCodeReq'
+          $ref: '#/definitions/dto.GenCodeReq'
       responses:
         "200":
           description: '{"code": 200, "message": "添加成功"}'
@@ -6549,7 +6549,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dilu_modules_tools_service_dto.DBReq'
+          $ref: '#/definitions/dto.DBReq'
       responses:
         "200":
           description: '{"code": 200, "data": [...]}'
@@ -6572,7 +6572,7 @@ paths:
             - properties:
                 data:
                   items:
-                    $ref: '#/definitions/dilu_modules_tools_service_dto.DbOption'
+                    $ref: '#/definitions/dto.DbOption'
                   type: array
               type: object
       summary: 获取配置的数据库
@@ -6597,7 +6597,7 @@ paths:
             - $ref: '#/definitions/base.Resp'
             - properties:
                 data:
-                  $ref: '#/definitions/dilu_modules_tools_models.GenTables'
+                  $ref: '#/definitions/models.GenTables'
               type: object
       summary: 删除GenTables
       tags:
@@ -6613,7 +6613,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dilu_modules_tools_service_dto.GenMenuReq'
+          $ref: '#/definitions/dto.GenMenuReq'
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -6632,7 +6632,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dilu_modules_tools_service_dto.GenTablesGetPageReq'
+          $ref: '#/definitions/dto.GenTablesGetPageReq'
       responses:
         "200":
           description: '{"code": 200, "data": [...]}'
@@ -6646,7 +6646,7 @@ paths:
                   - properties:
                       list:
                         items:
-                          $ref: '#/definitions/dilu_modules_tools_models.GenTables'
+                          $ref: '#/definitions/models.GenTables'
                         type: array
                     type: object
               type: object
@@ -6664,7 +6664,7 @@ paths:
         name: data
         required: true
         schema:
-          $ref: '#/definitions/dilu_modules_tools_models.GenTables'
+          $ref: '#/definitions/models.GenTables'
       responses:
         "200":
           description: '{"code": -1, "message": "添加失败"}'
@@ -6685,7 +6685,7 @@ paths:
             - $ref: '#/definitions/base.Resp'
             - properties:
                 data:
-                  $ref: '#/definitions/dilu_modules_tools_utils.Server'
+                  $ref: '#/definitions/utils.Server'
               type: object
       security:
       - Bearer: []

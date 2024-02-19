@@ -7,7 +7,7 @@ import (
 )
 
 type SysMemberGetPageReq struct {
-	base.ReqPage `search:"-"`
+	base.ReqPage `query:"-"`
 	Status       int    `json:"status" form:"status"` //状态 1正常
 	TeamId       int    `json:"teamId"`               //团队id
 	DeptId       int    `json:"deptId"`               //部门id

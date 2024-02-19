@@ -32,8 +32,14 @@ func (e *SysUserApi) QueryPage(c *gin.Context) {
 		e.Error(c, err)
 		return
 	}
+
 	list := make([]models.SysUser, 10)
 	var total int64
+
+	// if err := service.SerSysUser.QueryPage(req, &list, &total, req.GetSize(), req.GetOffset()); err != nil {
+	// 	e.Error(c, err)
+	// 	return
+	// }
 
 	var model models.SysUser
 	if err := copier.Copy(&model, req); err != nil {

@@ -5,7 +5,7 @@ import (
 )
 
 type SysDeptGetPageReq struct {
-	base.ReqPage `search:"-"`
+	base.ReqPage `query:"-"`
 	Status       int `json:"status" form:"status"` //
 	TeamId       int `json:"teamId"`               //团队id
 }

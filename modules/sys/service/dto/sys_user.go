@@ -7,31 +7,35 @@ import (
 )
 
 type SysUserGetPageReq struct {
-	base.ReqPage `search:"-"`
-	Id           int    `form:"id" search:"type:exact;column:user_id;table:sys_user" comment:"用户ID"`
-	Username     string `form:"username" search:"type:contains;column:username;table:sys_user" comment:"用户名"`
-	NickName     string `form:"nickName" search:"type:contains;column:nick_name;table:sys_user" comment:"昵称"`
-	Phone        string `form:"phone" search:"type:contains;column:phone;table:sys_user" comment:"手机号"`
-	Gender       string `form:"sex" search:"type:exact;column:sex;table:sys_user" comment:"性别"`
-	Email        string `form:"email" search:"type:contains;column:email;table:sys_user" comment:"邮箱"`
-	Post         string `form:"postId" search:"type:exact;column:post_id;table:sys_user" comment:"岗位"`
-	Status       int    `form:"status" search:"type:exact;column:status;table:sys_user" comment:"状态"`
-	DeptJoin     `search:"type:left;on:dept_id:dept_id;table:sys_user;join:sys_dept"`
+	base.ReqPage `query:"-"`
+	Id           int    `form:"id" query:"type:eq;column:user_id;table:sys_user" comment:"用户ID"`
+	Username     string `form:"username" query:"type:like;column:username;table:sys_user" comment:"用户名"`
+	NickName     string `form:"nickName" query:"type:like;column:nickname;table:sys_user" comment:"昵称"`
+	Phone        string `form:"phone" query:"type:like;column:phone;table:sys_user" comment:"手机号"`
+	Gender       string `form:"sex" query:"type:eq;column:sex;table:sys_user" comment:"性别"`
+	Email        string `form:"email" query:"type:like;column:email;table:sys_user" comment:"邮箱"`
+	Post         string `form:"postId" query:"type:eq;column:post_id;table:sys_user" comment:"岗位"`
+	Status       int    `form:"status" query:"type:eq;column:status;table:sys_user" comment:"状态"`
+	DeptJoin     `query:"type:join;on:id:dept_id;table:sys_user;join:sys_dept"`
 	SysUserOrder
 }
 
+func (SysUserGetPageReq) TableName() string {
+	return "sys_user"
+}
+
 type SysUserOrder struct {
-	IdOrder        string `search:"type:order;column:user_id;table:sys_user" form:"idOrder"`
-	UsernameOrder  string `search:"type:order;column:username;table:sys_user" form:"usernameOrder"`
-	StatusOrder    string `search:"type:order;column:status;table:sys_user" form:"statusOrder"`
-	CreatedAtOrder string `search:"type:order;column:created_at;table:sys_user" form:"createdAtOrder"`
+	IdOrder        string `query:"type:order;column:user_id;table:sys_user" form:"idOrder"`
+	UsernameOrder  string `query:"type:order;column:username;table:sys_user" form:"usernameOrder"`
+	StatusOrder    string `query:"type:order;column:status;table:sys_user" form:"statusOrder"`
+	CreatedAtOrder string `query:"type:order;column:created_at;table:sys_user" form:"createdAtOrder"`
 }
 
 type DeptJoin struct {
-	DeptId string `search:"type:contains;column:dept_path;table:sys_dept" form:"deptId"`
+	DeptId int `query:"type:like;column:dept_path;table:sys_dept" form:"deptId"`
 }
 
-func (m *SysUserGetPageReq) GetNeedSearch() interface{} {
+func (m *SysUserGetPageReq) GetNeedquery() interface{} {
 	return *m
 }
 
