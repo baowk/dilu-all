@@ -274,11 +274,12 @@ func (e *SysMenu) GetUserMenus(c *gin.Context, mvs *[]dto.MenuVo) errs.IError {
 	} else {
 		where = "platform_type >= ?"
 	}
-	db := e.DB().Where(where, enums.MenuPub)
+	db := e.DB().Where(where, enums.MenuPub).Order("sort desc").Order("parent_id asc")
 	if len(roles) > 0 {
 		db.Joins(" left join sys_role_menu on sys_role_menu.menu_id = sys_menu.id").
 			Where("sys_role_menu.role_id in ?", roles)
 	}
+
 	var ms []models.SysMenu
 	if err := db.Find(&ms).Error; err != nil {
 		return codes.ErrSys(err)

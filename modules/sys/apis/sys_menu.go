@@ -80,7 +80,7 @@ func (e *SysMenuApi) Update(c *gin.Context) {
 	}
 	var data models.SysMenu
 	copier.Copy(&data, req)
-	if err := service.SerSysMenu.Save(&data); err != nil {
+	if err := service.SerSysMenu.UpdateById(&data); err != nil {
 		e.Error(c, err)
 		return
 	}

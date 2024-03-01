@@ -19,4 +19,5 @@ type SysApiDto struct {
 	Type     string `json:"type"`     //接口类型
 	PermType string `json:"permType"` //权限类型（n：无需任何认证 t:须token p：须权限）
 	Status   int    `json:"status"`   //状态 3 DEF 2 OK 1 del
+	Sort     int    `json:"sort"`     //排序倒序
 }
