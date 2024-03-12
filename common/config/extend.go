@@ -6,6 +6,10 @@ import (
 
 var Ext *Extend
 
+func init() {
+	Ext = &Extend{}
+}
+
 type Extend struct {
 	Ding     DingCfg       `mapstructure:"ding" json:"ding" yaml:"ding"`
 	WechatMp WechatMp      `mapstructure:"wechat-mp" json:"wechat-mp" yaml:"wechat-mp"`

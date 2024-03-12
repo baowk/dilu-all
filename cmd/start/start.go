@@ -97,7 +97,7 @@ func run() {
 		}()
 	} else {
 		mergeCfg(&cfg, nil)
-		v.Sub("extend").Unmarshal(&config.Ext)
+		v.Sub("extend").Unmarshal(config.Ext)
 		v.WatchConfig()
 		v.OnConfigChange(func(e fsnotify.Event) {
 			fmt.Println("config file changed:", e.String())
