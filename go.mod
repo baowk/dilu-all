@@ -3,7 +3,7 @@ module dilu
 go 1.20
 
 require (
-	github.com/baowk/dilu-core v0.3.6
+	github.com/baowk/dilu-core v0.3.7
 	github.com/baowk/dilu-plugin v0.0.1
 	github.com/baowk/dilu-rd v0.1.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -24,7 +24,7 @@ require (
 	github.com/swaggo/swag v1.16.2
 	github.com/xuri/excelize/v2 v2.8.0
 	go.uber.org/zap v1.26.0
-	golang.org/x/crypto v0.17.0
+	golang.org/x/crypto v0.18.0
 	golang.org/x/text v0.14.0
 	google.golang.org/grpc v1.59.0
 	gorm.io/gorm v1.25.5
@@ -87,7 +87,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
-	github.com/klauspost/compress v1.17.0 // indirect
+	github.com/klauspost/compress v1.17.5 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.4 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible // indirect
@@ -140,8 +140,8 @@ require (
 	golang.org/x/image v0.13.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.15.0 // indirect
-	golang.org/x/sync v0.5.0 // indirect
-	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/sync v0.6.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/time v0.5.0 // indirect
 	golang.org/x/tools v0.13.0 // indirect
 	golang.org/x/xerrors v0.0.0-20220907171357-04be3eba64a2 // indirect
