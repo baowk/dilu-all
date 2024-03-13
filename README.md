@@ -12,6 +12,8 @@ dilu的完整版，包含了所有插件使用，配合[dilu-admin](https://gith
 - 获取项目代码
 ```bash
 git clone https://github.com/baowk/dilu-all.git
+or
+git clone https://gitee.com/walkbao/dilu-all.git
 ```
 
 - 安装依赖
