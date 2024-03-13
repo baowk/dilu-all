@@ -168,7 +168,7 @@ func (e *SysMenu) GetMenus(c *gin.Context, mvs *[]models.SysMenu) errs.IError {
 	} else {
 		where = "platform_type >= ?"
 	}
-	if err := e.DB().Where(where, enums.MenuPub).Find(mvs).Error; err != nil {
+	if err := e.DB().Where(where, enums.MenuPub).Order("sort desc").Find(mvs).Error; err != nil {
 		return codes.ErrSys(err)
 	}
 	return nil
