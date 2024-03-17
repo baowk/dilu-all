@@ -32,7 +32,7 @@ var (
 )
 
 func init() {
-	StartCmd.PersistentFlags().StringVarP(&configYml, "config", "c", "resources/config.dev.yml", "Start server with provided configuration file")
+	StartCmd.PersistentFlags().StringVarP(&configYml, "config", "c", "resources/config.dev.yaml", "Start server with provided configuration file")
 }
 
 func run() {
@@ -121,7 +121,9 @@ func run() {
 
 	//初始化gin
 	r := core.GetGinEngine()
+
 	middleware.InitMiddleware(r, &core.Cfg)
+
 	//初始化路由
 	for _, f := range AppRouters {
 		f()
