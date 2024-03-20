@@ -22,7 +22,6 @@ import (
 	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 type Ding struct {
@@ -89,7 +88,7 @@ func (e Ding) LoginByDing(c *gin.Context) {
 	if err != nil {
 		userId, err = LoginByQRcode(req.Code)
 		if err != nil {
-			core.Log.Error("ding login", zap.Error(err))
+			core.Log.Error("ding login", err)
 			e.Error(c, err)
 			return
 		}
@@ -233,7 +232,7 @@ func EncodeSHA256(message, secret string) string {
 func DingTmpHtml(c *gin.Context) {
 	t1, err := template.ParseFiles("app/sso/apis/ding.html")
 	if err != nil {
-		core.Log.Error("template err", zap.Error(err))
+		core.Log.Error("template err", err)
 	}
 	t1.Execute(c.Writer, "")
 }

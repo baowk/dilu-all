@@ -20,7 +20,6 @@ import (
 	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/baowk/dilu-core/core/errs"
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -38,7 +37,7 @@ func (e *SysUser) GetPage(c *dto.SysUserGetPageReq, list *[]models.SysUser, coun
 		Find(list).Limit(-1).Offset(-1).
 		Count(count).Error
 	if err != nil {
-		core.Log.Error("db error: %s", zap.Error(err))
+		core.Log.Error("db error: %s", err)
 		return err
 	}
 	return nil
@@ -52,11 +51,11 @@ func (e *SysUser) Get(id int, model *models.SysUser) error {
 		First(model, id).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		err = errors.New("查看对象不存在或无权查看")
-		core.Log.Error("db error: %s", zap.Error(err))
+		core.Log.Error("db error: %s", err)
 		return err
 	}
 	if err != nil {
-		core.Log.Error("db error: %s", zap.Error(err))
+		core.Log.Error("db error: %s", err)
 		return err
 	}
 	return nil
@@ -69,18 +68,18 @@ func (e *SysUser) Get(id int, model *models.SysUser) error {
 // 	var i int64
 // 	err = core.DB().Model(&data).Where("username = ?", c.Username).Count(&i).Error
 // 	if err != nil {
-// 		core.Log.Error("db error: %s", zap.Error(err))
+// 		core.Log.Error("db error: %s", err)
 // 		return err
 // 	}
 // 	if i > 0 {
 // 		err := errors.New("用户名已存在！")
-// 		core.Log.Error("db error: %s", zap.Error(err))
+// 		core.Log.Error("db error: %s", err)
 // 		return err
 // 	}
 // 	c.Generate(&data)
 // 	err = core.DB().Create(&data).Error
 // 	if err != nil {
-// 		core.Log.Error("db error: %s", zap.Error(err))
+// 		core.Log.Error("db error: %s", err)
 // 		return err
 // 	}
 // 	return nil
@@ -92,7 +91,7 @@ func (e *SysUser) Get(id int, model *models.SysUser) error {
 // 	var model models.SysUser
 // 	db := core.DB().First(&model, c.GetId())
 // 	if err = db.Error; err != nil {
-// 		core.Log.Error("Service UpdateSysUser error: %s", zap.Error(err))
+// 		core.Log.Error("Service UpdateSysUser error: %s", err)
 // 		return err
 // 	}
 // 	if db.RowsAffected == 0 {
@@ -102,7 +101,7 @@ func (e *SysUser) Get(id int, model *models.SysUser) error {
 // 	c.Generate(&model)
 // 	update := core.DB().Model(&model).Where("id = ?", &model.Id).Omit("password", "salt").Updates(&model)
 // 	if err = update.Error; err != nil {
-// 		core.Log.Error("db error: %s", zap.Error(err))
+// 		core.Log.Error("db error: %s", err)
 // 		return err
 // 	}
 // 	if update.RowsAffected == 0 {
@@ -119,7 +118,7 @@ func (e *SysUser) UpdateAvatar(c *dto.UpdateSysUserAvatarReq) error {
 	var model models.SysUser
 	db := core.DB().First(&model, c.GetId())
 	if err = db.Error; err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", zap.Error(err))
+		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -128,7 +127,7 @@ func (e *SysUser) UpdateAvatar(c *dto.UpdateSysUserAvatarReq) error {
 	}
 	err = core.DB().Table(model.TableName()).Where("id =? ", c.Id).Updates(c).Error
 	if err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", zap.Error(err))
+		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	return nil
@@ -140,7 +139,7 @@ func (e *SysUser) UpdateStatus(c *dto.UpdateSysUserStatusReq) error {
 	var model models.SysUser
 	db := core.DB().First(&model, c.GetId())
 	if err = db.Error; err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", zap.Error(err))
+		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -149,7 +148,7 @@ func (e *SysUser) UpdateStatus(c *dto.UpdateSysUserStatusReq) error {
 	}
 	err = core.DB().Table(model.TableName()).Where("id =? ", c.Id).Updates(c).Error
 	if err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", zap.Error(err))
+		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	return nil
@@ -161,7 +160,7 @@ func (e *SysUser) ResetPwd(c *dto.ResetSysUserPwdReq) error {
 	var model models.SysUser
 	db := core.DB().First(&model, c.GetId())
 	if err = db.Error; err != nil {
-		core.Log.Error("At Service ResetSysUserPwd error: %s", zap.Error(err))
+		core.Log.Error("At Service ResetSysUserPwd error: %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -170,7 +169,7 @@ func (e *SysUser) ResetPwd(c *dto.ResetSysUserPwdReq) error {
 	c.Generate(&model)
 	err = core.DB().Omit("username", "nick_name", "phone", "role_id", "avatar", "sex").Save(&model).Error
 	if err != nil {
-		core.Log.Error("At Service ResetSysUserPwd error: %s", zap.Error(err))
+		core.Log.Error("At Service ResetSysUserPwd error: %s", err)
 		return err
 	}
 	return nil
@@ -183,7 +182,7 @@ func (e *SysUser) Remove(id int) error {
 
 	db := core.DB().Model(&data).Delete(&data, id)
 	if err = db.Error; err != nil {
-		core.Log.Error("Error found in  RemoveSysUser : %s", zap.Error(err))
+		core.Log.Error("Error found in  RemoveSysUser : %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -207,7 +206,7 @@ func (e *SysUser) UpdatePwd(id int, oldPassword, newPassword string) errs.IError
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return codes.ErrNotFound(strconv.Itoa(id), "sysuser", "", err)
 		}
-		core.Log.Error("db error: %s", zap.Error(err))
+		core.Log.Error("db error: %s", err)
 		return codes.ErrSys(err)
 	}
 	if !c.CompPwd(oldPassword) {
@@ -218,7 +217,7 @@ func (e *SysUser) UpdatePwd(id int, oldPassword, newPassword string) errs.IError
 		Select("Password", "Salt").
 		Updates(c)
 	if err = db.Error; err != nil {
-		core.Log.Error("db error", zap.Error(err))
+		core.Log.Error("db error", err)
 		return codes.ErrSys(err)
 	}
 	if db.RowsAffected == 0 {
@@ -234,7 +233,7 @@ func (e *SysUser) CountByPhone(phone string, count *int64) error {
 	var data models.SysUser
 	err := core.DB().Model(&data).Where("phone = ?", phone).Count(count).Error
 	if err != nil {
-		core.Log.Error("db error", zap.Error(err))
+		core.Log.Error("db error", err)
 		return err
 	}
 	return nil
@@ -245,7 +244,7 @@ func (e *SysUser) CountByEmail(email string, count *int64) error {
 	var data models.SysUser
 	err := core.DB().Model(&data).Where("email = ?", email).Count(count).Error
 	if err != nil {
-		core.Log.Error("db error", zap.Error(err))
+		core.Log.Error("db error", err)
 		return err
 	}
 	return nil
@@ -286,7 +285,7 @@ func (e *SysUser) Register(loginType int, c *dto.RegisterReq, ip string) (dto.Lo
 	model.UpdatedAt = model.CreatedAt
 	err := core.DB().Create(&model).Error
 	if err != nil {
-		core.Log.Error("UserService Insert error", zap.Error(err))
+		core.Log.Error("UserService Insert error", err)
 		return lok, codes.ErrSys(err)
 	}
 	//go e.SendRegDingBot(model)
@@ -398,7 +397,7 @@ func (e *SysUser) LoginCode(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IErro
 
 		err := core.DB().Create(&model).Error
 		if err != nil {
-			core.Log.Error("sysuser", zap.Error(err))
+			core.Log.Error("sysuser", err)
 			return lok, codes.ErrSys(err)
 		}
 		if c.UUID != "" {
@@ -419,11 +418,11 @@ func (e *SysUser) GetByEmail(email string, model *models.SysUser) error {
 	err := core.DB().Model(&data).Where("email = ?", email).First(model).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		//err = errors.New("当前账号不存在，请先注册")
-		core.Log.Error("sysuser", zap.Error(err))
+		core.Log.Error("sysuser", err)
 		return err
 	}
 	if err != nil {
-		core.Log.Error("sysuser", zap.Error(err))
+		core.Log.Error("sysuser", err)
 		return err
 	}
 	return nil
@@ -497,7 +496,7 @@ func (e *SysUser) ChangePwd(mobile, email, password string) errs.IError {
 	updates.UpdatedAt = time.Now()
 	db := core.DB().Model(&user).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("sysuser", zap.Error(err))
+		core.Log.Error("sysuser", err)
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -590,11 +589,11 @@ func (e *SysUser) GetByUsername(username string, model *models.SysUser) errs.IEr
 	err := core.DB().Model(&data).Where("username = ?", username).First(model).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		berr := errs.Err(codes.ErrUserExist, "", err)
-		core.Log.Error("sysuser", zap.Error(berr))
+		core.Log.Error("sysuser", berr)
 		return berr
 	}
 	if err != nil {
-		core.Log.Error("sysuser", zap.Error(err))
+		core.Log.Error("sysuser", err)
 		return codes.ErrSys(err)
 	}
 	// if err := core.Cache.Set("username:"+username, model, time.Hour); err == nil {
@@ -638,7 +637,7 @@ func (e *SysUser) ChangePwdByOld(id int, oldPwd, newPwd, inviteCode string) errs
 	}
 	db := core.DB().Model(user).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("UserService Save error", zap.Error(err))
+		core.Log.Error("UserService Save error", err)
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -679,7 +678,7 @@ func (e *SysUser) Bind(id int, c *dto.BindReq) error {
 
 	db := core.DB().Model(user).Updates(updates)
 	if err := db.Error; err != nil {
-		core.Log.Error("UserService Save error", zap.Error(err))
+		core.Log.Error("UserService Save error", err)
 		return err
 	}
 	return nil
@@ -697,7 +696,7 @@ func (e *SysUser) ChangeUserinfo(userId int, user models.SysUser) error {
 	user.UpdateBy = userId
 	err := e.UpdateById(user)
 	if err != nil {
-		core.Log.Error("UserService Save error", zap.Error(err))
+		core.Log.Error("UserService Save error", err)
 		return err
 	}
 	return nil

@@ -10,7 +10,6 @@ import (
 	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/baowk/dilu-plugin/email"
-	"go.uber.org/zap"
 )
 
 type SysEmail struct {
@@ -38,7 +37,7 @@ func (e *SysEmail) Send(mail string) error {
 	}
 	err = core.DB().Create(&data).Error
 	if err != nil {
-		core.Log.Error("EmailLogService Insert error:%s \r\n", zap.Error(err))
+		core.Log.Error("EmailLogService Insert error:%s \r\n", err)
 		return err
 	}
 	content := fmt.Sprintf(mail_tmp, code)
@@ -56,7 +55,7 @@ func (e *SysEmail) Verify(mail, code string) bool {
 
 	err = core.DB().Model(&data).Where(" email = ? ", mail).Order("id desc").First(&data).Error
 	if err != nil {
-		core.Log.Error("验证码错误", zap.Error(err))
+		core.Log.Error("验证码错误", err)
 		return false
 	}
 	if data.UseStatus == 1 {

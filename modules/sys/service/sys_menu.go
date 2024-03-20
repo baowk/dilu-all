@@ -13,7 +13,6 @@ import (
 	"github.com/baowk/dilu-core/core/errs"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 
 	"dilu/modules/sys/enums"
@@ -58,12 +57,12 @@ func (e *SysMenu) Get(d *dto.SysMenuGetReq, model *models.SysMenu) (*SysMenu, er
 		First(model, d.GetId())
 	err = db.Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		core.Log.Error("sys_menu", zap.Error(err))
+		core.Log.Error("sys_menu", err)
 		berr := errs.Err(codes.FAILURE, "", err)
 		return e, berr
 	}
 	if err != nil {
-		core.Log.Error("sys_menu", zap.Error(err))
+		core.Log.Error("sys_menu", err)
 		berr := errs.Err(codes.FAILURE, "", err)
 		return e, berr
 	}
@@ -85,7 +84,7 @@ func (e *SysMenu) Insert(data *models.SysMenu) errs.IError {
 	err = tx.Create(&data).Error
 	if err != nil {
 		tx.Rollback()
-		core.Log.Error("sys_menu", zap.Error(err))
+		core.Log.Error("sys_menu", err)
 		berr := errs.Err(codes.FAILURE, "", err)
 		return berr
 	}
@@ -148,7 +147,7 @@ func (e *SysMenu) Remove(d *dto.SysMenuDeleteReq) (*SysMenu, errs.IError) {
 	db := core.DB().Model(&data).Delete(&data, d.Ids)
 	if err = db.Error; err != nil {
 		err = db.Error
-		core.Log.Error("sys_menu", zap.Error(err))
+		core.Log.Error("sys_menu", err)
 		berr := errs.Err(codes.FAILURE, "", err)
 		return e, berr
 	}

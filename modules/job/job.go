@@ -5,7 +5,6 @@ import (
 
 	"github.com/baowk/dilu-core/core"
 	"github.com/robfig/cron/v3"
-	"go.uber.org/zap"
 )
 
 var c = cron.New(cron.WithSeconds())
@@ -13,7 +12,7 @@ var c = cron.New(cron.WithSeconds())
 func Add(spec string, cmd func()) {
 	_, err := c.AddFunc(spec, cmd)
 	if err != nil {
-		core.Log.Error("job start err", zap.Error(err))
+		core.Log.Error("job start err", err)
 	}
 }
 

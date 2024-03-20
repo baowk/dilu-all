@@ -11,7 +11,6 @@ import (
 	"github.com/baowk/dilu-rd/examples/reg/impl"
 	"github.com/baowk/dilu-rd/grpc/pb/health"
 	"github.com/baowk/dilu-rd/grpc/pb/service"
-	"go.uber.org/zap"
 	"google.golang.org/grpc"
 )
 
@@ -27,12 +26,12 @@ func grpcInit() {
 	grpcAddr := fmt.Sprintf("%s:%d", core.Cfg.GrpcServer.GetHost(), core.Cfg.GrpcServer.GetPort())
 	lis, err := net.Listen("tcp", grpcAddr)
 	if err != nil {
-		core.Log.Error("failed to listen", zap.Error(err))
+		core.Log.Error("failed to listen", err)
 		log.Fatal("failed to listen:", err)
 	}
 	go func() {
 		if err := grpcServer.Serve(lis); err != nil {
-			core.Log.Error("failed to serve", zap.Error(err))
+			core.Log.Error("failed to serve", err)
 			log.Fatal("failed to serve:", err)
 		}
 	}()

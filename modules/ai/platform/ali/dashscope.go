@@ -7,7 +7,6 @@ import (
 
 	"github.com/baowk/dilu-core/common/utils/https"
 	"github.com/baowk/dilu-core/core"
-	"go.uber.org/zap"
 )
 
 const (
@@ -100,7 +99,7 @@ func Dashscope(token string, model DashscopeModel, messages []dto.Message, param
 	res, err := https.New().AddHeader("Content-Type", "application/json").AddHeader("Authorization", fmt.Sprintf("Bearer %s", token)).Post(API_URL, data)
 
 	if err != nil {
-		core.Log.Error("chat err ", zap.Error(err))
+		core.Log.Error("chat err ", err)
 		return
 	} else {
 		core.Log.Info(string(res))

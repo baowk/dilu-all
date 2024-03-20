@@ -9,7 +9,6 @@ import (
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/baowk/dilu-core/core/errs"
 	"github.com/gin-gonic/gin"
-	"go.uber.org/zap"
 )
 
 var ApiCaptcha = CaptchaApi{}
@@ -32,7 +31,7 @@ type CaptchaApi struct {
 func (e CaptchaApi) GenerateCaptchaHandler(c *gin.Context) {
 	id, b64s, _, err := service.DriverDigitFunc()
 	if err != nil {
-		core.Log.Error("生成验证码失败", zap.Error(err))
+		core.Log.Error("生成验证码失败", err)
 		e.Err(c, errs.Err(codes.CaptchaErr, e.GetReqId(c), err))
 		return
 	}

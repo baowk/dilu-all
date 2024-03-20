@@ -15,7 +15,6 @@ import (
 	"github.com/baowk/dilu-core/core/errs"
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/copier"
-	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -128,7 +127,7 @@ func (e *SSO) Register(c *gin.Context) {
 
 	ip := ips.GetIP(c)
 	if logOk, err := service.SerSysUser.Register(loginType, &req, ip); err != nil {
-		core.Log.Error("sso", zap.Error(err))
+		core.Log.Error("sso", err)
 		e.Error(c, err)
 		return
 	} else {
@@ -210,7 +209,7 @@ func (e *SSO) Login(c *gin.Context) {
 		}
 	} else {
 		if logOk, err := service.SerSysUser.LoginPwd(&req, ip); err != nil {
-			core.Log.Error("sso", zap.Error(err))
+			core.Log.Error("sso", err)
 			if err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					e.Code(c, codes.UserNotExist)
@@ -227,7 +226,7 @@ func (e *SSO) Login(c *gin.Context) {
 		}
 	}
 	if logOk, err := service.SerSysUser.LoginCode(&req, ip); err != nil {
-		core.Log.Error("sso", zap.Error(err))
+		core.Log.Error("sso", err)
 		e.Err(c, err)
 		return
 	} else {
@@ -280,7 +279,7 @@ func (e *SSO) ForgetPwd(c *gin.Context) {
 		return
 	}
 	if err := service.SerSysUser.ChangePwd(mobile, email, req.Password); err != nil {
-		core.Log.Error("sso", zap.Error(err))
+		core.Log.Error("sso", err)
 		e.Error(c, err)
 		return
 	} else {
@@ -307,13 +306,13 @@ func (e *SSO) GetUserInfo(c *gin.Context) {
 
 	err := service.SerSysUser.Get(req.Id, &object)
 	if err != nil {
-		core.Log.Error("sso", zap.Error(err))
+		core.Log.Error("sso", err)
 		e.Error(c, err)
 		return
 	}
 	resp := dto.UserinfoResp{}
 	if err := copier.Copy(&resp, object); err != nil {
-		core.Log.Error("sso", zap.Error(err))
+		core.Log.Error("sso", err)
 		e.Error(c, err)
 		return
 	}
