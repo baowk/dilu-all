@@ -788,7 +788,19 @@ func (s *BillService) StQuery(teamId, userId int, deptPath string, begin, end *t
 		v.Total = v.Paid.Add(v.Debt).Sub(v.Refund)
 		res = append(res, v)
 	}
+	res = sortArray(res)
 	return res, nil
+}
+
+func sortArray(arr []dto.BillUserStDto) []dto.BillUserStDto {
+	for i := 0; i < len(arr)-1; i++ {
+		for j := 0; j < len(arr)-1-i; j++ {
+			if arr[j].UserId > arr[j+1].UserId {
+				arr[j], arr[j+1] = arr[j+1], arr[j]
+			}
+		}
+	}
+	return arr
 }
 
 func (s *BillService) ExportBill(teamId, userId int, name string, deptPath string, begin, end *time.Time, reqId string) (*excelize.File, string, error) {
