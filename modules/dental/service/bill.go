@@ -684,6 +684,120 @@ func (s *BillService) StDay(teamId, userId int, deptPath string, day time.Time, 
 	return texts.String(), nil
 }
 
+var chinaWeekNames = []string{
+	"日",
+	"一",
+	"二",
+	"三",
+	"四",
+	"五",
+	"六",
+}
+
+/*
+*	日统计文字版
+ */
+func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time, reqId string) (string, error) {
+
+	if teamId < 1 {
+		return "", codes.ErrInvalidParameter(reqId, "teamId is nil")
+	}
+	today := utils.GetZoreTimeLocal(day)
+	end := today.Add(24 * time.Hour)
+	begin := utils.GetMonthFirstDayLocal(day)
+	unixToday := today.Unix()
+
+	var curM smodels.SysMember
+	if deptPath == "" {
+		service.SerSysMember.GetMember(teamId, userId, &curM)
+		deptPath = curM.DeptPath
+	}
+
+	db := s.DB().Where("team_id = ?", teamId).Where("trade_at >=?", begin).
+		Where("trade_at < ?", end).Where("dept_path like ?", deptPath+"%")
+	var list []models.Bill
+	if err := db.Find(&list).Error; err != nil {
+		return "", err
+	}
+	var totalDeal, totalPaid, totalDebt, totalrRefund, deal, paid, debt, refund, arrear decimal.Decimal
+	var firstCnt, dealCnt int
+	dentalArr := [5][2]int{}
+
+	for _, b := range list {
+		totalDeal = totalDeal.Add(b.RealAmount)
+		totalPaid = totalPaid.Add(b.PaidAmount)
+		totalDebt = totalDebt.Add(b.DebtAmount)
+		totalrRefund = totalrRefund.Add(b.RefundAmount)
+		if b.TradeAt.Unix() >= unixToday {
+			deal = deal.Add(b.RealAmount)
+			paid = paid.Add(b.PaidAmount)
+			debt = debt.Add(b.DebtAmount)
+			refund = refund.Add(b.RefundAmount)
+			if b.TradeType == int(enums.TradeDeal) {
+				arrear = arrear.Add(b.RealAmount.Sub(b.PaidAmount))
+				//dealCnt += 1
+			}
+		}
+		if b.Brand > 0 {
+			dentalArr[b.Brand-1][0] = dentalArr[b.Brand-1][0] + b.DentalCount
+			dentalArr[b.Brand-1][1] = dentalArr[b.Brand-1][1] + b.ImplantedCount
+		}
+
+	}
+
+	var edList []models.EventDaySt
+	if err := SerEventDaySt.GetList(teamId, 0, deptPath, today, end, &edList); err != nil {
+		return "", err
+	}
+	for _, ed := range edList {
+		firstCnt += ed.FirstDiagnosis
+		dealCnt += ed.Deal
+	}
+	todayPaid := paid.Add(debt)
+	tPaid := totalPaid.Add(totalDebt).Sub(totalrRefund)
+	var texts utils.StringBuilder
+
+	var taskList []models.TargetTask
+	if err := SerTargetTask.GetTasks(enums.Month, today.Year()*100+int(today.Month()), teamId, 0, deptPath, &taskList); err != nil {
+		return "", err
+	}
+	var tmpLen int
+	var memberLen int
+	var targetTotalDeal int
+	for _, task := range taskList {
+		if task.Deal > 0 {
+			targetTotalDeal += task.Deal
+			memberLen++
+		} else {
+			tmpLen++
+		}
+	}
+
+	curT := time.Now()
+	curday := curT.Format("01月02日")
+	w := curT.Weekday()
+	texts.Append(fmt.Sprintf("唐敦霞组%s（周%s）\n", curday, chinaWeekNames[w]))
+	texts.Append(fmt.Sprintf("本月团队任务%s\n", utils.MoneyFmt(float64(targetTotalDeal))))
+	texts.Append(fmt.Sprintf("今日初诊数：%d\n", firstCnt))
+	texts.Append(fmt.Sprintf("今日成交数：%d\n", dealCnt))
+	texts.Append(fmt.Sprintf("今日成交：%s\n", deal.StringFixedBank(0)))
+	texts.Append(fmt.Sprintf("今日实收：%s\n", todayPaid.StringFixedBank(0)))
+	texts.Append(fmt.Sprintf("今日欠款：%s\n", arrear.StringFixedBank(0)))
+	texts.Append(fmt.Sprintf("本月成交：%s\n", totalDeal.StringFixedBank(0)))
+	texts.Append(fmt.Sprintf("本月实收：%s\n", tPaid.StringFixedBank(0)))
+	dp := fmt.Sprintf("%d%%", today.Day()*100/utils.GetMonthLen(today))
+	texts.Append(fmt.Sprintf("本月时间进度：%s\n", dp))
+	texts.Append(fmt.Sprintf("本月完成：%s%%\n", tPaid.Div(decimal.NewFromInt(int64(targetTotalDeal/100))).StringFixedBank(0)))
+	texts.Append("本月成交种植延期\n")
+	texts.Append(fmt.Sprintf("奥:%d-%d-%d\n", dentalArr[0][0], dentalArr[0][1], dentalArr[0][0]-dentalArr[0][1]))
+	texts.Append(fmt.Sprintf("皓:%d-%d-%d\n", dentalArr[1][0], dentalArr[1][1], dentalArr[1][0]-dentalArr[1][1]))
+	texts.Append(fmt.Sprintf("雅:%d-%d-%d\n", dentalArr[2][0], dentalArr[2][1], dentalArr[2][0]-dentalArr[2][1]))
+	texts.Append(fmt.Sprintf("N:%d-%d-%d\n", dentalArr[4][0], dentalArr[4][1], dentalArr[4][0]-dentalArr[4][1]))
+	texts.Append(fmt.Sprintf("I:%d-%d-%d\n", dentalArr[3][0], dentalArr[3][1], dentalArr[3][0]-dentalArr[3][1]))
+
+	return texts.String(), nil
+}
+
 /*
 * 时间段内每人统计
  */
