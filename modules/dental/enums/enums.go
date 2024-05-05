@@ -74,10 +74,12 @@ const (
 type TradeType int
 
 const (
+	TradeFail    TradeType = -1 //未成交
 	TradeDeal    TradeType = 1  //成交
 	TradeBalance TradeType = 2  //补当月款
 	TradeDebt    TradeType = 3  //补上月款
 	TradeRefund  TradeType = 10 //退款
+
 )
 
 type ImplantType int
@@ -86,4 +88,19 @@ const (
 	ImplantNo   ImplantType = 1 //未种
 	ImplantHalf ImplantType = 2 //部分
 	ImplantFull ImplantType = 3 //全部
+)
+
+type DiagnosisType int
+
+const (
+	DiagnosisFirst   DiagnosisType = 1 //初诊
+	DiagnosisFurther DiagnosisType = 2 //复诊
+	DiagnosisSecend  DiagnosisType = 3 //新诊（二开）
+)
+
+type SourceType int
+
+const (
+	SourceLocal SourceType = 1 //场地
+	SourceOut   SourceType = 2 //场外
 )

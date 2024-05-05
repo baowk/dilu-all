@@ -374,3 +374,48 @@ func (e *BillApi) BillExport(c *gin.Context) {
 	data, _ := file.WriteToBuffer()
 	c.Data(http.StatusOK, "application/vnd.ms-excel", data.Bytes())
 }
+
+// StQuery 查询统计
+// @Summary 查询统计
+// @Tags dental-Bill
+// @Accept application/json
+// @Product application/vnd.ms-excel
+// @Param teamId header int false "团队id"
+// @Param data body dto.StQueryReq true "body"
+// @Router /api/v1/dental/st/exportrate [post]
+// @Security Bearer
+func (e *BillApi) StRateExport(c *gin.Context) {
+	var req dto.StQueryReq
+	if err := c.ShouldBind(&req); err != nil {
+		e.Error(c, err)
+		return
+	}
+
+	teamId := utils.GetTeamId(c)
+	if teamId > 0 {
+		req.TeamId = teamId
+	}
+	var tu smodels.SysMember
+	if err := sService.SerSysMember.GetMember(teamId, utils.GetUserId(c), &tu); err != nil {
+		e.Error(c, err)
+		return
+	}
+	if tu.PostId == senums.Staff.Id {
+		//req.UserId = userId
+	} else if tu.PostId > senums.Admin.Id {
+		req.DeptPath = tu.DeptPath
+	}
+	file, title, err := service.SerBill.StMonthRateExcel(time.Now(), req.TeamId, req.UserId, req.DeptPath)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
+	if title == "" {
+		title = "月占比统计"
+	}
+	title = url.PathEscape(title)
+	c.Header("Content-Disposition", fmt.Sprintf("attachment; filename=%s.xlsx;filename*=UTF-8", title))
+	c.Header("response-type", "blob")
+	data, _ := file.WriteToBuffer()
+	c.Data(http.StatusOK, "application/vnd.ms-excel", data.Bytes())
+}

@@ -27,4 +27,5 @@ type EventDayStDto struct {
 	Deal             int       `json:"deal"`             //成交
 	Invitation       int       `json:"invitation"`       //明日邀约
 	Rest             int       `json:"rest"`             //休息
+	//FirstDiagnosisReferred int       `json:"firstDiagnosisReferred"` //初诊转介绍
 }

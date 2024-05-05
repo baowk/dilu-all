@@ -29,5 +29,6 @@ func registerBillRouter(v1 *gin.RouterGroup) {
 		r1.POST("month", apis.ApiBill.StMonth)
 		r1.POST("query", apis.ApiBill.StQuery)
 		r1.POST("export", apis.ApiBill.StExport)
+		r1.POST("exportrate", apis.ApiBill.StRateExport)
 	}
 }
