@@ -767,51 +767,52 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 	dentalArr := [5][2]int{}
 
 	for _, b := range list {
-		totalDeal = totalDeal.Add(b.RealAmount)
-		totalPaid = totalPaid.Add(b.PaidAmount)
-		totalDebt = totalDebt.Add(b.DebtAmount)
-		totalrRefund = totalrRefund.Add(b.RefundAmount)
-		if b.TradeAt.Unix() >= unixToday {
-			deal = deal.Add(b.RealAmount)
-			paid = paid.Add(b.PaidAmount)
-			debt = debt.Add(b.DebtAmount)
-			refund = refund.Add(b.RefundAmount)
-			if b.TradeType == int(enums.TradeDeal) {
-				arrear = arrear.Add(b.RealAmount.Sub(b.PaidAmount))
-				dealCnt++
-				if b.DiagnosisType == int(enums.DiagnosisFirst) {
-					firstCnt++
+		if b.TradeType != int(enums.TradeFail) {
+			totalDeal = totalDeal.Add(b.RealAmount)
+			totalPaid = totalPaid.Add(b.PaidAmount)
+			totalDebt = totalDebt.Add(b.DebtAmount)
+			totalrRefund = totalrRefund.Add(b.RefundAmount)
+			if b.TradeAt.Unix() >= unixToday {
+				deal = deal.Add(b.RealAmount)
+				paid = paid.Add(b.PaidAmount)
+				debt = debt.Add(b.DebtAmount)
+				refund = refund.Add(b.RefundAmount)
+				if b.TradeType == int(enums.TradeDeal) {
+					arrear = arrear.Add(b.RealAmount.Sub(b.PaidAmount))
+					dealCnt++
+					if b.DiagnosisType == int(enums.DiagnosisFirst) {
+						firstCnt++
+					}
+				} else if b.TradeType == int(enums.TradeFail) {
+					if b.DiagnosisType == int(enums.DiagnosisFirst) {
+						firstCnt++
+					}
 				}
-			} else if b.TradeType == int(enums.TradeFail) {
-				if b.DiagnosisType == int(enums.DiagnosisFirst) {
-					firstCnt++
+
+			}
+			if b.Pack == int(enums.PackHalf) || b.Pack == int(enums.PackFull) {
+				if b.Brand1 > 0 {
+					actCnt += b.Brand1
+					actHCnt++
 				}
 			}
-
-		}
-		if b.Pack == int(enums.PackHalf) || b.Pack == int(enums.PackFull) {
 			if b.Brand1 > 0 {
-				actCnt += b.Brand1
-				actHCnt++
+				dentalArr[0][0] = dentalArr[0][0] + b.Brand1
+				dentalArr[0][1] = dentalArr[0][1] + b.Brand1Impl
+			} else if b.Brand2 > 0 {
+				dentalArr[1][0] = dentalArr[1][0] + b.Brand2
+				dentalArr[1][1] = dentalArr[1][1] + b.Brand2Impl
+			} else if b.Brand3 > 0 {
+				dentalArr[2][0] = dentalArr[2][0] + b.Brand3
+				dentalArr[2][1] = dentalArr[2][1] + b.Brand3Impl
+			} else if b.Brand4 > 0 {
+				dentalArr[3][0] = dentalArr[3][0] + b.Brand4
+				dentalArr[3][1] = dentalArr[3][1] + b.Brand4Impl
+			} else if b.Brand5 > 0 {
+				dentalArr[4][0] = dentalArr[4][0] + b.Brand5
+				dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
 			}
 		}
-		if b.Brand1 > 0 {
-			dentalArr[0][0] = dentalArr[0][0] + b.Brand1
-			dentalArr[0][1] = dentalArr[0][1] + b.Brand1Impl
-		} else if b.Brand2 > 0 {
-			dentalArr[1][0] = dentalArr[1][0] + b.Brand2
-			dentalArr[1][1] = dentalArr[1][1] + b.Brand2Impl
-		} else if b.Brand3 > 0 {
-			dentalArr[2][0] = dentalArr[2][0] + b.Brand3
-			dentalArr[2][1] = dentalArr[2][1] + b.Brand3Impl
-		} else if b.Brand4 > 0 {
-			dentalArr[3][0] = dentalArr[3][0] + b.Brand4
-			dentalArr[3][1] = dentalArr[3][1] + b.Brand4Impl
-		} else if b.Brand5 > 0 {
-			dentalArr[4][0] = dentalArr[4][0] + b.Brand5
-			dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
-		}
-
 	}
 
 	// var edList []models.EventDaySt
@@ -939,11 +940,7 @@ func (s *BillService) StQuery(teamId, userId int, deptPath string, begin, end *t
 				UserId: userId,
 			}
 		}
-		br.Deal = br.Deal.Add(b.RealAmount)
-		br.Paid = br.Paid.Add(b.PaidAmount)
-		br.Debt = br.Debt.Add(b.DebtAmount)
-		br.Refund = br.Refund.Add(b.RefundAmount)
-		if b.TradeType == int(enums.TradeDeal) {
+		if b.TradeType == int(enums.TradeFail) {
 			if b.DiagnosisType == int(enums.DiagnosisFirst) {
 				br.FirstDiagnosis = br.FirstDiagnosis + 1
 			} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
@@ -951,14 +948,20 @@ func (s *BillService) StQuery(teamId, userId int, deptPath string, begin, end *t
 			} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
 				br.SecondDiagnosis = br.SecondDiagnosis + 1
 			}
-			br.DealCnt = br.DealCnt + 1
-		} else if b.TradeType == int(enums.TradeFail) {
-			if b.DiagnosisType == int(enums.DiagnosisFirst) {
-				br.FirstDiagnosis = br.FirstDiagnosis + 1
-			} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
-				br.FurtherDiagnosis = br.FurtherDiagnosis + 1
-			} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
-				br.SecondDiagnosis = br.SecondDiagnosis + 1
+		} else {
+			br.Deal = br.Deal.Add(b.RealAmount)
+			br.Paid = br.Paid.Add(b.PaidAmount)
+			br.Debt = br.Debt.Add(b.DebtAmount)
+			br.Refund = br.Refund.Add(b.RefundAmount)
+			if b.TradeType == int(enums.TradeDeal) {
+				if b.DiagnosisType == int(enums.DiagnosisFirst) {
+					br.FirstDiagnosis = br.FirstDiagnosis + 1
+				} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
+					br.FurtherDiagnosis = br.FurtherDiagnosis + 1
+				} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
+					br.SecondDiagnosis = br.SecondDiagnosis + 1
+				}
+				br.DealCnt = br.DealCnt + 1
 			}
 		}
 		m[b.UserId] = br
@@ -1710,10 +1713,10 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 
 	f.SetSheetRow(sheet, "H2", &[]string{"项目", "初诊", "复诊", "新诊（二开）", "整体"})
 	f.SetCellStr(sheet, "H3", "客单价")
-	f.SetCellFormula(sheet, "I3", "=C13/C4")
-	f.SetCellFormula(sheet, "J3", "=E13/E4")
-	f.SetCellFormula(sheet, "K3", "=F13/F4")
-	f.SetCellFormula(sheet, "L3", "=J13/SUM(C4,E4,F4)")
+	f.SetCellFormula(sheet, "I3", "=C13/C3")
+	f.SetCellFormula(sheet, "J3", "=F13/E3")
+	f.SetCellFormula(sheet, "K3", "=H13/F3")
+	f.SetCellFormula(sheet, "L3", "=J13/SUM(C3,E3,F3)")
 
 	//实收
 	err = f.MergeCell(sheet, "A11", "M11")
@@ -1949,37 +1952,38 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 			} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
 				tSecD++
 			}
-		}
-		tmDeal = tmDeal.Add(b.RealAmount)
-		tPaid = tPaid.Add(b.PaidAmount)
-		tbDebt = tbDebt.Add(b.DebtAmount)
-		tRefund = tRefund.Add(b.RefundAmount)
-		if b.TradeAt.Unix() >= unixToday {
-			deal = deal.Add(b.RealAmount)
-			paid = paid.Add(b.PaidAmount)
-			bdebt = bdebt.Add(b.DebtAmount)
-			refund = refund.Add(b.RefundAmount)
-			dealCnt += 1
-			tdCnt += b.Brand1 + b.Brand2 + b.Brand3 + b.Brand4 + b.Brand5
-			tiCnt += (b.Brand1 + b.Brand2 + b.Brand3 + b.Brand4 + b.Brand5 - b.Brand1Impl - b.Brand2Impl - b.Brand3Impl - b.Brand4Impl - b.Brand5Impl)
+		} else {
+			tmDeal = tmDeal.Add(b.RealAmount)
+			tPaid = tPaid.Add(b.PaidAmount)
+			tbDebt = tbDebt.Add(b.DebtAmount)
+			tRefund = tRefund.Add(b.RefundAmount)
+			if b.TradeAt.Unix() >= unixToday {
+				deal = deal.Add(b.RealAmount)
+				paid = paid.Add(b.PaidAmount)
+				bdebt = bdebt.Add(b.DebtAmount)
+				refund = refund.Add(b.RefundAmount)
+				dealCnt += 1
+				tdCnt += b.Brand1 + b.Brand2 + b.Brand3 + b.Brand4 + b.Brand5
+				tiCnt += (b.Brand1 + b.Brand2 + b.Brand3 + b.Brand4 + b.Brand5 - b.Brand1Impl - b.Brand2Impl - b.Brand3Impl - b.Brand4Impl - b.Brand5Impl)
 
-			if b.TradeType == int(enums.TradeDeal) {
-				dayDeal++
-				if b.DiagnosisType == int(enums.DiagnosisFirst) {
-					dayFirD++
-				} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
-					dayFuD++
-				} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
-					daySecD++
+				if b.TradeType == int(enums.TradeDeal) {
+					dayDeal++
+					if b.DiagnosisType == int(enums.DiagnosisFirst) {
+						dayFirD++
+					} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
+						dayFuD++
+					} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
+						daySecD++
+					}
 				}
-			}
-			if b.TradeType == int(enums.TradeFail) {
-				if b.DiagnosisType == int(enums.DiagnosisFirst) {
-					dayFirD++
-				} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
-					dayFuD++
-				} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
-					daySecD++
+				if b.TradeType == int(enums.TradeFail) {
+					if b.DiagnosisType == int(enums.DiagnosisFirst) {
+						dayFirD++
+					} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
+						dayFuD++
+					} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
+						daySecD++
+					}
 				}
 			}
 		}
@@ -2072,7 +2076,7 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 	}
 
 	texts.Append(fmt.Sprintf("种植颗数：%d\n", dCnt))
-	texts.Append(fmt.Sprintf("延期颗数：%d\n", dCnt-iCnt))
+	texts.Append(fmt.Sprintf("延期颗数：%d\n", iCnt))
 	texts.Append(fmt.Sprintf("成交总流水：%s\n", tmDeal.StringFixedBank(0)))
 
 	texts.Append(fmt.Sprintf("总欠款金额：%s\n", totalDebt.StringFixedBank(0)))
