@@ -783,10 +783,6 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 					if b.DiagnosisType == int(enums.DiagnosisFirst) {
 						firstCnt++
 					}
-				} else if b.TradeType == int(enums.TradeFail) {
-					if b.DiagnosisType == int(enums.DiagnosisFirst) {
-						firstCnt++
-					}
 				}
 
 			}
@@ -811,6 +807,12 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 			} else if b.Brand5 > 0 {
 				dentalArr[4][0] = dentalArr[4][0] + b.Brand5
 				dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
+			}
+		} else {
+			if b.DiagnosisType == int(enums.DiagnosisFirst) {
+				if b.TradeAt.Unix() >= unixToday {
+					firstCnt++
+				}
 			}
 		}
 	}
@@ -1636,10 +1638,16 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 			if b.Source == int(enums.SourceLocal) { //场地
 				if b.DiagnosisType == int(enums.DiagnosisFirst) {
 					firLocalCnt++
+					// } else if b.DiagnosisType == int(enums.DiagnosisFurther) {
+
+					// } else if b.DiagnosisType == int(enums.DiagnosisSecend) {
 				}
 			} else { //场外
 				if b.DiagnosisType == int(enums.DiagnosisFirst) {
 					firRefCnt++
+					// } else if b.DiagnosisType == int(enums.DiagnosisFurther) {
+
+					// } else if b.DiagnosisType == int(enums.DiagnosisSecend) {
 				}
 			}
 
@@ -1944,13 +1952,22 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 				tSecD++
 			}
 		}
-		if b.TradeType == int(enums.TradeFail) {
+		if b.TradeType == int(enums.TradeFail) { //未成交
 			if b.DiagnosisType == int(enums.DiagnosisFirst) {
 				tFirD++
 			} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
 				tFuD++
 			} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
 				tSecD++
+			}
+			if b.TradeAt.Unix() >= unixToday {
+				if b.DiagnosisType == int(enums.DiagnosisFirst) {
+					dayFirD++
+				} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
+					dayFuD++
+				} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
+					daySecD++
+				}
 			}
 		} else {
 			tmDeal = tmDeal.Add(b.RealAmount)
@@ -1968,15 +1985,6 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 
 				if b.TradeType == int(enums.TradeDeal) {
 					dayDeal++
-					if b.DiagnosisType == int(enums.DiagnosisFirst) {
-						dayFirD++
-					} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
-						dayFuD++
-					} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
-						daySecD++
-					}
-				}
-				if b.TradeType == int(enums.TradeFail) {
 					if b.DiagnosisType == int(enums.DiagnosisFirst) {
 						dayFirD++
 					} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
