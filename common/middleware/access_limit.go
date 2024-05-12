@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/baowk/dilu-core/common/utils/ips"
@@ -22,7 +21,6 @@ func AccessLimitfunc() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ip := ips.GetIP(c)
 		v, ok := accessMap[ip]
-		fmt.Println(ip, v)
 		if !ok { //首次访
 			accessMap[ip] = &Access{beginTime: time.Now(), accessCnt: 1}
 		} else {
