@@ -764,10 +764,22 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 	var firstCnt, dealCnt int
 
 	var actHCnt, actCnt int
-	dentalArr := [5][2]int{}
+	dentalArr := [5][3]int{}
 
 	for _, b := range list {
-		if b.TradeType != int(enums.TradeFail) {
+		if b.TradeType == int(enums.TradeFail) {
+			if b.DiagnosisType == int(enums.DiagnosisFirst) {
+				if b.TradeAt.Unix() >= unixToday {
+					firstCnt++
+				}
+			}
+		} else if b.TradeType == int(enums.TradeImplant) {
+			dentalArr[0][2] = dentalArr[0][2] + b.Brand1Impl
+			dentalArr[1][2] = dentalArr[1][2] + b.Brand2Impl
+			dentalArr[2][2] = dentalArr[2][2] + b.Brand3Impl
+			dentalArr[3][2] = dentalArr[3][2] + b.Brand4Impl
+			dentalArr[4][2] = dentalArr[4][2] + b.Brand5Impl
+		} else {
 			totalDeal = totalDeal.Add(b.RealAmount)
 			totalPaid = totalPaid.Add(b.PaidAmount)
 			totalDebt = totalDebt.Add(b.DebtAmount)
@@ -792,28 +804,16 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 					actHCnt++
 				}
 			}
-			if b.Brand1 > 0 {
-				dentalArr[0][0] = dentalArr[0][0] + b.Brand1
-				dentalArr[0][1] = dentalArr[0][1] + b.Brand1Impl
-			} else if b.Brand2 > 0 {
-				dentalArr[1][0] = dentalArr[1][0] + b.Brand2
-				dentalArr[1][1] = dentalArr[1][1] + b.Brand2Impl
-			} else if b.Brand3 > 0 {
-				dentalArr[2][0] = dentalArr[2][0] + b.Brand3
-				dentalArr[2][1] = dentalArr[2][1] + b.Brand3Impl
-			} else if b.Brand4 > 0 {
-				dentalArr[3][0] = dentalArr[3][0] + b.Brand4
-				dentalArr[3][1] = dentalArr[3][1] + b.Brand4Impl
-			} else if b.Brand5 > 0 {
-				dentalArr[4][0] = dentalArr[4][0] + b.Brand5
-				dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
-			}
-		} else {
-			if b.DiagnosisType == int(enums.DiagnosisFirst) {
-				if b.TradeAt.Unix() >= unixToday {
-					firstCnt++
-				}
-			}
+			dentalArr[0][0] = dentalArr[0][0] + b.Brand1
+			dentalArr[0][1] = dentalArr[0][1] + b.Brand1Impl
+			dentalArr[1][0] = dentalArr[1][0] + b.Brand2
+			dentalArr[1][1] = dentalArr[1][1] + b.Brand2Impl
+			dentalArr[2][0] = dentalArr[2][0] + b.Brand3
+			dentalArr[2][1] = dentalArr[2][1] + b.Brand3Impl
+			dentalArr[3][0] = dentalArr[3][0] + b.Brand4
+			dentalArr[3][1] = dentalArr[3][1] + b.Brand4Impl
+			dentalArr[4][0] = dentalArr[4][0] + b.Brand5
+			dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
 		}
 	}
 
@@ -861,11 +861,11 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 	texts.Append(fmt.Sprintf("本月时间进度：%s\n", dp))
 	texts.Append(fmt.Sprintf("本月完成：%s%%\n", tPaid.Div(decimal.NewFromInt(int64(targetTotalDeal/100))).StringFixedBank(0)))
 	texts.Append("本月成交种植延期\n")
-	texts.Append(fmt.Sprintf("奥:%d-%d-%d\n", dentalArr[0][0], dentalArr[0][1], dentalArr[0][0]-dentalArr[0][1]))
-	texts.Append(fmt.Sprintf("皓:%d-%d-%d\n", dentalArr[1][0], dentalArr[1][1], dentalArr[1][0]-dentalArr[1][1]))
-	texts.Append(fmt.Sprintf("雅:%d-%d-%d\n", dentalArr[2][0], dentalArr[2][1], dentalArr[2][0]-dentalArr[2][1]))
-	texts.Append(fmt.Sprintf("N:%d-%d-%d\n", dentalArr[4][0], dentalArr[4][1], dentalArr[4][0]-dentalArr[4][1]))
-	texts.Append(fmt.Sprintf("I:%d-%d-%d\n", dentalArr[3][0], dentalArr[3][1], dentalArr[3][0]-dentalArr[3][1]))
+	texts.Append(fmt.Sprintf("奥:%d-%d-%d\n", dentalArr[0][0], dentalArr[0][1]+dentalArr[0][2], dentalArr[0][0]-dentalArr[0][1]))
+	texts.Append(fmt.Sprintf("皓:%d-%d-%d\n", dentalArr[1][0], dentalArr[1][1]+dentalArr[1][2], dentalArr[1][0]-dentalArr[1][1]))
+	texts.Append(fmt.Sprintf("雅:%d-%d-%d\n", dentalArr[2][0], dentalArr[2][1]+dentalArr[2][2], dentalArr[2][0]-dentalArr[2][1]))
+	texts.Append(fmt.Sprintf("N:%d-%d-%d\n", dentalArr[4][0], dentalArr[4][1]+dentalArr[4][2], dentalArr[4][0]-dentalArr[4][1]))
+	texts.Append(fmt.Sprintf("I:%d-%d-%d\n", dentalArr[3][0], dentalArr[3][1]+dentalArr[3][2], dentalArr[3][0]-dentalArr[3][1]))
 	texts.Append(fmt.Sprintf("奥齿泰全半口%d例%d颗\n", actHCnt, actCnt))
 	return texts.String(), nil
 }
@@ -950,6 +950,8 @@ func (s *BillService) StQuery(teamId, userId int, deptPath string, begin, end *t
 			} else if b.DiagnosisType == int(enums.DiagnosisSecend) {
 				br.SecondDiagnosis = br.SecondDiagnosis + 1
 			}
+		} else if b.TradeType == int(enums.TradeImplant) { //牙齿补种
+
 		} else {
 			br.Deal = br.Deal.Add(b.RealAmount)
 			br.Paid = br.Paid.Add(b.PaidAmount)
@@ -1128,6 +1130,26 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 			d, _ := v.DebtAmount.Float64()
 			f.SetCellFloat("Sheet1", fmt.Sprintf("E%d", i+3), d, 2, 32)
 			remark = "补上月款;"
+		} else if v.TradeType == int(enums.TradeImplant) {
+			var brand string
+			var cnt int
+			if v.Brand1Impl > 0 {
+				brand = "奥齿泰"
+				cnt = v.Brand1Impl
+			} else if v.Brand2Impl > 0 {
+				brand = "皓圣"
+				cnt = v.Brand2Impl
+			} else if v.Brand3Impl > 0 {
+				brand = "雅定"
+				cnt = v.Brand3Impl
+			} else if v.Brand4Impl > 0 {
+				brand = "ITI"
+				cnt = v.Brand4Impl
+			} else if v.Brand5Impl > 0 {
+				brand = "诺贝尔"
+				cnt = v.Brand5Impl
+			}
+			remark = fmt.Sprintf("补种牙齿:%s%d颗;", brand, cnt)
 		} else {
 			d, _ := v.RefundAmount.Mul(decimal.NewFromInt(-1)).Float64()
 			f.SetCellFloat("Sheet1", fmt.Sprintf("E%d", i+3), d, 2, 32)
@@ -2047,7 +2069,7 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 			for _, m := range members {
 				if m.UserId == ed.UserId {
 					if ed.Rest == 2 {
-						stDay.Append(fmt.Sprintf("%s：0休息\n", m.Name))
+						stDay.Append(fmt.Sprintf("%s：留存%d初诊%d复诊%d成交%d休息\n", m.Name, ed.NewCustomerCnt, ed.FirstDiagnosis, ed.FurtherDiagnosis, ed.Deal))
 					} else {
 						stDay.Append(fmt.Sprintf("%s：留存%d初诊%d复诊%d成交%d\n", m.Name, ed.NewCustomerCnt, ed.FirstDiagnosis, ed.FurtherDiagnosis, ed.Deal))
 					}

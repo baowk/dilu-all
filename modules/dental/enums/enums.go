@@ -78,6 +78,7 @@ const (
 	TradeDeal    TradeType = 1  //成交
 	TradeBalance TradeType = 2  //补当月款
 	TradeDebt    TradeType = 3  //补上月款
+	TradeImplant TradeType = 9  //补种牙齿
 	TradeRefund  TradeType = 10 //退款
 
 )
