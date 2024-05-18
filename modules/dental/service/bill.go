@@ -816,15 +816,6 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 			dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
 		}
 	}
-
-	// var edList []models.EventDaySt
-	// if err := SerEventDaySt.GetList(teamId, 0, deptPath, today, end, &edList); err != nil {
-	// 	return "", err
-	// }
-	// for _, ed := range edList {
-	// 	firstCnt += ed.FirstDiagnosis + ed.FirstDiagnosisReferred
-	// 	dealCnt += ed.Deal
-	// }
 	todayPaid := paid.Add(debt)
 	tPaid := totalPaid.Add(totalDebt).Sub(totalrRefund)
 	var texts utils.StringBuilder
@@ -877,12 +868,6 @@ func (s *BillService) StQuery(teamId, userId int, deptPath string, begin, end *t
 	if teamId < 1 {
 		return nil, codes.ErrInvalidParameter(reqId, "teamId is nil")
 	}
-
-	// var curM smodels.SysMember
-	// if deptPath == "" {
-	// 	service.SerSysMember.GetMember(teamId, userId, &curM)
-	// 	deptPath = curM.DeptPath
-	// }
 
 	var members []smodels.SysMember
 
@@ -983,10 +968,7 @@ func (s *BillService) StQuery(teamId, userId int, deptPath string, begin, end *t
 				UserId: userId,
 			}
 		}
-		//br.FirstDiagnosis += ed.FirstDiagnosis + ed.FirstDiagnosisReferred
 		br.NewCustomerCnt += ed.NewCustomerCnt
-		//br.FurtherDiagnosis += ed.FurtherDiagnosis
-		//br.DealCnt += ed.Deal
 		m[ed.UserId] = br
 	}
 
@@ -1119,14 +1101,15 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 		pa, _ := v.PaidAmount.Float64()
 		f.SetCellFloat("Sheet1", fmt.Sprintf("E%d", i+3), pa, 2, 32)
 		var remark string
-		if v.TradeType == 1 {
+		if v.TradeType == int(enums.TradeDeal) {
 			d, _ := v.RealAmount.Sub(v.PaidAmount).Float64()
 			f.SetCellFloat("Sheet1", fmt.Sprintf("F%d", i+3), d, 2, 32)
-		} else if v.TradeType == 2 {
+		} else if v.TradeType == int(enums.TradeBalance) {
 			d, _ := v.PaidAmount.Mul(decimal.NewFromInt(-1)).Float64()
 			f.SetCellFloat("Sheet1", fmt.Sprintf("F%d", i+3), d, 2, 32)
 			remark = "补当月款;"
-		} else if v.TradeType == 3 {
+			//f.SetCellInt("Sheet1", fmt.Sprintf("L%d", i+3), (0 - v.Brand1Impl - v.Brand2Impl - v.Brand3Impl - v.Brand4Impl - v.Brand5Impl))
+		} else if v.TradeType == int(enums.TradeDebt) {
 			d, _ := v.DebtAmount.Float64()
 			f.SetCellFloat("Sheet1", fmt.Sprintf("E%d", i+3), d, 2, 32)
 			remark = "补上月款;"
@@ -1168,8 +1151,10 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 			remark += "全口;"
 		}
 		extension := v.Brand1 + v.Brand2 + v.Brand3 + v.Brand4 + v.Brand5 - v.Brand1Impl - v.Brand2Impl - v.Brand3Impl - v.Brand4Impl - v.Brand5Impl
-		if extension < 0 {
-			extension = 0
+		if v.TradeType != int(enums.TradeBalance) {
+			if extension < 0 {
+				extension = 0
+			}
 		}
 
 		f.SetCellValue("Sheet1", fmt.Sprintf("L%d", i+3), extension)
@@ -1192,7 +1177,7 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 
 	last := len(list) + 3
 	f.SetCellValue("Sheet1", fmt.Sprintf("A%d", last), "合计")
-	for i := 4; i < len(billTitleClolumns)-3; i++ {
+	for i := 4; i < len(billTitleClolumns)-2; i++ {
 		cell, err := excelize.CoordinatesToCellName(i, last)
 		if err != nil {
 			fmt.Println(err)
