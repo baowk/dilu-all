@@ -44,6 +44,11 @@ dbcfg: # 数据库配置
 go run main.go start -c resources/config.dev.yaml
 ```
 
+- 同步新接口到系统
+```bash
+go run main.go start -c resources/config.dev.yaml -a
+```
+
 - 交流群
 
   欢迎家人们star，有问题或者想进行技术交流的先加我微信(注明:的卢)，我拉你进群!
