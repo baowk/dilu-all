@@ -40,3 +40,20 @@ func (s *SysApiService) GetByType(permType int, list *[]models.SysApi) error {
 	}
 	return err
 }
+
+func (s *SysApiService) CreateIsNotExits(method, path string) error {
+	var cnt int64
+	if err := s.DB().Model(models.NewSysApi()).Where("method = ? and path = ?", method, path).Count(&cnt).Error; err != nil {
+		return err
+	}
+	if cnt == 0 {
+		api := &models.SysApi{
+			Method: method,
+			Path:   path,
+		}
+		if err := s.DB().Create(&api).Error; err != nil {
+			return err
+		}
+	}
+	return nil
+}

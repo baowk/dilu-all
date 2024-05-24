@@ -19,8 +19,8 @@ import (
 )
 
 var (
-	//AppRouters = make([]func(), 0)
 	configYml string
+	syncApi   bool
 	StartCmd  = &cobra.Command{
 		Use:     "start",
 		Short:   "Get Application config info",
@@ -33,6 +33,7 @@ var (
 
 func init() {
 	StartCmd.PersistentFlags().StringVarP(&configYml, "config", "c", "resources/config.dev.yaml", "Start server with provided configuration file")
+	StartCmd.PersistentFlags().BoolVarP(&syncApi, "api", "a", false, "Start server with sync api")
 }
 
 func run() {
@@ -132,6 +133,9 @@ func run() {
 	go func() { //主服务启动后回调
 		<-core.Started
 		startedInit()
+		if syncApi {
+			syncApiFn(r)
+		}
 	}()
 
 	go func() { //服务关闭释放资源
