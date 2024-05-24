@@ -30,8 +30,8 @@ func DriverDigitFunc() (id, b64s, answer string, err error) {
 	e.Id = uuid.New().String()
 	e.DriverDigit = base64Captcha.NewDriverDigit(80, 240, 4, 0.7, 80)
 	driver := e.DriverDigit
-	cap := base64Captcha.NewCaptcha(driver, base64Captcha.DefaultMemStore)
-	return cap.Generate()
+	capt := base64Captcha.NewCaptcha(driver, base64Captcha.DefaultMemStore)
+	return capt.Generate()
 }
 
 // Verify 校验验证码

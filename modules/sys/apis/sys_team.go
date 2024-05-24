@@ -36,12 +36,7 @@ func (e *SysTeamApi) QueryPage(c *gin.Context) {
 	list := make([]models.SysTeam, 10)
 	var total int64
 
-	var model models.SysTeam
-	if err := copier.Copy(&model, req); err != nil {
-		e.Error(c, err)
-		return
-	}
-	if err := service.SerSysTeam.Page(model, &list, &total, req.GetSize(), req.GetOffset()); err != nil {
+	if err := service.SerSysTeam.Page(&req, &list, &total); err != nil {
 		e.Error(c, err)
 		return
 	}

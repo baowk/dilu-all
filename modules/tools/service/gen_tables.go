@@ -43,12 +43,12 @@ func (s *GenTablesService) Del(req base.ReqIds) error {
 	return s.DB().Delete(&models.GenTables{}, req.Ids).Error
 }
 
-func (e *GenTablesService) Get(tx *gorm.DB, exclude bool, tableId int) (models.GenTables, error) {
+func (s *GenTablesService) Get(tx *gorm.DB, exclude bool, tableId int) (models.GenTables, error) {
 	var doc models.GenTables
 	var err error
 	table := tx
 	if tx == nil {
-		table = e.DB()
+		table = s.DB()
 	}
 
 	if tableId != 0 {
@@ -67,9 +67,9 @@ func (e *GenTablesService) Get(tx *gorm.DB, exclude bool, tableId int) (models.G
 	return doc, nil
 }
 
-func (e *GenTablesService) Create(m *models.GenTables) error {
+func (s *GenTablesService) Create(m *models.GenTables) error {
 	m.CreateBy = 0
-	err := e.DB().Create(m).Error
+	err := s.DB().Create(m).Error
 	if err != nil {
 		return err
 	}
@@ -80,7 +80,7 @@ func (e *GenTablesService) Create(m *models.GenTables) error {
 	return nil
 }
 
-func (e *GenTablesService) GetDbs() []dto.DbOption {
+func (s *GenTablesService) GetDbs() []dto.DbOption {
 	var dbs []dto.DbOption
 	if core.Cfg.DBCfg.DSN != "" {
 		db := dto.DbOption{
@@ -105,7 +105,7 @@ var (
 	frontPath = "../dilu-admin/src"
 )
 
-func (e *GenTablesService) GenTableInit(dbname string, tableName string, force bool) (models.GenTables, error) {
+func (s *GenTablesService) GenTableInit(dbname string, tableName string, force bool) (models.GenTables, error) {
 	var data models.GenTables
 	var dbTable tools.DBTables
 	var dbColumn tools.DBColumns
@@ -121,7 +121,7 @@ func (e *GenTablesService) GenTableInit(dbname string, tableName string, force b
 	if force {
 		db = dstdb
 	} else {
-		db = e.DB()
+		db = s.DB()
 	}
 
 	dbtable, err := dbTable.Get(db, sdbn, driver)
@@ -310,7 +310,7 @@ func (e *GenTablesService) GenTableInit(dbname string, tableName string, force b
 
 const ROOT = "./modules/"
 
-func (e *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error {
+func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error {
 
 	tab.MLTBName = strings.Replace(tab.TBName, "_", "-", -1)
 
@@ -549,12 +549,12 @@ func (e *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 
 }
 
-func (e *GenTablesService) Update(tab *models.GenTables) (err error) {
+func (s *GenTablesService) Update(tab *models.GenTables) (err error) {
 
 	//参数1:是要修改的数据
 	//参数2:是修改的数据
 	tab.UpdateBy = 0
-	if err = e.DB().Where("table_id = ?", tab.TableId).Updates(tab).Error; err != nil {
+	if err = s.DB().Where("table_id = ?", tab.TableId).Updates(tab).Error; err != nil {
 		return
 	}
 
@@ -568,7 +568,7 @@ func (e *GenTablesService) Update(tab *models.GenTables) (err error) {
 	tables := make([]models.GenTables, 0)
 	tableMap := make(map[string]*models.GenTables)
 	if len(tableNames) > 0 {
-		if err = e.DB().Where("table_name in (?)", tableNames).Find(&tables).Error; err != nil {
+		if err = s.DB().Where("table_name in (?)", tableNames).Find(&tables).Error; err != nil {
 			return
 		}
 		for i := range tables {

@@ -35,12 +35,6 @@ func (e *SysUserApi) QueryPage(c *gin.Context) {
 
 	list := make([]models.SysUser, 10)
 	var total int64
-
-	// if err := service.SerSysUser.QueryPage(req, &list, &total, req.GetSize(), req.GetOffset()); err != nil {
-	// 	e.Error(c, err)
-	// 	return
-	// }
-
 	var model models.SysUser
 	if err := copier.Copy(&model, req); err != nil {
 		e.Error(c, err)
@@ -92,7 +86,11 @@ func (e *SysUserApi) Create(c *gin.Context) {
 		return
 	}
 	var data models.SysUser
-	copier.Copy(&data, req)
+	err := copier.Copy(&data, req)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
 	if err := service.SerSysUser.Create(&data); err != nil {
 		e.Error(c, err)
 		return
@@ -117,7 +115,11 @@ func (e *SysUserApi) Update(c *gin.Context) {
 	}
 
 	var data models.SysUser
-	copier.Copy(&data, req)
+	err := copier.Copy(&data, req)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
 	if err := service.SerSysUser.ChangeUserinfo(utils.GetUserId(c), data); err != nil {
 		e.Error(c, err)
 		return

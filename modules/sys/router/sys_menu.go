@@ -26,8 +26,8 @@ func registerSysMenuRouter(v1 *gin.RouterGroup) {
 	{
 		r2.POST("/userMenus", apis.SysMenuA.GetUserMenus)
 		r2.POST("/grant", apis.SysMenuA.GetGrantMenus)
-
-		//		r2.POST("/perms", apis.SysMenuA.GetUserPerms)
+		r2.POST("/apis", apis.SysMenuA.GetApis)
+		r2.POST("/set_apis", apis.SysMenuA.SetApis)
 	}
 	v1.POST("canAccess", apis.SysMenuA.CanAccess)
 }

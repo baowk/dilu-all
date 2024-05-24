@@ -108,6 +108,33 @@ func (e *SysMemberApi) MyTeams(c *gin.Context) {
 	e.Ok(c, list)
 }
 
+// Exits 用户是否在团队中
+// @Summary Exits 用户是否在团队中
+// @Tags sys-SysMember
+// @Accept application/json
+// @Product application/json
+// @Param data body dto.ExistMemberReq true "body"
+// @Param teamId header int false "团队id"
+// @Success 200 {object} base.Resp{data=dto.ExistMemberResp} "{"code": 200, "data": [...]}"
+// @Router /api/v1/sys/sys-member/exist [post]
+// @Security Bearer
+func (e *SysMemberApi) Exits(c *gin.Context) {
+	var req dto.ExistMemberReq
+	if err := c.ShouldBind(&req); err != nil {
+		e.Error(c, err)
+		return
+	}
+	req.TeamId = utils.GetReqTeamId(c, req.TeamId)
+	b, err := service.SerSysMember.Exist(req.TeamId, req.UserId)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
+	e.Ok(c, dto.ExistMemberResp{
+		Exist: b,
+	})
+}
+
 // MyInfo 获取我的信息
 // @Summary 获取我的信息
 // @Tags sys-SysMember

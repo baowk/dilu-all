@@ -69,3 +69,12 @@ type TeamMemberResp struct {
 	EntryTime time.Time `json:"entryTime"` //入职时间
 	Birthday  time.Time `json:"birthday"`  //生日时间
 }
+
+type ExistMemberReq struct {
+	TeamId int `json:"teamId"`
+	UserId int `json:"userId"`
+}
+
+type ExistMemberResp struct {
+	Exist bool `json:"exist"`
+}

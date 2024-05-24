@@ -39,6 +39,23 @@ func (e *SysMemberService) Create(m *models.SysMember) error {
 			return err
 		}
 		m.UserId = user.Id
+	} else {
+		var user models.SysUser
+		if err := SerSysUser.Get(m.UserId, &user); err != nil {
+			return err
+		}
+		if m.Birthday.IsZero() && user.Birthday != "" {
+			t, err := time.Parse("2006-01-02", user.Birthday)
+			if err == nil {
+				m.Birthday = t
+			}
+		}
+		if m.Nickname == "" && user.Nickname != "" {
+			m.Nickname = user.Nickname
+		}
+		if m.Phone == "" && user.Phone != "" {
+			m.Phone = user.Phone
+		}
 	}
 	if m.DeptId > 0 {
 		var dept models.SysDept
@@ -103,6 +120,22 @@ func (e *SysMemberService) GetTeamMember(teamId, uid int, teamMember *dto.TeamMe
 			Where team_id = ? and  user_id = ? and m.status = 1 and t.status = 2 
 			and m.team_id = t.id order by m.updated_at desc`
 	return e.DB().Raw(sql, teamId, uid).Find(teamMember).Error
+}
+
+func (e *SysMemberService) Exist(teamId, userId int) (bool, error) {
+	cStr, err := e.Cache().Get(common.TeamMemberKey(teamId, userId))
+	if err == nil && cStr != "" {
+		return true, nil
+	}
+	var cnt int64
+	err = e.DB().Model(&models.SysMember{}).Where("team_id = ?", teamId).Where("user_id = ?", userId).Count(&cnt).Error
+	if err != nil {
+		return false, err
+	}
+	if cnt > 0 {
+		return true, nil
+	}
+	return false, nil
 }
 
 func (e *SysMemberService) GetMember(teamId, userId int, member *models.SysMember) error {

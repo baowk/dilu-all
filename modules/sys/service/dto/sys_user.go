@@ -138,19 +138,19 @@ type PassWord struct {
 }
 
 type SysUserDto struct {
-	Id       int    `json:"id"`       //主键
-	Username string `json:"username"` //用户名
-	Phone    string `json:"phone"`    //手机号
-	Email    string `json:"email"`    //邮箱
-	Password string `json:"password"` //密码
-	Nickname string `json:"nickname"` //昵称
-	Name     string `json:"name"`     //姓名
-	Avatar   string `json:"avatar"`   //头像
-	Bio      string `json:"bio"`      //签名
-	Birthday string `json:"birthday"` //生日
-	Gender   string `json:"gender"`   //性别 1男 2女 3未知
-	RoleId   int    `json:"roleId"`   //角色id
-	Post     string `json:"post"`     //岗位
-	Remark   string `json:"remark"`   //备注
-	Status   int    `json:"status"`   //状态 1冻结 2正常 3默认
+	Id             int    `json:"id"`             //主键
+	Username       string `json:"username"`       //用户名
+	Phone          string `json:"phone"`          //手机号
+	Email          string `json:"email"`          //邮箱
+	Password       string `json:"password"`       //密码
+	Nickname       string `json:"nickname"`       //昵称
+	Name           string `json:"name"`           //姓名
+	Avatar         string `json:"avatar"`         //头像
+	Bio            string `json:"bio"`            //签名
+	Birthday       string `json:"birthday"`       //生日
+	Gender         string `json:"gender"`         //性别 1男 2女 3未知
+	PlatformRoleId int    `json:"platformRoleId"` //角色id
+	Post           string `json:"post"`           //岗位
+	Remark         string `json:"remark"`         //备注
+	Status         int    `json:"status"`         //状态 1冻结 2正常 3默认
 }

@@ -1,6 +1,7 @@
 package apis
 
 import (
+	"dilu/common/utils"
 	"dilu/modules/sys/models"
 	"dilu/modules/sys/service"
 	"dilu/modules/sys/service/dto"
@@ -102,7 +103,11 @@ func (e *SysApiApi) Create(c *gin.Context) {
 		return
 	}
 	var data models.SysApi
-	copier.Copy(&data, req)
+	err := copier.Copy(&data, req)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
 	if err := service.SerSysApi.Create(&data); err != nil {
 		e.Error(c, err)
 		return
@@ -126,7 +131,13 @@ func (e *SysApiApi) Update(c *gin.Context) {
 		return
 	}
 	var data models.SysApi
-	copier.Copy(&data, req)
+	err := copier.Copy(&data, req)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
+	currentUserId := utils.GetUserId(c)
+	data.UpdateBy = currentUserId
 	if err := service.SerSysApi.Save(&data); err != nil {
 		e.Error(c, err)
 		return

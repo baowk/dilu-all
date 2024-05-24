@@ -18,95 +18,42 @@ func (m *SysMenuGetPageReq) GetNeedSearch() interface{} {
 }
 
 type SysMenuInsertReq struct {
-	Id         int             `uri:"id" comment:"编码"`             // 编码
-	MenuName   string          `form:"menuName" comment:"菜单name"`  //菜单name
-	Title      string          `form:"title" comment:"显示名称"`       //显示名称
-	Icon       string          `form:"icon" comment:"图标"`          //图标
-	Path       string          `form:"path" comment:"路径"`          //路径
-	Paths      string          `form:"paths" comment:"id路径"`       //id路径
-	MenuType   string          `form:"menuType" comment:"菜单类型"`    //菜单类型
-	Permission string          `form:"permission" comment:"权限编码"`  //权限编码
-	ParentId   int             `form:"parentId" comment:"上级菜单"`    //上级菜单
-	NoCache    bool            `form:"noCache" comment:"是否缓存"`     //是否缓存
-	Breadcrumb string          `form:"breadcrumb" comment:"是否面包屑"` //是否面包屑
-	Component  string          `form:"component" comment:"组件"`     //组件
-	Sort       int             `form:"sort" comment:"排序"`          //排序
-	Hidden     bool            `form:"hidden" comment:"是否隐藏"`      //是否隐藏
-	SysApi     []models.SysApi `form:"sysApi"`
+	Id           int    `uri:"id" comment:"编码"`            // 编码
+	MenuName     string `form:"menuName" comment:"菜单name"` //菜单name
+	Title        string `form:"title" comment:"显示名称"`      //显示名称
+	Icon         string `form:"icon" comment:"图标"`         //图标
+	Path         string `form:"path" comment:"路径"`         //路径
+	PlatformType int    `json:"platformType"`              //平台类型 1 平台管理 2团队管理
+	MenuType     int    `form:"menuType" comment:"菜单类型"`   //菜单类型
+	Permission   string `form:"permission" comment:"权限编码"` //权限编码
+	ParentId     int    `form:"parentId" comment:"上级菜单"`   //上级菜单
+	NoCache      bool   `form:"noCache" comment:"是否缓存"`    //是否缓存
+	Component    string `form:"component" comment:"组件"`    //组件
+	Sort         int    `form:"sort" comment:"排序"`         //排序
+	Hidden       bool   `form:"hidden" comment:"是否隐藏"`     //是否隐藏
 	base.ControlBy
 }
-
-// func (s *SysMenuInsertReq) Generate(model *models.SysMenu) {
-// 	if s.Id != 0 {
-// 		model.MenuId = s.Id
-// 	}
-// 	model.MenuName = s.MenuName
-// 	model.Title = s.Title
-// 	model.Icon = s.Icon
-// 	model.Path = s.Path
-// 	model.Paths = s.Paths
-// 	model.MenuType = s.MenuType
-// 	model.SysApi = s.SysApi
-// 	model.Permission = s.Permission
-// 	model.ParentId = s.ParentId
-// 	model.NoCache = s.NoCache
-// 	model.Component = s.Component
-// 	model.Sort = s.Sort
-// 	model.Hidden = s.Hidden
-// 	if s.CreateBy != 0 {
-// 		model.CreateBy = s.CreateBy
-// 	}
-// 	if s.UpdateBy != 0 {
-// 		model.UpdateBy = s.UpdateBy
-// 	}
-// }
 
 func (s *SysMenuInsertReq) GetId() interface{} {
 	return s.Id
 }
 
 type SysMenuUpdateReq struct {
-	Id         int             `uri:"id" comment:"编码"`            // 编码
-	MenuName   string          `form:"menuName" comment:"菜单name"` //菜单name
-	Title      string          `form:"title" comment:"显示名称"`      //显示名称
-	Icon       string          `form:"icon" comment:"图标"`         //图标
-	Path       string          `form:"path" comment:"路径"`         //路径
-	Paths      string          `form:"paths" comment:"id路径"`      //id路径
-	MenuType   string          `form:"menuType" comment:"菜单类型"`   //菜单类型
-	SysApi     []models.SysApi `form:"sysApi"`
-	Apis       []int           `form:"apis"`
-	Permission string          `form:"permission" comment:"权限编码"` //权限编码
-	ParentId   int             `form:"parentId" comment:"上级菜单"`   //上级菜单
-	NoCache    bool            `form:"noCache" comment:"是否缓存"`    //是否缓存
-	Component  string          `form:"component" comment:"组件"`    //组件
-	Sort       int             `form:"sort" comment:"排序"`         //排序
-	Hidden     bool            `form:"hidden" comment:"是否显示"`     //是否显示
+	Id           int    `uri:"id" comment:"编码"`            // 编码
+	MenuName     string `form:"menuName" comment:"菜单name"` //菜单name
+	Title        string `form:"title" comment:"显示名称"`      //显示名称
+	Icon         string `form:"icon" comment:"图标"`         //图标
+	Path         string `form:"path" comment:"路径"`         //路径
+	PlatformType int    `json:"platformType"`              //平台类型 1 平台管理 2团队管理
+	MenuType     int    `form:"menuType" comment:"菜单类型"`   //菜单类型
+	Permission   string `form:"permission" comment:"权限编码"` //权限编码
+	ParentId     int    `form:"parentId" comment:"上级菜单"`   //上级菜单
+	NoCache      bool   `form:"noCache" comment:"是否缓存"`    //是否缓存
+	Component    string `form:"component" comment:"组件"`    //组件
+	Sort         int    `form:"sort" comment:"排序"`         //排序
+	Hidden       bool   `form:"hidden" comment:"是否显示"`     //是否显示
 	base.ControlBy
 }
-
-// func (s *SysMenuUpdateReq) Generate(model *models.SysMenu) {
-// 	if s.Id != 0 {
-// 		model.MenuId = s.Id
-// 	}
-// 	model.MenuName = s.MenuName
-// 	model.Title = s.Title
-// 	model.Icon = s.Icon
-// 	model.Path = s.Path
-// 	model.Paths = s.Paths
-// 	model.MenuType = s.MenuType
-// 	model.Permission = s.Permission
-// 	model.ParentId = s.ParentId
-// 	model.NoCache = s.NoCache
-// 	model.Component = s.Component
-// 	model.Sort = s.Sort
-// 	model.Hidden = s.Hidden
-// 	if s.CreateBy != 0 {
-// 		model.CreateBy = s.CreateBy
-// 	}
-// 	if s.UpdateBy != 0 {
-// 		model.UpdateBy = s.UpdateBy
-// 	}
-// }
 
 func (s *SysMenuUpdateReq) GetId() interface{} {
 	return s.Id
@@ -133,6 +80,17 @@ type RouteMeta struct {
 	FrameLoading bool     `json:"frameLoading"`         //iframe页是否开启首次加载动画（默认true）可选
 	Auths        []string `json:"auths,omitempty"`      //按钮权限
 	//HiddenTag    bool     `json:"hiddenTag"`              //当前菜单名称或自定义信息禁止添加到标签页
+}
+
+type SysMenuAPiGetReq struct {
+	base.ReqPage `query:"-"`
+	MenuId       int    `json:"menuId" form:"menuId"`
+	Path         string `json:"path" form:"path"`
+}
+
+type SysMenuApiSetReq struct {
+	MenuId int   `json:"menuId"`
+	ApiIds []int `json:"apiIds"`
 }
 
 type SysMenuGetReq struct {

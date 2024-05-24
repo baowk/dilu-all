@@ -167,7 +167,7 @@ func (e *SysMenu) GetMenus(c *gin.Context, mvs *[]models.SysMenu) errs.IError {
 	} else {
 		where = "platform_type >= ?"
 	}
-	if err := e.DB().Where(where, enums.MenuPub).Order("sort desc").Find(mvs).Error; err != nil {
+	if err := e.DB().Where(where, enums.MenuPub).Order("sort asc").Find(mvs).Error; err != nil {
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -200,6 +200,7 @@ func (e *SysMenu) GetMenus(c *gin.Context, mvs *[]models.SysMenu) errs.IError {
 
 func (e *SysMenu) GetRoles(c *gin.Context) (platform, teamId int, roles []int, ierr errs.IError) {
 	role := utils.GetRoleId(c)
+	fmt.Println(role)
 	platform = 2
 	if role != 0 { //超管
 		platform = 1
@@ -273,7 +274,7 @@ func (e *SysMenu) GetUserMenus(c *gin.Context, mvs *[]dto.MenuVo) errs.IError {
 	} else {
 		where = "platform_type >= ?"
 	}
-	db := e.DB().Where(where, enums.MenuPub).Order("sort desc").Order("parent_id asc")
+	db := e.DB().Where(where, enums.MenuPub).Order("sort asc").Order("parent_id asc")
 	if len(roles) > 0 {
 		db.Joins(" left join sys_role_menu on sys_role_menu.menu_id = sys_menu.id").
 			Where("sys_role_menu.role_id in ?", roles)
@@ -354,4 +355,49 @@ func (e *SysMenu) GetUserPerms(roleId int, mvs *[]string) errs.IError {
 	}
 	*mvs = ms
 	return nil
+}
+
+func (e *SysMenu) GetApisByPage(menuId int, path string, total *int64, size, offset int) ([]dto.SysApiExt, error) {
+	var orderBy = func(menuId int) string {
+		if menuId > 0 {
+			return "sys_menu_api_rule.sys_menu_id DESC"
+		}
+		return "sys_api.id DESC"
+	}
+	var apis []dto.SysApiExt
+	db := e.DB().Model(&models.SysApi{}).Select("*")
+	if menuId > 0 {
+		db.Joins("LEFT JOIN sys_menu_api_rule ON sys_api.id = sys_menu_api_rule.sys_api_id AND sys_menu_api_rule.sys_menu_id = ?", menuId)
+	}
+	if path != "" {
+		db.Where("sys_api.path LIKE ?", "%"+path+"%")
+	}
+	if err := db.Limit(size).Offset(offset).Order(orderBy(menuId)).Find(&apis).Limit(-1).Offset(-1).Count(total).Error; err != nil {
+		return nil, err
+	}
+	return apis, nil
+}
+
+// SetApis 给 menu 设置 api
+func (e *SysMenu) SetApis(menuId int, apiIds []int) error {
+	for _, id := range apiIds {
+		var cnt int64
+		if err := e.DB().Model(&models.SysMenuApiRule{}).Where("sys_menu_id = ? and sys_api_id = ?", menuId, id).Count(&cnt).Error; err != nil {
+			return err
+		}
+		if cnt > 0 {
+			continue
+		} else {
+			if err := e.DB().Model(&models.SysMenuApiRule{}).Create(&models.SysMenuApiRule{SysMenuId: uint(menuId), SysApiId: uint(id)}).Error; err != nil {
+				return err
+			}
+		}
+	}
+	var err error
+	if len(apiIds) > 0 {
+		err = e.DB().Model(&models.SysMenuApiRule{}).Where("sys_menu_id = ? AND sys_api_id NOT IN (?)", menuId, apiIds).Delete(&models.SysMenuApiRule{}).Error
+	} else {
+		err = e.DB().Model(&models.SysMenuApiRule{}).Where("sys_menu_id = ?", menuId).Delete(&models.SysMenuApiRule{}).Error
+	}
+	return err
 }

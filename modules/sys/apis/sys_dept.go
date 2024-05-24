@@ -108,11 +108,8 @@ func (e *SysDeptApi) Create(c *gin.Context) {
 		e.Error(c, err)
 		return
 	}
-	teamId := utils.GetTeamId(c)
 	var data models.SysDept
-	if teamId > 0 {
-		req.TeamId = teamId
-	}
+	req.TeamId = utils.GetReqTeamId(c, req.TeamId)
 	adminId := utils.GetUserId(c)
 	if err := service.SerSysDept.CreateDept(req, adminId, e.GetReqId(c)); err != nil {
 		e.Error(c, err)

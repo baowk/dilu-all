@@ -6,7 +6,8 @@ import (
 
 type SysTeamGetPageReq struct {
 	base.ReqPage `query:"-"`
-	Status       int `json:"status" form:"status"` //状态
+	Status       int    `json:"status" form:"status"` //状态
+	Name         string `json:"name" form:"name"`     // 团队名
 }
 
 // 团队

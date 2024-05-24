@@ -1,7 +1,6 @@
 package apis
 
 import (
-	dm "dilu/modules/dental/models"
 	nm "dilu/modules/notice/models"
 	"dilu/modules/sys/models"
 	tm "dilu/modules/tools/models"
@@ -56,15 +55,7 @@ func (e *Init) DoInit(c *gin.Context) {
 	); err != nil {
 		result = "sys执行失败"
 	}
-	if err := core.Db("dental").AutoMigrate(
-		&dm.Bill{},
-		&dm.Customer{},
-		&dm.EventDaySt{},
-		&dm.SummaryPlanDay{},
-		&dm.TargetTask{},
-	); err != nil {
-		result = "dental执行失败"
-	}
+
 	if err := core.Db("notice").AutoMigrate(
 		&nm.PubNotice{},
 		&nm.UserNotice{},
