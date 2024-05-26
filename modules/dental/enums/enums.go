@@ -37,22 +37,22 @@ var DentalBrands = []DentalBrand{
 	},
 }
 
-var Counselor = []string{"咨询师"}
-var TradeAt = []string{"成交日期"}
+var Counselor = []string{"咨询师", "外场咨询"}
+var TradeAt = []string{"成交日期", "时间"}
 var CustomerName = []string{"患者姓名", "患者"}
 var Doctor = []string{"种植医生", "医生"}
 var Project = []string{"种植项目"}
 var Brand = []string{"品牌"}
 var Cnt = []string{"颗数"}
 var Others = []string{"全科项目", "全科"}
-var Total = []string{"成交金额"}
+var Total = []string{"成交金额", "费用"}
 var Paid = []string{"实收金额", "实收"}
 var Debts = []string{"欠款金额", "欠款"}
 var PaybackDate = []string{"补款日期"}
 var Implant = []string{"种在嘴里", "是否已种", "种植情况"}
 var ImplantVals = []string{"是", "已"}
 var Extensions = []string{"延期情况"}
-var Remark = []string{"备注"}
+var Remark = []string{"备注", "未成交原因"}
 
 type DayType int
 

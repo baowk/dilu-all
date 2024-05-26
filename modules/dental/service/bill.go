@@ -8,6 +8,7 @@ import (
 	"dilu/modules/dental/models"
 	"dilu/modules/dental/service/dto"
 	smodels "dilu/modules/sys/models"
+	"log/slog"
 
 	senums "dilu/modules/sys/enums"
 	"dilu/modules/sys/service"
@@ -82,9 +83,7 @@ func (s *BillService) Page(teamId int, userId int, req dto.BillGetPageReq, list 
 		for _, c := range cs {
 			if c.Id == b.CustomerId {
 				var bt dto.BillDto
-
 				copier.Copy(&bt, b)
-				fmt.Println(b, bt)
 				bt.CustomerName = c.Name
 				*list = append(*list, bt)
 				break
@@ -541,23 +540,23 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 		bill.Brand1Impl = bill.ImplantedCount
 	}
 
-	if strings.Contains(req.Text, "转介绍") {
+	if strings.Contains(req.Text, "转介绍") || strings.Contains(req.Text, "加班") {
 		bill.Source = 2
 	} else {
 		bill.Source = 1
 	}
 
-	if strings.Contains(req.Text, "复诊") {
+	if strings.Contains(req.Text, "新诊") {
 		bill.DiagnosisType = 2
-	} else if strings.Contains(req.Text, "新诊") {
-		bill.DiagnosisType = 3
+	} else if strings.Contains(req.Text, "复诊") {
+		bill.DiagnosisType = 2
 	} else {
 		bill.DiagnosisType = 1
 	}
 
-	if bill.PrjName == "半口" {
+	if strings.Contains(bill.PrjName, "半口") {
 		bill.Pack = int(enums.PackHalf)
-	} else if bill.PrjName == "全口" {
+	} else if strings.Contains(bill.PrjName, "全口") {
 		bill.Pack = int(enums.PackFull)
 		// } else if bill.DentalCount > 0 {
 		// 	bill.Pack = int(enums.PackCnt)
@@ -591,28 +590,6 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 	} else {
 		(*bill).CustomerName = custName
 	}
-	// if bill.Implant == 3 {
-	// 	(*bill).ImplantedCount = bill.DentalCount
-	// 	(*bill).ImplantDate = bill.TradeAt
-	// }
-	// if bill.BrandName != "" {
-	// 	bn := strings.ToUpper(bill.BrandName)
-	// 	for _, v := range enums.DentalBrands {
-	// 		if strings.Contains(bn, v.Name) {
-	// 			bill.Brand = v.Id
-	// 			break
-	// 		}
-	// 		for _, a := range v.Alias {
-	// 			if strings.Contains(bn, a) {
-	// 				bill.Brand = v.Id
-	// 				break
-	// 			}
-	// 		}
-	// 		if bill.Brand > 0 {
-	// 			break
-	// 		}
-	// 	}
-	// }
 	(*bill).TradeType = int(enums.TradeDeal)
 	if bill.RealAmount == "" && bill.PaidAmount != "" {
 		(*bill).TradeType = int(enums.TradeBalance)
@@ -620,7 +597,34 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 	if bill.PaidAmount == "" && bill.RealAmount != "" {
 		(*bill).PaidAmount = bill.RealAmount
 	}
+	if strings.Contains(req.Text, "未成交患者模板") {
+		bill.TradeType = int(enums.TradeFail)
+	}
+	if bill.UserId > 0 && bill.CustomerId > 0 {
+		var firBill models.Bill
+		if err := s.GetBill(bill.UserId, bill.CustomerId, &firBill); err != nil {
+			return nil
+		}
+		//fmt.Println(firBill)
+		if firBill.Id > 0 {
+			bill.LinkId = firBill.Id
+			bill.Source = firBill.Source
+			if firBill.TradeType == int(enums.TradeDeal) && bill.DiagnosisType != int(enums.DiagnosisSecend) {
+				bill.DiagnosisType = firBill.DiagnosisType
+			} else if firBill.TradeType == int(enums.TradeFail) && bill.DiagnosisType != int(enums.DiagnosisSecend) {
+				bill.DiagnosisType = int(enums.DiagnosisFurther)
+			}
+			if bill.DiagnosisType != int(enums.DiagnosisSecend) {
+				bill.Pack = firBill.Pack
+			}
+		}
+	}
+
 	return nil
+}
+
+func (s *BillService) GetBill(userId, customerId int, bill *models.Bill) error {
+	return s.DB().Where("user_id = ? and customer_id = ?", userId, customerId).Order("id asc").Limit(1).First(bill).Error
 }
 
 func getVal(data string) string {
@@ -763,8 +767,8 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 	var totalDeal, totalPaid, totalDebt, totalrRefund, deal, paid, debt, refund, arrear decimal.Decimal
 	var firstCnt, dealCnt int
 
-	var actHCnt, actCnt int
-	dentalArr := [5][3]int{}
+	//["0：总颗数","1：已种","2：补种颗数","3：半口数","4:颗数","5:已种颗数","6:补种颗数","7:全口数","8:颗数","9:已种颗数","10:补种颗数"]
+	dentalArr := [5][11]int{}
 
 	for _, b := range list {
 		if b.TradeType == int(enums.TradeFail) {
@@ -779,6 +783,61 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 			dentalArr[2][2] = dentalArr[2][2] + b.Brand3Impl
 			dentalArr[3][2] = dentalArr[3][2] + b.Brand4Impl
 			dentalArr[4][2] = dentalArr[4][2] + b.Brand5Impl
+			if b.Pack == int(enums.PackHalf) {
+				if b.Brand1Impl > 0 {
+					dentalArr[0][3] += 1
+					dentalArr[0][4] += b.Brand1Impl
+					dentalArr[0][5] += b.Brand1Impl
+					dentalArr[0][6] += b.Brand1Impl
+				} else if b.Brand2Impl > 0 {
+					dentalArr[1][3] += 1
+					dentalArr[1][4] += b.Brand2Impl
+					dentalArr[1][5] += b.Brand2Impl
+					dentalArr[1][6] += b.Brand2Impl
+				} else if b.Brand3Impl > 0 {
+					dentalArr[2][3] += 1
+					dentalArr[2][4] += b.Brand3Impl
+					dentalArr[2][5] += b.Brand3Impl
+					dentalArr[2][6] += b.Brand3Impl
+				} else if b.Brand4Impl > 0 {
+					dentalArr[3][3] += 1
+					dentalArr[3][4] += b.Brand4Impl
+					dentalArr[3][5] += b.Brand4Impl
+					dentalArr[3][6] += b.Brand4Impl
+				} else if b.Brand5Impl > 0 {
+					dentalArr[4][3] += 1
+					dentalArr[4][4] += b.Brand5Impl
+					dentalArr[4][5] += b.Brand5Impl
+					dentalArr[4][6] += b.Brand5Impl
+				}
+			} else if b.Pack == int(enums.PackFull) {
+				if b.Brand1Impl > 0 {
+					dentalArr[0][7] += 1
+					dentalArr[0][8] += b.Brand1Impl
+					dentalArr[0][9] += b.Brand1Impl
+					dentalArr[0][10] += b.Brand1Impl
+				} else if b.Brand2Impl > 0 {
+					dentalArr[1][7] += 1
+					dentalArr[1][8] += b.Brand2Impl
+					dentalArr[1][9] += b.Brand2Impl
+					dentalArr[1][10] += b.Brand2Impl
+				} else if b.Brand3Impl > 0 {
+					dentalArr[2][7] += 1
+					dentalArr[2][8] += b.Brand3Impl
+					dentalArr[2][9] += b.Brand3Impl
+					dentalArr[2][10] += b.Brand3Impl
+				} else if b.Brand4Impl > 0 {
+					dentalArr[3][7] += 1
+					dentalArr[3][8] += b.Brand4Impl
+					dentalArr[3][9] += b.Brand4Impl
+					dentalArr[3][10] += b.Brand4Impl
+				} else if b.Brand5Impl > 0 {
+					dentalArr[4][7] += 1
+					dentalArr[4][8] += b.Brand5Impl
+					dentalArr[4][9] += b.Brand5Impl
+					dentalArr[4][10] += b.Brand5Impl
+				}
+			}
 		} else {
 			totalDeal = totalDeal.Add(b.RealAmount)
 			totalPaid = totalPaid.Add(b.PaidAmount)
@@ -798,12 +857,6 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 				}
 
 			}
-			if b.Pack == int(enums.PackHalf) || b.Pack == int(enums.PackFull) {
-				if b.Brand1 > 0 {
-					actCnt += b.Brand1
-					actHCnt++
-				}
-			}
 			dentalArr[0][0] = dentalArr[0][0] + b.Brand1
 			dentalArr[0][1] = dentalArr[0][1] + b.Brand1Impl
 			dentalArr[1][0] = dentalArr[1][0] + b.Brand2
@@ -814,6 +867,51 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 			dentalArr[3][1] = dentalArr[3][1] + b.Brand4Impl
 			dentalArr[4][0] = dentalArr[4][0] + b.Brand5
 			dentalArr[4][1] = dentalArr[4][1] + b.Brand5Impl
+			if b.Pack == int(enums.PackHalf) {
+				if b.Brand1 > 0 {
+					dentalArr[0][3] += 1
+				} else if b.Brand2 > 0 {
+					dentalArr[1][3] += 1
+				} else if b.Brand3 > 0 {
+					dentalArr[2][3] += 1
+				} else if b.Brand4 > 0 {
+					dentalArr[3][3] += 1
+				} else if b.Brand5 > 0 {
+					dentalArr[4][3] += 1
+				}
+				dentalArr[0][4] += b.Brand1
+				dentalArr[0][5] += b.Brand1Impl
+				dentalArr[1][4] += b.Brand2
+				dentalArr[1][5] += b.Brand2Impl
+				dentalArr[2][4] += b.Brand3
+				dentalArr[2][5] += b.Brand3Impl
+				dentalArr[3][4] += b.Brand4
+				dentalArr[3][5] += b.Brand4Impl
+				dentalArr[4][4] += b.Brand5
+				dentalArr[4][5] += b.Brand5Impl
+			} else if b.Pack == int(enums.PackFull) {
+				if b.Brand1 > 0 {
+					dentalArr[0][7] += 1
+				} else if b.Brand2 > 0 {
+					dentalArr[1][7] += 1
+				} else if b.Brand3 > 0 {
+					dentalArr[2][7] += 1
+				} else if b.Brand4 > 0 {
+					dentalArr[3][7] += 1
+				} else if b.Brand5 > 0 {
+					dentalArr[4][7] += 1
+				}
+				dentalArr[0][8] += b.Brand1
+				dentalArr[0][9] += b.Brand1Impl
+				dentalArr[1][8] += b.Brand2
+				dentalArr[1][9] += b.Brand2Impl
+				dentalArr[2][8] += b.Brand3
+				dentalArr[2][9] += b.Brand3Impl
+				dentalArr[3][8] += b.Brand4
+				dentalArr[3][9] += b.Brand4Impl
+				dentalArr[4][8] += b.Brand5
+				dentalArr[4][9] += b.Brand5Impl
+			}
 		}
 	}
 	todayPaid := paid.Add(debt)
@@ -857,7 +955,41 @@ func (s *BillService) StDayV2(teamId, userId int, deptPath string, day time.Time
 	texts.Append(fmt.Sprintf("雅:%d-%d-%d\n", dentalArr[2][0], dentalArr[2][1]+dentalArr[2][2], dentalArr[2][0]-dentalArr[2][1]))
 	texts.Append(fmt.Sprintf("N:%d-%d-%d\n", dentalArr[4][0], dentalArr[4][1]+dentalArr[4][2], dentalArr[4][0]-dentalArr[4][1]))
 	texts.Append(fmt.Sprintf("I:%d-%d-%d\n", dentalArr[3][0], dentalArr[3][1]+dentalArr[3][2], dentalArr[3][0]-dentalArr[3][1]))
-	texts.Append(fmt.Sprintf("奥齿泰全半口%d例%d颗\n", actHCnt, actCnt))
+	if dentalArr[0][3] > 0 {
+		texts.Append(fmt.Sprintf("奥齿泰半口%d例%d颗,延期%d,补种%d\n", dentalArr[0][3], dentalArr[0][4], dentalArr[0][4]-dentalArr[0][5], dentalArr[0][6]))
+	}
+	if dentalArr[0][7] > 0 {
+		texts.Append(fmt.Sprintf("奥齿泰全口%d例%d颗,延期%d,补种%d\n", dentalArr[0][7], dentalArr[0][8], dentalArr[0][8]-dentalArr[0][9], dentalArr[0][10]))
+	}
+
+	if dentalArr[1][3] > 0 {
+		texts.Append(fmt.Sprintf("皓圣半口%d例%d颗,延期%d,补种%d\n", dentalArr[1][3], dentalArr[1][4], dentalArr[1][4]-dentalArr[1][5], dentalArr[1][6]))
+	}
+	if dentalArr[1][7] > 0 {
+		texts.Append(fmt.Sprintf("皓圣泰全口%d例%d颗,延期%d,补种%d\n", dentalArr[1][7], dentalArr[1][8], dentalArr[1][8]-dentalArr[1][9], dentalArr[1][10]))
+	}
+
+	if dentalArr[2][3] > 0 {
+		texts.Append(fmt.Sprintf("雅定半口%d例%d颗,延期%d,补种%d\n", dentalArr[2][3], dentalArr[2][4], dentalArr[2][4]-dentalArr[2][5], dentalArr[2][6]))
+	}
+	if dentalArr[2][7] > 0 {
+		texts.Append(fmt.Sprintf("雅定泰全口%d例%d颗,延期%d,补种%d\n", dentalArr[2][7], dentalArr[2][8], dentalArr[2][8]-dentalArr[2][9], dentalArr[2][10]))
+	}
+
+	if dentalArr[3][3] > 0 {
+		texts.Append(fmt.Sprintf("ITI半口%d例%d颗,延期%d,补种%d\n", dentalArr[3][3], dentalArr[3][4], dentalArr[3][4]-dentalArr[3][5], dentalArr[3][6]))
+	}
+	if dentalArr[3][7] > 0 {
+		texts.Append(fmt.Sprintf("ITI全口%d例%d颗,延期%d,补种%d\n", dentalArr[3][7], dentalArr[3][8], dentalArr[3][8]-dentalArr[3][9], dentalArr[3][10]))
+	}
+
+	if dentalArr[4][3] > 0 {
+		texts.Append(fmt.Sprintf("诺贝尔半口%d例%d颗,延期%d,补种%d\n", dentalArr[4][3], dentalArr[4][4], dentalArr[4][4]-dentalArr[4][5], dentalArr[4][6]))
+	}
+	if dentalArr[4][7] > 0 {
+		texts.Append(fmt.Sprintf("诺贝尔全口%d例%d颗,延期%d,补种%d\n", dentalArr[4][7], dentalArr[4][8], dentalArr[4][8]-dentalArr[4][9], dentalArr[4][10]))
+	}
+
 	return texts.String(), nil
 }
 
@@ -1046,7 +1178,7 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 	f := excelize.NewFile()
 	defer func() {
 		if err := f.Close(); err != nil {
-			fmt.Println(err)
+			slog.Error("err", "err", err)
 		}
 	}()
 
@@ -1055,24 +1187,24 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 
 	err := f.SetColWidth("Sheet1", "A", "A", 12)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 	err = f.SetColWidth("Sheet1", "B", "F", 13)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 	err = f.SetColWidth("Sheet1", "G", "N", 10)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 	err = f.SetColWidth("Sheet1", "O", "O", 15)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	err = f.MergeCell("Sheet1", "A1", "O1")
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 	title := fmt.Sprintf("%s组%d月份小组成交明细", name, month)
 	f.SetCellValue("Sheet1", "A1", title)
@@ -1180,7 +1312,7 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 	for i := 4; i < len(billTitleClolumns)-2; i++ {
 		cell, err := excelize.CoordinatesToCellName(i, last)
 		if err != nil {
-			fmt.Println(err)
+			slog.Error("err", "err", err)
 			return nil, "", err
 		}
 		f.SetCellFormula("Sheet1", cell, fmt.Sprintf("=SUM(%s%d:%s%d)", BASE_CLOUMN[i-1], 3, BASE_CLOUMN[i-1], last-1))
@@ -1217,7 +1349,7 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 		},
 	})
 	if err2 != nil {
-		fmt.Println(err2)
+		slog.Error("err", "err", err2)
 	}
 	f.SetCellStyle("Sheet1", "A1", "A1", titleS)
 
@@ -1251,7 +1383,7 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 		},
 	})
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	f.SetCellStyle("Sheet1", "A2", fmt.Sprintf("O%d", last), style)
@@ -1286,11 +1418,11 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 		},
 	})
 	if err3 != nil {
-		fmt.Println(err3)
+		slog.Error("err", "err", err3)
 	}
 	f.SetCellStyle("Sheet1", "B3", fmt.Sprintf("O%d", last), titleC)
 	// if err := f.SaveAs("Book1.xlsx"); err != nil {
-	// 	fmt.Println(err)
+	// 	slog.Error("err","err",err)
 	// }
 
 	return f, title, nil
@@ -1313,7 +1445,7 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 	f := excelize.NewFile()
 	defer func() {
 		if err := f.Close(); err != nil {
-			fmt.Println(err)
+			slog.Error("err", "err", err)
 		}
 	}()
 
@@ -1322,27 +1454,27 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 
 	err := f.SetColWidth("Sheet1", "A", "A", 7)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	err = f.SetColWidth("Sheet1", "B", "I", 11)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	err = f.SetColWidth("Sheet1", "J", "S", 10)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	err = f.SetColWidth("Sheet1", "K", "O", 11)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	err = f.MergeCell("Sheet1", "A1", "S1")
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 		return nil, "", err
 	}
 	title := fmt.Sprintf("%s组%d月份小组进度数据表", name, month)
@@ -1410,7 +1542,7 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 	for i := 3; i < len(titleClolumns); i++ {
 		cell, err := excelize.CoordinatesToCellName(i, last)
 		if err != nil {
-			fmt.Println(err)
+			slog.Error("err", "err", err)
 			return nil, "", err
 		}
 		if i == 5 {
@@ -1473,7 +1605,7 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 		},
 	})
 	if err2 != nil {
-		fmt.Println(err2)
+		slog.Error("err", "err", err2)
 	}
 	f.SetCellStyle("Sheet1", "A1", "A1", titleS)
 
@@ -1507,7 +1639,7 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 		},
 	})
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	f.SetCellStyle("Sheet1", "A2", fmt.Sprintf("S%d", last), style)
@@ -1542,12 +1674,12 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 		},
 	})
 	if err3 != nil {
-		fmt.Println(err3)
+		slog.Error("err", "err", err3)
 	}
 	f.SetCellStyle("Sheet1", "B3", fmt.Sprintf("S%d", last), titleC)
 
 	// if err := f.SaveAs("Book1.xlsx"); err != nil {
-	// 	fmt.Println(err)
+	// 	slog.Error("err","err",err)
 	// }
 
 	return f, title, nil
@@ -1666,7 +1798,7 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 	f := excelize.NewFile()
 	defer func() {
 		if err := f.Close(); err != nil {
-			fmt.Println(err)
+			slog.Error("err", "err", err)
 		}
 	}()
 
@@ -1675,13 +1807,13 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 
 	err := f.SetColWidth(sheet, "A", "M", 17)
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	//#到诊
 	err = f.MergeCell(sheet, "A1", "F1")
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 		return nil, "", err
 	}
 	title := fmt.Sprintf("杭州院%d年%d月份到诊情况", year, month)
@@ -1721,7 +1853,7 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 	//客单价
 	err = f.MergeCell(sheet, "H1", "L1")
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 		return nil, "", err
 	}
 	f.SetCellValue(sheet, "H1", "客单价")
@@ -1736,7 +1868,7 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 	//实收
 	err = f.MergeCell(sheet, "A11", "M11")
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 		return nil, "", err
 	}
 
@@ -1823,7 +1955,7 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 		},
 	})
 	if err2 != nil {
-		fmt.Println(err2)
+		slog.Error("err", "err", err2)
 	}
 	f.SetCellStyle(sheet, "A1", "L1", titleS)
 	f.SetCellStyle(sheet, "A11", "A11", titleS)
@@ -1858,7 +1990,7 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 		},
 	})
 	if err != nil {
-		fmt.Println(err)
+		slog.Error("err", "err", err)
 	}
 
 	f.SetCellStyle(sheet, "A2", "F7", style)
@@ -1895,7 +2027,7 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 		},
 	})
 	if err3 != nil {
-		fmt.Println(err3)
+		slog.Error("err", "err", err3)
 	}
 
 	f.SetCellStyle(sheet, "B3", "F7", contentStyle)
