@@ -2164,7 +2164,7 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 	}
 	texts.Append(fmt.Sprintf("本月团队任务：%s\n", utils.MoneyFmt(float64(totalDeal))))
 	if tmpLen > 0 {
-		texts.Append(fmt.Sprintf("未完成任务：%d+%d\n", memberLen, tmpLen))
+		texts.Append(fmt.Sprintf("人员数量：%d+%d\n", memberLen, tmpLen))
 	} else {
 		texts.Append(fmt.Sprintf("人员数量：%d\n", memberLen))
 	}
