@@ -85,7 +85,7 @@ func (e *SysTeamApi) Create(c *gin.Context) {
 	}
 	var data models.SysTeam
 	copier.Copy(&data, req)
-	if err := service.SerSysTeam.Create(&data); err != nil {
+	if err := service.SerSysTeam.Create(&data, nil, nil); err != nil {
 		e.Error(c, err)
 		return
 	}

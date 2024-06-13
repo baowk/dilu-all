@@ -211,7 +211,7 @@ func (e *SysMemberApi) Create(c *gin.Context) {
 
 	var data models.SysMember
 	copier.Copy(&data, req)
-	if err := service.SerSysMember.Create(&data); err != nil {
+	if err := service.SerSysMember.Create(&data, nil); err != nil {
 		e.Error(c, err)
 		return
 	}

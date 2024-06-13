@@ -6,11 +6,13 @@ import (
 	"dilu/modules/sys/models"
 	"dilu/modules/sys/service/dto"
 	"encoding/json"
+	"fmt"
 	"strings"
 	"time"
 
 	"github.com/baowk/dilu-core/common/consts"
 	"github.com/baowk/dilu-core/core/base"
+	"github.com/jinzhu/copier"
 )
 
 type SysMemberService struct {
@@ -21,7 +23,7 @@ var SerSysMember = SysMemberService{
 	base.NewService(consts.DB_DEF),
 }
 
-func (e *SysMemberService) Create(m *models.SysMember) error {
+func (e *SysMemberService) Create(m *models.SysMember, user *models.SysUser) error {
 	if m.Name != "" {
 		m.PY = utils.GetPinyin(m.Name)
 	}
@@ -35,14 +37,15 @@ func (e *SysMemberService) Create(m *models.SysMember) error {
 			Gender:   m.Gender,
 			Status:   1,
 		}
-		if err := SerSysUser.Create(&user); err != nil {
+		if err := SerSysUser.BaseService.Create(&user); err != nil {
 			return err
 		}
 		m.UserId = user.Id
 	} else {
-		var user models.SysUser
-		if err := SerSysUser.Get(m.UserId, &user); err != nil {
-			return err
+		if user == nil {
+			if err := SerSysUser.Get(m.UserId, user); err != nil {
+				return err
+			}
 		}
 		if m.Birthday.IsZero() && user.Birthday != "" {
 			t, err := time.Parse("2006-01-02", user.Birthday)
@@ -104,13 +107,72 @@ func (e *SysMemberService) Query(req dto.SysMemberGetPageReq, list *[]models.Sys
 	return db.Find(list).Limit(-1).Offset(-1).Count(total).Error
 }
 
-func (e *SysMemberService) GetUserTeams(uid int, list *[]dto.TeamMemberResp) error {
+func (e *SysMemberService) GetUserTeams(uid int, resp *[]dto.TeamMemberResp) error {
 	sql := `Select t.name as team_name, t.owner ,user_id, team_id,nickname, m.name, phone, 
 			dept_id, dept_path, post_id, roles, entry_time, gender,birthday
 			From sys_team t,sys_member m 
 			Where user_id = ? and m.status = 1 and t.status = 2 and m.team_id = t.id 
 			order by m.updated_at desc`
-	return e.DB().Raw(sql, uid).Find(list).Error
+
+	var list []dto.TeamMember
+	if err := e.DB().Raw(sql, uid).Find(&list).Error; err != nil {
+		return err
+	}
+	if len(list) == 0 {
+		var user models.SysUser
+		if err := SerSysUser.Get(uid, &user); err != nil {
+			return err
+		}
+		team := models.SysTeam{
+			Owner:  uid,
+			Status: 2,
+		}
+		if user.Name != "" {
+			team.Name = user.Name + " Team"
+		} else if user.Nickname != "" {
+			team.Name = user.Nickname + " Team"
+		} else if user.Username != "" {
+			team.Name = user.Username + " Team"
+		} else if user.Phone != "" {
+			team.Name = user.Phone + " Team"
+		} else {
+			team.Name = fmt.Sprintf("%d Team", user.Id)
+		}
+
+		var member models.SysMember
+		if err := SerSysTeam.Create(&team, &user, &member); err != nil {
+			return err
+		}
+
+		tm := dto.TeamMember{
+			TeamId:    team.Id,
+			TeamName:  team.Name,
+			UserId:    member.UserId,
+			Nickname:  member.Nickname,
+			Name:      member.Name,
+			DeptPath:  member.DeptPath,
+			DeptId:    member.DeptId,
+			Gender:    member.Gender,
+			Phone:     member.Phone,
+			PostId:    member.PostId,
+			Roles:     member.Roles,
+			Owner:     team.Owner,
+			EntryTime: member.EntryTime,
+			Birthday:  member.Birthday,
+		}
+		list = append(list, tm)
+	}
+	for _, tm := range list {
+		var tmr dto.TeamMemberResp
+		copier.Copy(&tmr, tm)
+		ts, err := utils.EncodeTeamId(tm.TeamId)
+		if err != nil {
+			continue
+		}
+		tmr.TeamId = ts
+		*resp = append(*resp, tmr)
+	}
+	return nil
 }
 
 func (e *SysMemberService) GetTeamMember(teamId, uid int, teamMember *dto.TeamMemberResp) error {

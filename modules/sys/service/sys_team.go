@@ -29,31 +29,34 @@ func (s *SysTeamService) Page(req *dto.SysTeamGetPageReq, list *[]models.SysTeam
 	return db.Limit(req.GetSize()).Offset(req.GetOffset()).Find(list).Limit(-1).Offset(-1).Count(total).Error
 }
 
-func (s *SysTeamService) Create(model *models.SysTeam) error {
-	if model.Name == "" {
+func (s *SysTeamService) Create(team *models.SysTeam, user *models.SysUser, owner *models.SysMember) error {
+	if team.Name == "" {
 		return errors.New("团队名不能为空")
 	}
-	if model.Owner == 0 {
+	if team.Owner == 0 {
 		return errors.New("用户id不能为空")
 	}
-	var user models.SysUser
-	if err := SerSysUser.Get(model.Owner, &user); err != nil {
-		return err
+	if user == nil {
+		if err := SerSysUser.Get(team.Owner, user); err != nil {
+			return err
+		}
 	}
 	if user.Status != 1 {
 		return errors.New("用户状态异常")
 	}
 	if user.PlatformRoleId != 0 {
-		return errors.New("用户是平台管理员用户")
+		return errors.New("用户是平台管理员用户,无法创建团队")
 	}
-	model.Status = 2
-	if err := s.DB().Create(model).Error; err != nil {
+	team.Status = 2
+	if err := s.BaseService.DB().Create(team).Error; err != nil {
 		return err
 	}
-
-	member := models.SysMember{
-		TeamId:   model.Id,
-		UserId:   model.Owner,
+	if owner != nil && owner.Id > 0 {
+		return nil
+	}
+	owner = &models.SysMember{
+		TeamId:   team.Id,
+		UserId:   user.Id,
 		Nickname: user.Nickname,
 		Name:     user.Name,
 		PostId:   enums.Admin.Id,
@@ -61,8 +64,9 @@ func (s *SysTeamService) Create(model *models.SysTeam) error {
 		Roles:    "1",
 	}
 
-	if err := s.DB().Create(&member).Error; err != nil {
+	if err := SerSysMember.Create(owner, user); err != nil {
 		return err
 	}
+
 	return nil
 }

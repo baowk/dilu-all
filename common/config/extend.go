@@ -11,6 +11,7 @@ func init() {
 }
 
 type Extend struct {
+	AesKey   string        `mapstructure:"aes-key" json:"aes-key" yaml:"aes-key"` //aes加密key
 	Ding     DingCfg       `mapstructure:"ding" json:"ding" yaml:"ding"`
 	WechatMp WechatMp      `mapstructure:"wechat-mp" json:"wechat-mp" yaml:"wechat-mp"`
 	Ai       Ai            `mapstructure:"ai" json:"ai" yaml:"ai"`

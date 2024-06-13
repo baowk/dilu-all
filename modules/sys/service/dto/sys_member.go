@@ -55,6 +55,23 @@ type ChangeMyMemberDto struct {
 
 type TeamMemberResp struct {
 	Owner     int       `json:"owner"`     //团队拥有者id
+	TeamId    string    `json:"teamId"`    //团队id
+	TeamName  string    `json:"teamName"`  //团队名
+	UserId    int       `json:"userId"`    //用户id
+	Nickname  string    `json:"nickname"`  //昵称
+	Name      string    `json:"name"`      //姓名
+	Phone     string    `json:"phone"`     //电话
+	DeptPath  string    `json:"deptPath"`  //部门路径
+	DeptId    int       `json:"deptId"`    //部门id
+	PostId    int       `json:"postId"`    //职位标签 1主管 2副主管 3员工
+	Roles     string    `json:"roles"`     //角色id
+	Gender    int       `json:"gender"`    //性别
+	EntryTime time.Time `json:"entryTime"` //入职时间
+	Birthday  time.Time `json:"birthday"`  //生日时间
+}
+
+type TeamMember struct {
+	Owner     int       `json:"owner"`     //团队拥有者id
 	TeamId    int       `json:"teamId"`    //团队id
 	TeamName  string    `json:"teamName"`  //团队名
 	UserId    int       `json:"userId"`    //用户id

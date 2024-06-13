@@ -68,6 +68,7 @@ gen:
   enable: true #开启生成
   front-path: ../dilu-admin/src #前端生成路径 默认：../dilu-admin/src
 extend:             # 扩展项（此处没有提供具体说明）
+  aes-key: abcd1234poiu0987
   rd-config:
     enable: false
     driver: consul

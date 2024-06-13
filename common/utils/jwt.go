@@ -1,11 +1,15 @@
 package utils
 
 import (
+	"dilu/common/config"
+	"encoding/base64"
 	"fmt"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/baowk/dilu-core/common/utils"
+	"github.com/baowk/dilu-core/common/utils/cryptos"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 )
@@ -21,16 +25,44 @@ func GetUserId(c *gin.Context) int {
 	return uid
 }
 
+//var key = "abcd1234qwer0987"
+
+func EncodeTeamId(teamId int) (string, error) {
+	msg := fmt.Sprintf("%d-%d", teamId, time.Now().Unix())
+	en, err := cryptos.AesEncryptCBC([]byte(msg), []byte(config.Ext.AesKey))
+	if err != nil {
+		return "", err
+	}
+	return base64.StdEncoding.EncodeToString(en), nil
+}
+
 func GetTeamId(c *gin.Context) int {
 	if GetRoleId(c) != 0 {
 		return -1
 	}
 	sTeamId := c.GetHeader("teamId")
-	if sTeamId != "" {
-		teamId, _ := strconv.Atoi(sTeamId)
-		return teamId
+	if sTeamId == "" {
+		sTeamId = c.GetString("teamId")
 	}
-	return c.GetInt("teamId")
+	if sTeamId != "" {
+		data, err := base64.StdEncoding.DecodeString(sTeamId)
+		if err != nil {
+			return 0
+		}
+		de, err := cryptos.AesDecryptCBC(data, []byte(config.Ext.AesKey))
+		if err != nil {
+			return 0
+		}
+		arr := strings.Split(string(de), "-")
+		if len(arr) == 2 {
+			teamId, err := strconv.Atoi(arr[0])
+			if err != nil {
+				return 0
+			}
+			return teamId
+		}
+	}
+	return 0
 }
 
 func GetReqTeamId(c *gin.Context, reqTeamId int) int {
