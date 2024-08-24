@@ -102,6 +102,7 @@ const (
 type SourceType int
 
 const (
-	SourceLocal SourceType = 1 //场地
-	SourceOut   SourceType = 2 //场外
+	SourceLocal        SourceType = 1 //场地
+	SourceOut          SourceType = 2 //场外
+	SourceWorkOvertime SourceType = 3 //加班
 )

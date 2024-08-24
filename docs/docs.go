@@ -386,6 +386,40 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/dental/bill/todoMethod": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dental-Bill"
+                ],
+                "summary": "TodoMethod",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.StQueryReq"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
         "/api/v1/dental/bill/update": {
             "post": {
                 "security": [
@@ -1056,6 +1090,40 @@ const docTemplate = `{
             }
         },
         "/api/v1/dental/st/export": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "dental-Bill"
+                ],
+                "summary": "查询统计",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.StQueryReq"
+                        }
+                    }
+                ],
+                "responses": {}
+            }
+        },
+        "/api/v1/dental/st/exportrate": {
             "post": {
                 "security": [
                     {
@@ -2749,6 +2817,42 @@ const docTemplate = `{
                                     }
                                 }
                             ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys-menu/apis": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-SysMenu"
+                ],
+                "summary": "设置 Menu 和 API 关联关系",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.SysMenuAPiGetReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "$ref": "#/definitions/base.Resp"
                         }
                     }
                 }
@@ -4732,6 +4836,59 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/sys/sys-member/exist": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-SysMember"
+                ],
+                "summary": "Exits 用户是否在团队中",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ExistMemberReq"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.ExistMemberResp"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sys/sys-member/get": {
             "post": {
                 "security": [
@@ -5108,7 +5265,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.SysApiDto"
+                            "$ref": "#/definitions/dto.SysMenuInsertReq"
                         }
                     }
                 ],
@@ -7012,7 +7169,43 @@ const docTemplate = `{
                     "description": "金额",
                     "type": "number"
                 },
-                "brand": {
+                "brand1": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand1Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand2": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand2Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand3": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand3Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand4": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand4Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand5": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand5Impl": {
                     "description": "品牌",
                     "type": "integer"
                 },
@@ -7043,6 +7236,10 @@ const docTemplate = `{
                 "deptPath": {
                     "description": "路径",
                     "type": "string"
+                },
+                "diagnosisType": {
+                    "description": "出诊类型",
+                    "type": "integer"
                 },
                 "doctor": {
                     "description": "医生",
@@ -7104,6 +7301,10 @@ const docTemplate = `{
                     "description": "备注",
                     "type": "string"
                 },
+                "source": {
+                    "description": "来源",
+                    "type": "integer"
+                },
                 "tags": {
                     "description": "标签",
                     "type": "string"
@@ -7140,6 +7341,10 @@ const docTemplate = `{
                 "begin": {
                     "description": "开始成交日期",
                     "type": "string"
+                },
+                "customerId": {
+                    "description": "客户id",
+                    "type": "integer"
                 },
                 "end": {
                     "description": "结束成交日期",
@@ -7474,6 +7679,25 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.ExistMemberReq": {
+            "type": "object",
+            "properties": {
+                "teamId": {
+                    "type": "integer"
+                },
+                "userId": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.ExistMemberResp": {
+            "type": "object",
+            "properties": {
+                "exist": {
+                    "type": "boolean"
+                }
+            }
+        },
         "dto.ForgetPwdReq": {
             "type": "object",
             "properties": {
@@ -7539,13 +7763,45 @@ const docTemplate = `{
                     "description": "金额",
                     "type": "string"
                 },
-                "brand": {
+                "brand1": {
                     "description": "品牌",
                     "type": "integer"
                 },
-                "brandName": {
-                    "description": "品牌名",
-                    "type": "string"
+                "brand1Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand2": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand2Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand3": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand3Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand4": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand4Impl": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand5": {
+                    "description": "品牌",
+                    "type": "integer"
+                },
+                "brand5Impl": {
+                    "description": "品牌",
+                    "type": "integer"
                 },
                 "customerId": {
                     "description": "顾客Id",
@@ -7567,7 +7823,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "dentalCount": {
-                    "description": "颗数",
+                    "type": "integer"
+                },
+                "diagnosisType": {
+                    "description": "出诊类型",
                     "type": "integer"
                 },
                 "doctor": {
@@ -7636,6 +7895,10 @@ const docTemplate = `{
                 "remark": {
                     "description": "备注",
                     "type": "string"
+                },
+                "source": {
+                    "description": "来源",
+                    "type": "integer"
                 },
                 "tags": {
                     "description": "标签",
@@ -8201,8 +8464,8 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "permType": {
-                    "description": "权限类型（n：无需任何认证 t:须token p：须权限）",
-                    "type": "string"
+                    "description": "权限类型（1无需认证 2须token 3须鉴权）",
+                    "type": "integer"
                 },
                 "status": {
                     "description": "状态 3 DEF 2 OK 1 del",
@@ -8212,8 +8475,52 @@ const docTemplate = `{
                     "description": "标题",
                     "type": "string"
                 },
-                "type": {
-                    "description": "接口类型",
+                "updateBy": {
+                    "description": "更新者",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "description": "最后更新时间",
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SysApiExt": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "method": {
+                    "description": "请求类型",
+                    "type": "string"
+                },
+                "path": {
+                    "description": "请求地址",
+                    "type": "string"
+                },
+                "permType": {
+                    "description": "权限类型（1无需认证 2须token 3须鉴权）",
+                    "type": "integer"
+                },
+                "status": {
+                    "description": "状态 3 DEF 2 OK 1 del",
+                    "type": "integer"
+                },
+                "sysMenuId": {
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "标题",
+                    "type": "string"
+                },
+                "updateBy": {
+                    "description": "更新者",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "description": "最后更新时间",
                     "type": "string"
                 }
             }
@@ -8523,10 +8830,94 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.SysMenuAPiGetReq": {
+            "type": "object",
+            "properties": {
+                "menuId": {
+                    "type": "integer"
+                },
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页大小",
+                    "type": "integer"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.SysMenuGetReq": {
             "type": "object",
             "properties": {
                 "id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.SysMenuInsertReq": {
+            "type": "object",
+            "properties": {
+                "component": {
+                    "description": "组件",
+                    "type": "string"
+                },
+                "createBy": {
+                    "description": "创建者id",
+                    "type": "integer"
+                },
+                "hidden": {
+                    "description": "是否隐藏",
+                    "type": "boolean"
+                },
+                "icon": {
+                    "description": "图标",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "编码",
+                    "type": "integer"
+                },
+                "menuName": {
+                    "description": "菜单name",
+                    "type": "string"
+                },
+                "menuType": {
+                    "description": "菜单类型",
+                    "type": "integer"
+                },
+                "noCache": {
+                    "description": "是否缓存",
+                    "type": "boolean"
+                },
+                "parentId": {
+                    "description": "上级菜单",
+                    "type": "integer"
+                },
+                "path": {
+                    "description": "路径",
+                    "type": "string"
+                },
+                "permission": {
+                    "description": "权限编码",
+                    "type": "string"
+                },
+                "platformType": {
+                    "description": "平台类型 1 平台管理 2团队管理",
+                    "type": "integer"
+                },
+                "sort": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "title": {
+                    "description": "显示名称",
+                    "type": "string"
+                },
+                "updateBy": {
+                    "description": "更新者id",
                     "type": "integer"
                 }
             }
@@ -8786,6 +9177,10 @@ const docTemplate = `{
         "dto.SysTeamGetPageReq": {
             "type": "object",
             "properties": {
+                "name": {
+                    "description": "团队名",
+                    "type": "string"
+                },
                 "page": {
                     "description": "页码",
                     "type": "integer"
@@ -8843,6 +9238,10 @@ const docTemplate = `{
                     "description": "手机号",
                     "type": "string"
                 },
+                "platformRoleId": {
+                    "description": "角色id",
+                    "type": "integer"
+                },
                 "post": {
                     "description": "岗位",
                     "type": "string"
@@ -8850,10 +9249,6 @@ const docTemplate = `{
                 "remark": {
                     "description": "备注",
                     "type": "string"
-                },
-                "roleId": {
-                    "description": "角色id",
-                    "type": "integer"
                 },
                 "status": {
                     "description": "状态 1冻结 2正常 3默认",
@@ -9266,8 +9661,44 @@ const docTemplate = `{
                     "description": "金额",
                     "type": "number"
                 },
-                "brand": {
-                    "description": "品牌",
+                "brand1": {
+                    "description": "品牌奥齿泰",
+                    "type": "integer"
+                },
+                "brand1Impl": {
+                    "description": "品牌奥齿泰",
+                    "type": "integer"
+                },
+                "brand2": {
+                    "description": "品牌皓圣",
+                    "type": "integer"
+                },
+                "brand2Impl": {
+                    "description": "品牌皓圣",
+                    "type": "integer"
+                },
+                "brand3": {
+                    "description": "品牌雅定",
+                    "type": "integer"
+                },
+                "brand3Impl": {
+                    "description": "品牌雅定",
+                    "type": "integer"
+                },
+                "brand4": {
+                    "description": "品牌ITI",
+                    "type": "integer"
+                },
+                "brand4Impl": {
+                    "description": "品牌ITI",
+                    "type": "integer"
+                },
+                "brand5": {
+                    "description": "品牌诺贝尔",
+                    "type": "integer"
+                },
+                "brand5Impl": {
+                    "description": "品牌诺贝尔",
                     "type": "integer"
                 },
                 "createBy": {
@@ -9286,13 +9717,13 @@ const docTemplate = `{
                     "description": "回收上月欠款",
                     "type": "number"
                 },
-                "dentalCount": {
-                    "description": "颗数",
-                    "type": "integer"
-                },
                 "deptPath": {
                     "description": "路径",
                     "type": "string"
+                },
+                "diagnosisType": {
+                    "description": "出诊类型1 初诊 2复诊 3新诊",
+                    "type": "integer"
                 },
                 "doctor": {
                     "description": "医生",
@@ -9309,10 +9740,6 @@ const docTemplate = `{
                 "implantDate": {
                     "description": "植入日期",
                     "type": "string"
-                },
-                "implantedCount": {
-                    "description": "已种颗数",
-                    "type": "integer"
                 },
                 "linkId": {
                     "description": "关联订单",
@@ -9353,6 +9780,10 @@ const docTemplate = `{
                 "remark": {
                     "description": "备注",
                     "type": "string"
+                },
+                "source": {
+                    "description": "来源 1场地 2转介绍",
+                    "type": "integer"
                 },
                 "tags": {
                     "description": "标签",
@@ -9497,7 +9928,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "furtherDiagnosis": {
-                    "description": "复诊",
+                    "description": "FirstDiagnosisReferred int       ` + "`" + `json:\"firstDiagnosisReferred\" gorm:\"type:int unsigned;comment:初诊\"` + "`" + `      //初诊转介绍",
                     "type": "integer"
                 },
                 "id": {
@@ -10485,7 +10916,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "platformRoleId": {
-                    "description": "平台角色ID 大于0为平台账户,0为团队账户",
+                    "description": "平台角色ID -1为超管 \u003e0为角色id",
                     "type": "integer"
                 },
                 "remark": {

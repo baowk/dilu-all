@@ -33,7 +33,7 @@ type Bill struct {
 	Brand4Impl    int             `json:"brand4Impl" gorm:"type:tinyint;comment:品牌"`                        //品牌ITI
 	Brand5Impl    int             `json:"brand5Impl" gorm:"type:tinyint;comment:品牌"`                        //品牌诺贝尔
 	DiagnosisType int             `json:"diagnosisType" gorm:"type:tinyint;comment:出诊类型"`                   //出诊类型1 初诊 2复诊 3新诊
-	Source        int             `json:"source" gorm:"type:tinyint;comment:来源"`                            //来源 1场地 2转介绍
+	Source        int             `json:"source" gorm:"type:tinyint;comment:来源"`                            //来源 1场地 2转介绍 3 加班
 	Implant       int             `json:"implant" gorm:"type:tinyint;comment:种植状态：1 未种 2部分 3已种"`            //种植状态：1 未种 2部分 3已种
 	ImplantDate   time.Time       `json:"implantDate" gorm:"type:datetime;default:(-);comment:植入日期"`        //植入日期
 	Doctor        string          `json:"doctor" gorm:"type:varchar(32);comment:医生"`                        //医生
