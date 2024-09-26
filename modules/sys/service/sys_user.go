@@ -10,6 +10,7 @@ import (
 	"dilu/common/codes"
 	"dilu/common/consts"
 	"dilu/common/utils"
+	"dilu/modules/sys/enums"
 	"dilu/modules/sys/models"
 	"dilu/modules/sys/service/dto"
 
@@ -33,14 +34,9 @@ var SerSysUser = SysUser{
 
 // GetPage 获取SysUser列表
 func (e *SysUser) GetPage(c *dto.SysUserGetPageReq, list *[]models.SysUser, count *int64) error {
-	err := core.DB().Debug().Preload("Dept").
+	return core.DB().Debug().Preload("Dept").
 		Find(list).Limit(-1).Offset(-1).
 		Count(count).Error
-	if err != nil {
-		core.Log.Error("db error: %s", err)
-		return err
-	}
-	return nil
 }
 
 // Get 获取SysUser对象
@@ -51,66 +47,10 @@ func (e *SysUser) Get(id int, model *models.SysUser) error {
 		First(model, id).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		err = errors.New("查看对象不存在或无权查看")
-		core.Log.Error("db error: %s", err)
 		return err
 	}
-	if err != nil {
-		core.Log.Error("db error: %s", err)
-		return err
-	}
-	return nil
+	return err
 }
-
-// // Insert 创建SysUser对象
-// func (e *SysUser) Insert(c *dto.SysUserInsertReq) error {
-// 	var err error
-// 	var data models.SysUser
-// 	var i int64
-// 	err = core.DB().Model(&data).Where("username = ?", c.Username).Count(&i).Error
-// 	if err != nil {
-// 		core.Log.Error("db error: %s", err)
-// 		return err
-// 	}
-// 	if i > 0 {
-// 		err := errors.New("用户名已存在！")
-// 		core.Log.Error("db error: %s", err)
-// 		return err
-// 	}
-// 	c.Generate(&data)
-// 	err = core.DB().Create(&data).Error
-// 	if err != nil {
-// 		core.Log.Error("db error: %s", err)
-// 		return err
-// 	}
-// 	return nil
-// }
-
-// // Update 修改SysUser对象
-// func (e *SysUser) Update(c *dto.SysUserUpdateReq) error {
-// 	var err error
-// 	var model models.SysUser
-// 	db := core.DB().First(&model, c.GetId())
-// 	if err = db.Error; err != nil {
-// 		core.Log.Error("Service UpdateSysUser error: %s", err)
-// 		return err
-// 	}
-// 	if db.RowsAffected == 0 {
-// 		return errors.New("无权更新该数据")
-
-// 	}
-// 	c.Generate(&model)
-// 	update := core.DB().Model(&model).Where("id = ?", &model.Id).Omit("password", "salt").Updates(&model)
-// 	if err = update.Error; err != nil {
-// 		core.Log.Error("db error: %s", err)
-// 		return err
-// 	}
-// 	if update.RowsAffected == 0 {
-// 		err = errors.New("update userinfo error")
-// 		core.Log.Warn("db update error")
-// 		return err
-// 	}
-// 	return nil
-// }
 
 // UpdateAvatar 更新用户头像
 func (e *SysUser) UpdateAvatar(c *dto.UpdateSysUserAvatarReq) error {
@@ -118,7 +58,6 @@ func (e *SysUser) UpdateAvatar(c *dto.UpdateSysUserAvatarReq) error {
 	var model models.SysUser
 	db := core.DB().First(&model, c.GetId())
 	if err = db.Error; err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -127,7 +66,6 @@ func (e *SysUser) UpdateAvatar(c *dto.UpdateSysUserAvatarReq) error {
 	}
 	err = core.DB().Table(model.TableName()).Where("id =? ", c.Id).Updates(c).Error
 	if err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	return nil
@@ -139,7 +77,6 @@ func (e *SysUser) UpdateStatus(c *dto.UpdateSysUserStatusReq) error {
 	var model models.SysUser
 	db := core.DB().First(&model, c.GetId())
 	if err = db.Error; err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -148,7 +85,6 @@ func (e *SysUser) UpdateStatus(c *dto.UpdateSysUserStatusReq) error {
 	}
 	err = core.DB().Table(model.TableName()).Where("id =? ", c.Id).Updates(c).Error
 	if err != nil {
-		core.Log.Error("Service UpdateSysUser error: %s", err)
 		return err
 	}
 	return nil
@@ -160,7 +96,6 @@ func (e *SysUser) ResetPwd(c *dto.ResetSysUserPwdReq) error {
 	var model models.SysUser
 	db := core.DB().First(&model, c.GetId())
 	if err = db.Error; err != nil {
-		core.Log.Error("At Service ResetSysUserPwd error: %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -169,7 +104,6 @@ func (e *SysUser) ResetPwd(c *dto.ResetSysUserPwdReq) error {
 	c.Generate(&model)
 	err = core.DB().Omit("username", "nick_name", "phone", "role_id", "avatar", "sex").Save(&model).Error
 	if err != nil {
-		core.Log.Error("At Service ResetSysUserPwd error: %s", err)
 		return err
 	}
 	return nil
@@ -182,7 +116,6 @@ func (e *SysUser) Remove(id int) error {
 
 	db := core.DB().Model(&data).Delete(&data, id)
 	if err = db.Error; err != nil {
-		core.Log.Error("Error found in  RemoveSysUser : %s", err)
 		return err
 	}
 	if db.RowsAffected == 0 {
@@ -206,7 +139,6 @@ func (e *SysUser) UpdatePwd(id int, oldPassword, newPassword string) errs.IError
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return codes.ErrNotFound(strconv.Itoa(id), "sysuser", "", err)
 		}
-		core.Log.Error("db error: %s", err)
 		return codes.ErrSys(err)
 	}
 	if !c.CompPwd(oldPassword) {
@@ -217,7 +149,6 @@ func (e *SysUser) UpdatePwd(id int, oldPassword, newPassword string) errs.IError
 		Select("Password", "Salt").
 		Updates(c)
 	if err = db.Error; err != nil {
-		core.Log.Error("db error", err)
 		return codes.ErrSys(err)
 	}
 	if db.RowsAffected == 0 {
@@ -231,27 +162,18 @@ func (e *SysUser) UpdatePwd(id int, oldPassword, newPassword string) errs.IError
 // 手机注册次数
 func (e *SysUser) CountByPhone(phone string, count *int64) error {
 	var data models.SysUser
-	err := core.DB().Model(&data).Where("phone = ?", phone).Count(count).Error
-	if err != nil {
-		core.Log.Error("db error", err)
-		return err
-	}
-	return nil
+	return core.DB().Model(&data).Where("phone = ?", phone).Count(count).Error
+
 }
 
 // 手机注册次数
 func (e *SysUser) CountByEmail(email string, count *int64) error {
 	var data models.SysUser
-	err := core.DB().Model(&data).Where("email = ?", email).Count(count).Error
-	if err != nil {
-		core.Log.Error("db error", err)
-		return err
-	}
-	return nil
+	return core.DB().Model(&data).Where("email = ?", email).Count(count).Error
 }
 
 // 注册用户
-func (e *SysUser) Register(loginType int, c *dto.RegisterReq, ip string) (dto.LoginOK, errs.IError) {
+func (e *SysUser) Register(loginType enums.LoginType, c *dto.RegisterReq, ip string) (dto.LoginOK, errs.IError) {
 	model := models.SysUser{}
 	lok := dto.LoginOK{}
 	var count int64
@@ -283,16 +205,33 @@ func (e *SysUser) Register(loginType int, c *dto.RegisterReq, ip string) (dto.Lo
 	model.Nickname = c.Name
 	model.CreatedAt = time.Now()
 	model.UpdatedAt = model.CreatedAt
+	model.RegIp = ip
+	model.SrcId = c.SrcId
+	model.ClientId = c.ClientId
+	if c.InviteCode != "" {
+		iu, err := e.GetByInviteCode(c.InviteCode)
+		if err == nil {
+			model.Inviter = iu.Id
+		}
+	}
 	err := core.DB().Create(&model).Error
 	if err != nil {
-		core.Log.Error("UserService Insert error", err)
+		core.Log.Error("UserService", "Create", err)
 		return lok, codes.ErrSys(err)
 	}
-	//go e.SendRegDingBot(model)
-	return e.loginOK(&model, 0)
+	return e.loginOK(&model, 0, loginType, ip, "", c.ClientVer, c.Os, c.OsVer)
 }
 
-func (e *SysUser) loginOK(u *models.SysUser, need int) (dto.LoginOK, errs.IError) {
+func (e *SysUser) GetByInviteCode(inviteCode string) (*models.SysUser, errs.IError) {
+	var model models.SysUser
+	err := core.DB().Model(&model).Where("invite_code =?", inviteCode).First(&model).Error
+	if err != nil {
+		return nil, codes.ErrSys(err)
+	}
+	return &model, nil
+}
+
+func (e *SysUser) loginOK(u *models.SysUser, need int, loginType enums.LoginType, ip, location, clientVer, os, osVer string) (dto.LoginOK, errs.IError) {
 	exp := time.Now().Add(time.Duration(core.Cfg.JWT.Expires) * time.Minute)
 	claims := utils.NewClaims(u.Id, exp, core.Cfg.JWT.Issuer, core.Cfg.JWT.Subject)
 	claims.Phone = u.Phone
@@ -322,6 +261,20 @@ func (e *SysUser) loginOK(u *models.SysUser, need int) (dto.LoginOK, errs.IError
 	claims.ExpiresAt(exp.Add(time.Hour * 24 * 7))
 	refT, _ := utils.Generate(claims, core.Cfg.JWT.SignKey)
 	lok.RefreshToken = refT
+
+	// 记录登录日志
+	ll := models.LoginLog{
+		Uid:       uint(u.Id),
+		Method:    int8(loginType),
+		Ip:        ip,
+		Region:    location,
+		ClientId:  u.ClientId,
+		ClientVer: clientVer,
+		Os:        os,
+		OsVer:     osVer,
+		UpdatedAt: time.Now(),
+	}
+	go SerLoginLog.Create(&ll)
 	return lok, nil
 }
 
@@ -329,6 +282,7 @@ func (e *SysUser) loginOK(u *models.SysUser, need int) (dto.LoginOK, errs.IError
 func (e *SysUser) LoginPwd(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IError) {
 	model := models.SysUser{}
 	lok := dto.LoginOK{}
+	loginType := enums.LT_USER_PWD
 	if regexps.CheckMobile(c.Username) {
 		if err := e.GetByPhone(c.Username, &model); err != nil {
 			if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -336,6 +290,7 @@ func (e *SysUser) LoginPwd(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IError
 			}
 			return lok, errs.ErrWithCode(codes.FAILURE)
 		}
+		loginType = enums.LT_PHONE
 	} else if regexps.CheckEmail(c.Username) { //是否邮箱
 		if err := e.GetByEmail(c.Username, &model); err != nil {
 			if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -343,6 +298,7 @@ func (e *SysUser) LoginPwd(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IError
 			}
 			return lok, errs.ErrWithCode(codes.FAILURE)
 		}
+		loginType = enums.LT_EMAIL
 	} else { //用户名密码登录
 		if err := e.GetByUsername(c.Username, &model); err != nil {
 			if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -360,7 +316,7 @@ func (e *SysUser) LoginPwd(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IError
 	if c.UUID != "" {
 		e.bindById(c.UUID, model)
 	}
-	return e.loginOK(&model, 0)
+	return e.loginOK(&model, 0, loginType, ip, "", c.ClientVer, c.Os, c.OsVer)
 }
 
 // 通过验证码
@@ -368,6 +324,7 @@ func (e *SysUser) LoginCode(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IErro
 	var model models.SysUser
 	lok := dto.LoginOK{}
 	var name string
+	loginType := enums.LT_UNKNOWN
 	if regexps.CheckMobile(c.Username) {
 		if err := e.GetByPhone(c.Username, &model); err != nil {
 			if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -377,6 +334,7 @@ func (e *SysUser) LoginCode(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IErro
 				name = c.Username
 			}
 		}
+		loginType = enums.LT_PHONE
 	} else if regexps.CheckEmail(c.Username) { //是否邮箱
 		if err := e.GetByEmail(c.Username, &model); err != nil {
 			if !errors.Is(err, gorm.ErrRecordNotFound) {
@@ -387,6 +345,7 @@ func (e *SysUser) LoginCode(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IErro
 				name = arr[0]
 			}
 		}
+		loginType = enums.LT_EMAIL
 	} else {
 		return lok, errs.ErrWithCode(codes.ErrMobileOrEmail)
 	}
@@ -394,43 +353,38 @@ func (e *SysUser) LoginCode(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IErro
 		model.CreatedAt = time.Now()
 		model.UpdatedAt = model.CreatedAt
 		model.Nickname = name
-
+		model.RegIp = ip
+		model.SrcId = c.SrcId
+		model.ClientId = c.ClientId
+		if c.InviteCode != "" {
+			iu, err := e.GetByInviteCode(c.InviteCode)
+			if err == nil {
+				model.Inviter = iu.Id
+			}
+		}
 		err := core.DB().Create(&model).Error
 		if err != nil {
-			core.Log.Error("sysuser", err)
+			core.Log.Error("sysuser", "create", err)
 			return lok, codes.ErrSys(err)
 		}
 		if c.UUID != "" {
 			e.bindById(c.UUID, model)
 		}
-		//go e.SendRegDingBot(model)
-		return e.loginOK(&model, 2)
+		return e.loginOK(&model, 2, loginType, ip, "", c.ClientVer, c.Os, c.OsVer)
 	}
 	if c.UUID != "" {
 		e.bindById(c.UUID, model)
 	}
-	return e.loginOK(&model, 0)
+	return e.loginOK(&model, 0, loginType, ip, "", c.ClientVer, c.Os, c.OsVer)
 }
 
 // Get 获取User对象
 func (e *SysUser) GetByEmail(email string, model *models.SysUser) error {
-	var data models.SysUser
-	err := core.DB().Model(&data).Where("email = ?", email).First(model).Error
-	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
-		//err = errors.New("当前账号不存在，请先注册")
-		core.Log.Error("sysuser", err)
-		return err
-	}
-	if err != nil {
-		core.Log.Error("sysuser", err)
-		return err
-	}
-	return nil
+	return core.DB().Where("email = ?", email).First(model).Error
 }
 
 // Get 获取User对象
 func (e *SysUser) GetByPhone(mobile string, model *models.SysUser) error {
-	//var data models.SysUser
 	return core.DB().Where("phone = ?", mobile).First(model).Error
 }
 
@@ -496,7 +450,7 @@ func (e *SysUser) ChangePwd(mobile, email, password string) errs.IError {
 	updates.UpdatedAt = time.Now()
 	db := core.DB().Model(&user).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("sysuser", err)
+		core.Log.Error("sysuser", "update", err)
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -533,8 +487,7 @@ func (e *SysUser) LoginWechatMp(req dto.MpSceneReq, openId, ip string) (dto.Logi
 			return lok, codes.ErrSys(err)
 		}
 	}
-	return e.loginOK(&user, 0)
-
+	return e.loginOK(&user, 0, enums.LT_WECHAT_MP, ip, "", req.ClientVer, req.Os, req.OsVer)
 }
 
 // 钉钉登录
@@ -571,7 +524,7 @@ func (e *SysUser) LoginDing(c *dto.LoginDingReq, id string) (dto.LoginOK, errs.I
 			return lok, codes.ErrSys(err)
 		}
 	}
-	return e.loginOK(&user, 0)
+	return e.loginOK(&user, 0, enums.LT_WECHAT_MP, "", "", c.ClientVer, c.Os, c.OsVer)
 }
 
 // Get 获取User对象
@@ -589,11 +542,11 @@ func (e *SysUser) GetByUsername(username string, model *models.SysUser) errs.IEr
 	err := core.DB().Model(&data).Where("username = ?", username).First(model).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		berr := errs.Err(codes.ErrUserExist, "", err)
-		core.Log.Error("sysuser", berr)
+		core.Log.Error("sysuser", "get", berr)
 		return berr
 	}
 	if err != nil {
-		core.Log.Error("sysuser", err)
+		core.Log.Error("sysuser", "err", err)
 		return codes.ErrSys(err)
 	}
 	// if err := core.Cache.Set("username:"+username, model, time.Hour); err == nil {
@@ -637,7 +590,7 @@ func (e *SysUser) ChangePwdByOld(id int, oldPwd, newPwd, inviteCode string) errs
 	}
 	db := core.DB().Model(user).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("UserService Save error", err)
+		core.Log.Error("UserService", "update", err)
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -678,7 +631,7 @@ func (e *SysUser) Bind(id int, c *dto.BindReq) error {
 
 	db := core.DB().Model(user).Updates(updates)
 	if err := db.Error; err != nil {
-		core.Log.Error("UserService Save error", err)
+		core.Log.Error("UserService", "update", err)
 		return err
 	}
 	return nil
@@ -696,7 +649,7 @@ func (e *SysUser) ChangeUserinfo(userId int, user models.SysUser) error {
 	user.UpdateBy = userId
 	err := e.UpdateById(user)
 	if err != nil {
-		core.Log.Error("UserService Save error", err)
+		core.Log.Error("UserService", "update", err)
 		return err
 	}
 	return nil

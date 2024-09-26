@@ -23,6 +23,12 @@ type SysUser struct {
 	Status         int       `json:"status" gorm:"type:tinyint;comment:状态 1正常 "`                          //状态 1正常
 	Remark         string    `json:"remark" gorm:"size:255;comment:备注"`                                   //备注
 	LockTime       time.Time `json:"lockTime" gorm:"type:datetime;default:(-);comment:锁定结束时间"`            //锁定结束时间
+	Inviter        int       `json:"inviter" gorm:"type:int unsigned;index;comment:邀请人"`                  //邀请人
+	InviteCode     string    `json:"inviteCode" gorm:"size:32;comment:邀请码"`                               // 邀请码
+	SrcId          string    `json:"srcId" gorm:"size:32;comment:来源id"`                                   // 来源id
+	ClientId       string    `json:"clientId" gorm:"size:64;comment:客户端id"`                               // 客户端id
+	RegIp          string    `json:"regIp" gorm:"size:42;comment:注册ip"`                                   // 注册ip
+	IpLocation     string    `json:"ipLocation" gorm:"size:100;comment:ip地域"`                             //地域
 	CreatedAt      time.Time `json:"createdAt" gorm:"comment:创建时间"`                                       //创建时间
 	UpdatedAt      time.Time `json:"updatedAt" gorm:"comment:最后更新时间"`                                     //更新时间
 	UpdateBy       int       `json:"updateBy" gorm:"type:int unsigned;index;comment:更新者"`                 //更新者id

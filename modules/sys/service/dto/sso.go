@@ -5,54 +5,60 @@ import (
 )
 
 type VerifyCodeReq struct {
-	Username string `json:"username" comment:"手机号或者邮箱"` //手机号或者邮箱
-	Code     string `json:"code" comment:"验证码"`         //验证码
+	Username string `json:"username"` //手机号或者邮箱
+	Code     string `json:"code"`     //验证码
 }
 
 type RegisterReq struct {
-	Username   string `json:"username" comment:"手机号或者邮箱"` //手机号或者邮箱
-	Password   string `json:"password" comment:"密码"`      //密码
-	RePassword string `json:"rePassword" comment:"重复密码"`  //重复密码
-	UUID       string `json:"uuid" comment:"uuid"`        //微信或者钉钉第一次登录绑定用
-	Code       string `json:"code" comment:"验证码"`         //验证码
-	Name       string `json:"name" comment:"真实姓名"`        //真实姓名
-	// Client     string `json:"client" comment:"客户端类型"`        //客户端类型 未定义
-	// Source     string `json:"source"`                        //来源（最长32位）
-	// Os         string `json:"os"`                            //操作系统
-	// Inviter    string `json:"inviter" comment:"邀请人"`         //邀请人id
-	// InviteType int    `json:"inviteType" comment:"1 企业内部邀人"` //1企业内部邀请 2 用户邀请
+	Username   string `json:"username"`   // 手机号或者邮箱
+	Password   string `json:"password"`   // 密码
+	RePassword string `json:"rePassword"` // 重复密码
+	UUID       string `json:"uuid"`       // 微信或者钉钉第一次登录绑定用
+	Code       string `json:"code"`       // 验证码
+	Name       string `json:"name"`       // 真实姓名
+	InviteCode string `json:"inviteCode"` // 邀请码
+	SrcId      string `json:"srcId"`      // 来源id
+	ClientId   string `json:"clientId"`   // 客户端id
+	ClientVer  string `json:"clientVer"`  // 客户端版本
+	Os         string `json:"os"`         // 操作系统
+	OsVer      string `json:"osVer"`      // 操作系统版本
 }
 
 type LoginReq struct {
-	Username string `json:"username" comment:"手机号或者邮箱"`                //手机号或者邮箱
-	Password string `json:"password" comment:"密码 密码不为空 为密码登录 否则验证码登录"` //密码 密码不为空 为密码登录 否则验证码登录
-	UUID     string `json:"uuid" comment:"微信或者钉钉登录绑定用"`                //微信或者钉钉第一次登录绑定用
-	Code     string `json:"code" comment:"验证码"`                        //验证码
-	Name     string `json:"name" comment:"真实姓名"`                       //真实姓名
-	// Client     string `json:"client" comment:"客户端类型"`                    //客户端类型 未定义
-	// Source     string `json:"source"`                                    //来源（最长32位）
-	// Os         string `json:"os"`                                        //操作系统
-	// Inviter    string `json:"inviter" comment:"邀请人"`                     //邀请人id
-	// InviteType int    `json:"inviteType" comment:"1 企业内部邀人"`             //1企业内部邀请 2 用户邀请
+	Username   string `json:"username"`   //手机号或者邮箱
+	Password   string `json:"password"`   //密码 密码不为空 为密码登录 否则验证码登录
+	UUID       string `json:"uuid"`       //微信或者钉钉第一次登录绑定用
+	Code       string `json:"code"`       //验证码
+	Name       string `json:"name"`       //真实姓名
+	InviteCode string `json:"inviteCode"` // 邀请码
+	SrcId      string `json:"srcId"`      // 来源id
+	ClientId   string `json:"clientId"`   // 客户端id
+	ClientVer  string `json:"clientVer"`  // 客户端版本
+	Os         string `json:"os"`         // 操作系统
+	OsVer      string `json:"osVer"`      // 操作系统版本
 }
 
 type LoginWechatReq struct {
-	Code       string `json:"code" comment:"微信登录code"`       //微信登录获得code
-	Client     string `json:"client" comment:"客户端类型"`        //客户端类型 未定义
-	Device     string `json:"device" comment:"客户端设备类型"`      //设备类型 未定义
-	Inviter    string `json:"inviter" comment:"邀请人"`         //邀请人id
-	InviteType int    `json:"inviteType" comment:"1 企业内部邀人"` //1企业内部邀请 2 用户邀请
-	Name       string `json:"name" comment:"真实姓名"`           //真实姓名
+	Code       string `json:"code"`       //微信登录获得code
+	Name       string `json:"name"`       //真实姓名
+	InviteCode string `json:"inviteCode"` // 邀请码
+	SrcId      string `json:"srcId"`      // 来源id
+	ClientId   string `json:"clientId"`   // 客户端id
+	ClientVer  string `json:"clientVer"`  // 客户端版本
+	Os         string `json:"os"`         // 操作系统
+	OsVer      string `json:"osVer"`      // 操作系统版本
 }
 
 type LoginDingReq struct {
-	Code       string `json:"code" comment:"钉钉登录code"`       //钉钉登录code
-	State      string `json:"state" comment:"服务器端返回State"`   //服务器返回state
-	Client     string `json:"client" comment:"客户端类型"`        //客户端类型 暂未定义
-	Device     string `json:"device" comment:"客户端设备类型"`      //客户端设备类型
-	Inviter    string `json:"inviter" comment:"邀请人"`         //邀请人id
-	InviteType int    `json:"inviteType" comment:"1 企业内部邀人"` //邀请人类型 1企业内部
-	Name       string `json:"name" comment:"真实姓名"`           //真实姓名（在该企业的名字）
+	Code       string `json:"code" comment:"钉钉登录code"`     //钉钉登录code
+	State      string `json:"state" comment:"服务器端返回State"` //服务器返回state
+	Name       string `json:"name" comment:"真实姓名"`         //真实姓名（在该企业的名字）
+	InviteCode string `json:"inviteCode"`                  // 邀请码
+	SrcId      string `json:"srcId"`                       // 来源id
+	ClientId   string `json:"clientId"`                    // 客户端id
+	ClientVer  string `json:"clientVer"`                   // 客户端版本
+	Os         string `json:"os"`                          // 操作系统
+	OsVer      string `json:"osVer"`                       // 操作系统版本
 }
 
 type LoginOK struct {
@@ -137,12 +143,12 @@ type DingCfgResp struct {
 }
 
 type MpSceneReq struct {
-	Scene           string `json:"scene"`                         //随机参数
-	Client          string `json:"client" comment:"客户端类型"`        //客户端类型 未定义
-	Source          string `json:"source"`                        //来源（最长32位）
-	LastLoginPort   string `json:"last_login_port" `              //登录平台
-	LastLoginDevice string `json:"last_login_device"`             //登录设备
-	Os              string `json:"os"`                            //操作系统
-	Inviter         string `json:"inviter" comment:"邀请人"`         //邀请人id
-	InviteType      int    `json:"inviteType" comment:"1 企业内部邀人"` //1企业内部邀请 2 用户邀请
+	Scene      string `json:"scene"`      //随机参数
+	InviteCode string `json:"inviteCode"` // 邀请码
+	SrcId      string `json:"srcId"`      // 来源id
+	ClientId   string `json:"clientId"`   // 客户端id
+	ClientVer  string `json:"clientVer"`  // 客户端版本
+	Os         string `json:"os"`         // 操作系统
+	OsVer      string `json:"osVer"`      // 操作系统版本
+	Client     string `json:"client"`     //客户端类型 未定义
 }

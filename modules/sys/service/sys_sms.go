@@ -33,7 +33,6 @@ func (e *SysSms) Send(phone string, tempId string) error {
 	data.UpdatedAt = data.CreatedAt
 	err = core.DB().Create(&data).Error
 	if err != nil {
-		core.Log.Error("EmailLogService Insert error", err)
 		return err
 	}
 	sms.SMSSend.Send(phone, code, tempId)
@@ -49,7 +48,6 @@ func (e *SysSms) Verify(phone, code string) bool {
 	var data models.SysSms
 	err = core.DB().Model(&data).Where(" mobile = ? ", phone).Order("id desc").First(&data).Error
 	if err != nil {
-		core.Log.Error("验证码错误", err)
 		return false
 	}
 	if data.UseStatus == 1 {

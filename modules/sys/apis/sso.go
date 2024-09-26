@@ -3,6 +3,7 @@ package apis
 import (
 	"dilu/common/codes"
 	"dilu/common/utils"
+	"dilu/modules/sys/enums"
 	"dilu/modules/sys/models"
 	"dilu/modules/sys/service"
 	"dilu/modules/sys/service/dto"
@@ -106,20 +107,19 @@ func (e *SSO) Register(c *gin.Context) {
 		return
 	}
 
-	loginType := 1
+	loginType := enums.LT_PHONE
 	//是否手机
 	if regexps.CheckMobile(req.Username) {
 		if !service.SerSms.Verify(req.Username, req.Code) {
 			e.Code(c, codes.ErrVerifyCode)
 			return
 		}
-		loginType = 1
 	} else if regexps.CheckEmail(req.Username) { //是否邮箱
 		if !service.SerEmail.Verify(req.Username, req.Code) {
 			e.Code(c, codes.ErrVerifyCode)
 			return
 		}
-		loginType = 2
+		loginType = enums.LT_EMAIL
 	} else {
 		e.Code(c, codes.ErrMobileOrEmail)
 		return
@@ -127,7 +127,7 @@ func (e *SSO) Register(c *gin.Context) {
 
 	ip := ips.GetIP(c)
 	if logOk, err := service.SerSysUser.Register(loginType, &req, ip); err != nil {
-		core.Log.Error("sso", err)
+		core.Log.Error("sso", "register", err)
 		e.Error(c, err)
 		return
 	} else {
