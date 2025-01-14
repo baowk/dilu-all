@@ -23,7 +23,6 @@ var SerThirdLogin = ThirdLogin{
 func (e *ThirdLogin) Create(data *models.ThirdLogin) error {
 	err := core.DB().Create(data).Error
 	if err != nil {
-		core.Log.Error("ThirdLogin", err)
 		return err
 	}
 	return nil
@@ -37,7 +36,6 @@ func (e *ThirdLogin) GetById(id int, model *models.ThirdLogin) error {
 		return nil
 	}
 	if err != nil {
-		core.Log.Error("ThirdLogin", err)
 		return err
 	}
 	return nil
@@ -67,12 +65,10 @@ func (e *ThirdLogin) GetTL(platform int, openId, unionId string, model *models.T
 			db.Where("platform = ? and  open_id = ?", platform, openId)
 			err = db.First(model).Error
 			if err != nil && !errors.Is(err, gorm.ErrRecordNotFound) {
-				core.Log.Error("ThirdLogin", err)
 				return err
 			}
 		}
 	} else {
-		core.Log.Error("ThirdLogin", err)
 		return err
 	}
 	return nil
@@ -88,7 +84,6 @@ func (e *ThirdLogin) UpdateUserId(userId int, data models.ThirdLogin) error {
 
 	db := core.DB().Model(data).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("ThirdLogin", err)
 		return err
 	}
 	if db.RowsAffected == 0 {

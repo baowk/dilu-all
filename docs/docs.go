@@ -3206,6 +3206,286 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/v1/sys/login-log/create": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-LoginLog"
+                ],
+                "summary": "创建LoginLog",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginLogDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.LoginLog"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys/login-log/del": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-LoginLog"
+                ],
+                "summary": "删除LoginLog",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/base.ReqIds"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.LoginLog"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys/login-log/get": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-LoginLog"
+                ],
+                "summary": "获取LoginLog",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/base.ReqId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.LoginLog"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys/login-log/page": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-LoginLog"
+                ],
+                "summary": "获取LoginLog列表",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginLogGetPageReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/definitions/base.PageResp"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "list": {
+                                                            "type": "array",
+                                                            "items": {
+                                                                "$ref": "#/definitions/models.LoginLog"
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys/login-log/update": {
+            "post": {
+                "security": [
+                    {
+                        "Bearer": []
+                    }
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-LoginLog"
+                ],
+                "summary": "更新LoginLog",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "团队id",
+                        "name": "teamId",
+                        "in": "header"
+                    },
+                    {
+                        "description": "body",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginLogDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/models.LoginLog"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/sys/loginDing": {
             "post": {
                 "description": "钉钉登录",
@@ -7905,33 +8185,95 @@ const docTemplate = `{
         "dto.LoginDingReq": {
             "type": "object",
             "properties": {
-                "client": {
-                    "description": "客户端类型 暂未定义",
+                "clientId": {
+                    "description": "客户端id",
+                    "type": "string"
+                },
+                "clientVer": {
+                    "description": "客户端版本",
                     "type": "string"
                 },
                 "code": {
                     "description": "钉钉登录code",
                     "type": "string"
                 },
-                "device": {
-                    "description": "客户端设备类型",
-                    "type": "string"
-                },
-                "inviteType": {
-                    "description": "邀请人类型 1企业内部",
-                    "type": "integer"
-                },
-                "inviter": {
-                    "description": "邀请人id",
+                "inviteCode": {
+                    "description": "邀请码",
                     "type": "string"
                 },
                 "name": {
                     "description": "真实姓名（在该企业的名字）",
                     "type": "string"
                 },
+                "os": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "osVer": {
+                    "description": "操作系统版本",
+                    "type": "string"
+                },
+                "srcId": {
+                    "description": "来源id",
+                    "type": "string"
+                },
                 "state": {
                     "description": "服务器返回state",
                     "type": "string"
+                }
+            }
+        },
+        "dto.LoginLogDto": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "description": "客户端",
+                    "type": "string"
+                },
+                "clientVer": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "ip": {
+                    "description": "登录ip",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "登录方式",
+                    "type": "integer"
+                },
+                "os": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "osVer": {
+                    "description": "操作系统版本",
+                    "type": "string"
+                },
+                "region": {
+                    "description": "地域",
+                    "type": "string"
+                },
+                "uid": {
+                    "description": "用户id",
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.LoginLogGetPageReq": {
+            "type": "object",
+            "properties": {
+                "page": {
+                    "description": "页码",
+                    "type": "integer"
+                },
+                "pageSize": {
+                    "description": "每页大小",
+                    "type": "integer"
                 }
             }
         },
@@ -7970,16 +8312,40 @@ const docTemplate = `{
         "dto.LoginReq": {
             "type": "object",
             "properties": {
+                "clientId": {
+                    "description": "客户端id",
+                    "type": "string"
+                },
+                "clientVer": {
+                    "description": "客户端版本",
+                    "type": "string"
+                },
                 "code": {
                     "description": "验证码",
+                    "type": "string"
+                },
+                "inviteCode": {
+                    "description": "邀请码",
                     "type": "string"
                 },
                 "name": {
                     "description": "真实姓名",
                     "type": "string"
                 },
+                "os": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "osVer": {
+                    "description": "操作系统版本",
+                    "type": "string"
+                },
                 "password": {
                     "description": "密码 密码不为空 为密码登录 否则验证码登录",
+                    "type": "string"
+                },
+                "srcId": {
+                    "description": "来源id",
                     "type": "string"
                 },
                 "username": {
@@ -8040,32 +8406,32 @@ const docTemplate = `{
                     "description": "客户端类型 未定义",
                     "type": "string"
                 },
-                "inviteType": {
-                    "description": "1企业内部邀请 2 用户邀请",
-                    "type": "integer"
-                },
-                "inviter": {
-                    "description": "邀请人id",
+                "clientId": {
+                    "description": "客户端id",
                     "type": "string"
                 },
-                "last_login_device": {
-                    "description": "登录设备",
+                "clientVer": {
+                    "description": "客户端版本",
                     "type": "string"
                 },
-                "last_login_port": {
-                    "description": "登录平台",
+                "inviteCode": {
+                    "description": "邀请码",
                     "type": "string"
                 },
                 "os": {
                     "description": "操作系统",
                     "type": "string"
                 },
+                "osVer": {
+                    "description": "操作系统版本",
+                    "type": "string"
+                },
                 "scene": {
                     "description": "随机参数",
                     "type": "string"
                 },
-                "source": {
-                    "description": "来源（最长32位）",
+                "srcId": {
+                    "description": "来源id",
                     "type": "string"
                 }
             }
@@ -8273,12 +8639,32 @@ const docTemplate = `{
         "dto.RegisterReq": {
             "type": "object",
             "properties": {
+                "clientId": {
+                    "description": "客户端id",
+                    "type": "string"
+                },
+                "clientVer": {
+                    "description": "客户端版本",
+                    "type": "string"
+                },
                 "code": {
                     "description": "验证码",
                     "type": "string"
                 },
+                "inviteCode": {
+                    "description": "邀请码",
+                    "type": "string"
+                },
                 "name": {
                     "description": "真实姓名",
+                    "type": "string"
+                },
+                "os": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "osVer": {
+                    "description": "操作系统版本",
                     "type": "string"
                 },
                 "password": {
@@ -8287,6 +8673,10 @@ const docTemplate = `{
                 },
                 "rePassword": {
                     "description": "重复密码",
+                    "type": "string"
+                },
+                "srcId": {
+                    "description": "来源id",
                     "type": "string"
                 },
                 "username": {
@@ -10176,6 +10566,51 @@ const docTemplate = `{
                 }
             }
         },
+        "models.LoginLog": {
+            "type": "object",
+            "properties": {
+                "clientId": {
+                    "description": "客户端",
+                    "type": "string"
+                },
+                "clientVer": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "id": {
+                    "description": "主键",
+                    "type": "integer"
+                },
+                "ip": {
+                    "description": "登录ip",
+                    "type": "string"
+                },
+                "method": {
+                    "description": "登录方式",
+                    "type": "integer"
+                },
+                "os": {
+                    "description": "操作系统",
+                    "type": "string"
+                },
+                "osVer": {
+                    "description": "操作系统版本",
+                    "type": "string"
+                },
+                "region": {
+                    "description": "地域",
+                    "type": "string"
+                },
+                "uid": {
+                    "description": "用户id",
+                    "type": "integer"
+                },
+                "updatedAt": {
+                    "description": "更新时间",
+                    "type": "string"
+                }
+            }
+        },
         "models.PubNotice": {
             "type": "object",
             "properties": {
@@ -10849,6 +11284,10 @@ const docTemplate = `{
                     "description": "生日",
                     "type": "string"
                 },
+                "clientId": {
+                    "description": "客户端id",
+                    "type": "string"
+                },
                 "createdAt": {
                     "description": "创建时间",
                     "type": "string"
@@ -10864,6 +11303,18 @@ const docTemplate = `{
                 "id": {
                     "description": "主键",
                     "type": "integer"
+                },
+                "inviteCode": {
+                    "description": "邀请码",
+                    "type": "string"
+                },
+                "inviter": {
+                    "description": "邀请人",
+                    "type": "integer"
+                },
+                "ipLocation": {
+                    "description": "地域",
+                    "type": "string"
                 },
                 "lockTime": {
                     "description": "锁定结束时间",
@@ -10889,8 +11340,16 @@ const docTemplate = `{
                     "description": "平台角色ID -1为超管 \u003e0为角色id",
                     "type": "integer"
                 },
+                "regIp": {
+                    "description": "注册ip",
+                    "type": "string"
+                },
                 "remark": {
                     "description": "备注",
+                    "type": "string"
+                },
+                "srcId": {
+                    "description": "来源id",
                     "type": "string"
                 },
                 "status": {

@@ -37,7 +37,6 @@ func (e *SysEmail) Send(mail string) error {
 	}
 	err = core.DB().Create(&data).Error
 	if err != nil {
-		core.Log.Error("EmailLogService Insert error:%s \r\n", err)
 		return err
 	}
 	content := fmt.Sprintf(mail_tmp, code)
@@ -55,7 +54,6 @@ func (e *SysEmail) Verify(mail, code string) bool {
 
 	err = core.DB().Model(&data).Where(" email = ? ", mail).Order("id desc").First(&data).Error
 	if err != nil {
-		core.Log.Error("验证码错误", err)
 		return false
 	}
 	if data.UseStatus == 1 {
