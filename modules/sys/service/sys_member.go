@@ -7,6 +7,7 @@ import (
 	"dilu/modules/sys/service/dto"
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"strings"
 	"time"
 
@@ -164,9 +165,15 @@ func (e *SysMemberService) GetUserTeams(uid int, resp *[]dto.TeamMemberResp) err
 	}
 	for _, tm := range list {
 		var tmr dto.TeamMemberResp
-		copier.Copy(&tmr, tm)
+		err := copier.Copy(&tmr, &tm)
+
+		if err != nil {
+			slog.Error("copier.Copy", "err:", err)
+			return err
+		}
 		ts, err := utils.EncodeTeamId(tm.TeamId)
 		if err != nil {
+			slog.Error("EncodeTeamId", "err:", err)
 			continue
 		}
 		tmr.TeamId = ts

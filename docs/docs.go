@@ -386,40 +386,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/dental/bill/todoMethod": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "dental-Bill"
-                ],
-                "summary": "TodoMethod",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "团队id",
-                        "name": "teamId",
-                        "in": "header"
-                    },
-                    {
-                        "description": "body",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.StQueryReq"
-                        }
-                    }
-                ],
-                "responses": {}
-            }
-        },
         "/api/v1/dental/bill/update": {
             "post": {
                 "security": [
@@ -7342,10 +7308,6 @@ const docTemplate = `{
                     "description": "开始成交日期",
                     "type": "string"
                 },
-                "customerId": {
-                    "description": "客户id",
-                    "type": "integer"
-                },
                 "end": {
                     "description": "结束成交日期",
                     "type": "string"
@@ -7635,6 +7597,10 @@ const docTemplate = `{
                 },
                 "newCustomerCnt": {
                     "description": "留存",
+                    "type": "integer"
+                },
+                "recheck": {
+                    "description": "复查",
                     "type": "integer"
                 },
                 "rest": {
@@ -9504,7 +9470,7 @@ const docTemplate = `{
                 },
                 "teamId": {
                     "description": "团队id",
-                    "type": "integer"
+                    "type": "string"
                 },
                 "teamName": {
                     "description": "团队名",
@@ -9782,7 +9748,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "source": {
-                    "description": "来源 1场地 2转介绍",
+                    "description": "来源 1场地 2转介绍 3 加班",
                     "type": "integer"
                 },
                 "tags": {
@@ -9928,7 +9894,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "furtherDiagnosis": {
-                    "description": "FirstDiagnosisReferred int       ` + "`" + `json:\"firstDiagnosisReferred\" gorm:\"type:int unsigned;comment:初诊\"` + "`" + `      //初诊转介绍",
+                    "description": "复诊",
                     "type": "integer"
                 },
                 "id": {
@@ -9941,6 +9907,10 @@ const docTemplate = `{
                 },
                 "newCustomerCnt": {
                     "description": "留存",
+                    "type": "integer"
+                },
+                "recheck": {
+                    "description": "复查",
                     "type": "integer"
                 },
                 "rest": {

@@ -24,6 +24,7 @@ type EventDayStDto struct {
 	NewCustomerCnt   int       `json:"newCustomerCnt"`   //留存
 	FirstDiagnosis   int       `json:"firstDiagnosis"`   //初诊
 	FurtherDiagnosis int       `json:"furtherDiagnosis"` //复诊
+	Recheck          int       `json:"recheck"`          //复查
 	Deal             int       `json:"deal"`             //成交
 	Invitation       int       `json:"invitation"`       //明日邀约
 	Rest             int       `json:"rest"`             //休息

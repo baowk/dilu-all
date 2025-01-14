@@ -186,9 +186,6 @@ definitions:
       begin:
         description: 开始成交日期
         type: string
-      customerId:
-        description: 客户id
-        type: integer
       end:
         description: 结束成交日期
         type: string
@@ -396,6 +393,9 @@ definitions:
         type: integer
       newCustomerCnt:
         description: 留存
+        type: integer
+      recheck:
+        description: 复查
         type: integer
       rest:
         description: 休息
@@ -1732,7 +1732,7 @@ definitions:
         type: string
       teamId:
         description: 团队id
-        type: integer
+        type: string
       teamName:
         description: 团队名
         type: string
@@ -1936,7 +1936,7 @@ definitions:
         description: 备注
         type: string
       source:
-        description: 来源 1场地 2转介绍
+        description: 来源 1场地 2转介绍 3 加班
         type: integer
       tags:
         description: 标签
@@ -2044,8 +2044,7 @@ definitions:
         description: 初诊
         type: integer
       furtherDiagnosis:
-        description: FirstDiagnosisReferred int       `json:"firstDiagnosisReferred"
-          gorm:"type:int unsigned;comment:初诊"`      //初诊转介绍
+        description: 复诊
         type: integer
       id:
         description: 主键
@@ -2055,6 +2054,9 @@ definitions:
         type: integer
       newCustomerCnt:
         description: 留存
+        type: integer
+      recheck:
+        description: 复查
         type: integer
       rest:
         description: 1上班 2休息
@@ -3195,27 +3197,6 @@ paths:
       security:
       - Bearer: []
       summary: Page接口
-      tags:
-      - dental-Bill
-  /api/v1/dental/bill/todoMethod:
-    post:
-      consumes:
-      - application/json
-      parameters:
-      - description: 团队id
-        in: header
-        name: teamId
-        type: integer
-      - description: body
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/dto.StQueryReq'
-      responses: {}
-      security:
-      - Bearer: []
-      summary: TodoMethod
       tags:
       - dental-Bill
   /api/v1/dental/bill/update:

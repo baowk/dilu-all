@@ -4,22 +4,22 @@ import "time"
 
 // EventDaySt
 type EventDaySt struct {
-	Id             int       `json:"id" gorm:"type:int unsigned;primaryKey;autoIncrement;comment:主键"` //主键
-	Day            time.Time `json:"day" gorm:"type:date;comment:时间"`                                 //时间
-	TeamId         int       `json:"teamId" gorm:"type:int unsigned;comment:团队id"`                    //团队id
-	UserId         int       `json:"userId" gorm:"type:int unsigned;comment:用户id"`                    //用户id
-	DeptPath       string    `json:"deptPath" gorm:"type:varchar(255);comment:部门路径"`                  //路径
-	NewCustomerCnt int       `json:"newCustomerCnt" gorm:"type:int unsigned;comment:留存"`              //留存
-	FirstDiagnosis int       `json:"firstDiagnosis" gorm:"type:int unsigned;comment:初诊"`              //初诊
-	//FirstDiagnosisReferred int       `json:"firstDiagnosisReferred" gorm:"type:int unsigned;comment:初诊"`      //初诊转介绍
-	FurtherDiagnosis int       `json:"furtherDiagnosis" gorm:"type:int unsigned;comment:复诊"` //复诊
-	Deal             int       `json:"deal" gorm:"type:int unsigned;comment:成交"`             //成交
-	Invitation       int       `json:"invitation" gorm:"type:int unsigned;comment:明日邀约"`     //明日邀约
-	Rest             int       `json:"rest" gorm:"type:tinyint;comment: 1上班 2休息"`            //1上班 2休息
-	CreatedAt        time.Time `json:"createdAt" gorm:"type:datetime;comment:创建时间"`          //创建时间
-	UpdatedAt        time.Time `json:"updatedAt" gorm:"type:datetime;comment:更新时间"`          //更新时间
-	CreateBy         int       `json:"createBy" gorm:"type:int unsigned;index;comment:创建者"`  //创建者id
-	UpdateBy         int       `json:"updateBy" gorm:"type:int unsigned;index;comment:更新者"`  //更新者id
+	Id               int       `json:"id" gorm:"type:int unsigned;primaryKey;autoIncrement;comment:主键"` //主键
+	Day              time.Time `json:"day" gorm:"type:date;comment:时间"`                                 //时间
+	TeamId           int       `json:"teamId" gorm:"type:int unsigned;comment:团队id"`                    //团队id
+	UserId           int       `json:"userId" gorm:"type:int unsigned;comment:用户id"`                    //用户id
+	DeptPath         string    `json:"deptPath" gorm:"type:varchar(255);comment:部门路径"`                  //路径
+	NewCustomerCnt   int       `json:"newCustomerCnt" gorm:"type:int unsigned;comment:留存"`              //留存
+	FirstDiagnosis   int       `json:"firstDiagnosis" gorm:"type:int unsigned;comment:初诊"`              //初诊
+	FurtherDiagnosis int       `json:"furtherDiagnosis" gorm:"type:int unsigned;comment:复诊"`            //复诊
+	Recheck          int       `json:"recheck" gorm:"type:int unsigned;comment:复诊"`                     //复查
+	Deal             int       `json:"deal" gorm:"type:int unsigned;comment:成交"`                        //成交
+	Invitation       int       `json:"invitation" gorm:"type:int unsigned;comment:明日邀约"`                //明日邀约
+	Rest             int       `json:"rest" gorm:"type:tinyint;comment: 1上班 2休息"`                       //1上班 2休息
+	CreatedAt        time.Time `json:"createdAt" gorm:"type:datetime;comment:创建时间"`                     //创建时间
+	UpdatedAt        time.Time `json:"updatedAt" gorm:"type:datetime;comment:更新时间"`                     //更新时间
+	CreateBy         int       `json:"createBy" gorm:"type:int unsigned;index;comment:创建者"`             //创建者id
+	UpdateBy         int       `json:"updateBy" gorm:"type:int unsigned;index;comment:更新者"`             //更新者id
 }
 
 func (EventDaySt) TableName() string {

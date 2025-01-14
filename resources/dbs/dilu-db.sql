@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : wsl
+ Source Server         : local_u
  Source Server Type    : MySQL
- Source Server Version : 80036 (8.0.36-0ubuntu0.20.04.1)
- Source Host           : 172.25.74.228:3306
+ Source Server Version : 80039 (8.0.39-0ubuntu0.20.04.1)
+ Source Host           : localhost:3306
  Source Schema         : dilu-db
 
  Target Server Type    : MySQL
- Target Server Version : 80036 (8.0.36-0ubuntu0.20.04.1)
+ Target Server Version : 80039 (8.0.39-0ubuntu0.20.04.1)
  File Encoding         : 65001
 
- Date: 26/05/2024 11:24:23
+ Date: 14/01/2025 19:39:31
 */
 
 SET NAMES utf8mb4;
@@ -61,7 +61,7 @@ CREATE TABLE `gen_columns`  (
   `created_at` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`column_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 722 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 809 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_columns
@@ -521,6 +521,93 @@ INSERT INTO `gen_columns` VALUES (718, 57, 'created_at', '创建时间', 'dateti
 INSERT INTO `gen_columns` VALUES (719, 57, 'create_by', '创建人', 'int', 'int', 'CreateBy', 'createBy', '0', '', '0', '1', '', '1', '', 'EQ', 'input', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-03-13 19:57:09.404', '2024-03-13 19:57:09.404');
 INSERT INTO `gen_columns` VALUES (720, 57, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 10, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-03-13 19:57:09.409', '2024-03-13 19:57:09.409');
 INSERT INTO `gen_columns` VALUES (721, 57, 'update_by', '更新人', 'int', 'int', 'UpdateBy', 'updateBy', '0', '', '0', '1', '', '1', '', 'EQ', 'input', '', 11, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-03-13 19:57:09.414', '2024-03-13 19:57:09.414');
+INSERT INTO `gen_columns` VALUES (722, 58, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.441', '2024-09-26 16:35:57.441');
+INSERT INTO `gen_columns` VALUES (723, 58, 'uid', '用户id', 'int unsigned', 'uint', 'Uid', 'uid', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.458', '2024-09-26 16:35:57.458');
+INSERT INTO `gen_columns` VALUES (724, 58, 'method', '登录方式', 'tinyint', 'int8', 'Method', 'method', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.470', '2024-09-26 16:35:57.470');
+INSERT INTO `gen_columns` VALUES (725, 58, 'ip', '登录ip', 'varchar(42)', 'string', 'Ip', 'ip', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.482', '2024-09-26 16:35:57.482');
+INSERT INTO `gen_columns` VALUES (726, 58, 'region', '地域', 'varchar(100)', 'string', 'Region', 'region', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.493', '2024-09-26 16:35:57.493');
+INSERT INTO `gen_columns` VALUES (727, 58, 'client_id', '客户端', 'varchar(64)', 'string', 'ClientId', 'clientId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.503', '2024-09-26 16:35:57.503');
+INSERT INTO `gen_columns` VALUES (728, 58, 'client_ver', '操作系统', 'varchar(32)', 'string', 'ClientVer', 'clientVer', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.516', '2024-09-26 16:35:57.516');
+INSERT INTO `gen_columns` VALUES (729, 58, 'os', '操作系统', 'varchar(32)', 'string', 'Os', 'os', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.527', '2024-09-26 16:35:57.527');
+INSERT INTO `gen_columns` VALUES (730, 58, 'os_ver', '操作系统版本', 'varchar(64)', 'string', 'OsVer', 'osVer', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.537', '2024-09-26 16:35:57.537');
+INSERT INTO `gen_columns` VALUES (731, 58, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 10, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-26 16:35:57.548', '2024-09-26 16:35:57.548');
+INSERT INTO `gen_columns` VALUES (732, 59, 'id', 'id', 'int unsigned', 'uint', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.148', '2024-09-27 15:02:40.148');
+INSERT INTO `gen_columns` VALUES (733, 59, 'key', 'key', 'varchar(32)', 'string', 'Key', 'key', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.165', '2024-09-27 15:02:40.165');
+INSERT INTO `gen_columns` VALUES (734, 59, 'onwer', '拥有者', 'int unsigned', 'uint', 'Onwer', 'onwer', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.175', '2024-09-27 15:02:40.175');
+INSERT INTO `gen_columns` VALUES (735, 59, 'used_uid', '使用者', 'int unsigned', 'uint', 'UsedUid', 'usedUid', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.186', '2024-09-27 15:02:40.186');
+INSERT INTO `gen_columns` VALUES (736, 59, 'shelf_life', '有效期', 'int unsigned', 'uint', 'ShelfLife', 'shelfLife', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.195', '2024-09-27 15:02:40.195');
+INSERT INTO `gen_columns` VALUES (737, 59, 'used_time', '使用日期', 'bigint', 'int64', 'UsedTime', 'usedTime', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.205', '2024-09-27 15:02:40.205');
+INSERT INTO `gen_columns` VALUES (738, 59, 'status', '状态 1未使用 3 已使用', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.218', '2024-09-27 15:02:40.218');
+INSERT INTO `gen_columns` VALUES (739, 59, 'created_at', '创建时间', 'datetime', 'time.Time', 'CreatedAt', 'createdAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.231', '2024-09-27 15:02:40.231');
+INSERT INTO `gen_columns` VALUES (740, 59, 'updated_time', '更新时间', 'datetime', 'time.Time', 'UpdatedTime', 'updatedTime', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.241', '2024-09-27 15:02:40.241');
+INSERT INTO `gen_columns` VALUES (741, 60, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.264', '2024-09-27 15:02:40.264');
+INSERT INTO `gen_columns` VALUES (742, 60, 'type', '类型 1 token 2 账密', 'tinyint', 'int8', 'Type', 'type', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.275', '2024-09-27 15:02:40.275');
+INSERT INTO `gen_columns` VALUES (743, 60, 'src', '来源 1 导入 2 购买', 'tinyint', 'int8', 'Src', 'src', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.285', '2024-09-27 15:02:40.285');
+INSERT INTO `gen_columns` VALUES (744, 60, 'data', '数据', 'text', 'string', 'Data', 'data', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.296', '2024-09-27 15:02:40.296');
+INSERT INTO `gen_columns` VALUES (745, 60, 'mer_id', '商户id', 'int unsigned', 'uint', 'MerId', 'merId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.305', '2024-09-27 15:02:40.305');
+INSERT INTO `gen_columns` VALUES (746, 60, 'status', '状态 1有效 -1 无效', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.315', '2024-09-27 15:02:40.315');
+INSERT INTO `gen_columns` VALUES (747, 60, 'expired', '有效期 0 无限制', 'bigint', 'int64', 'Expired', 'expired', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.328', '2024-09-27 15:02:40.328');
+INSERT INTO `gen_columns` VALUES (748, 60, 'created_at', '添加时间', 'datetime', 'time.Time', 'CreatedAt', 'createdAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.340', '2024-09-27 15:02:40.340');
+INSERT INTO `gen_columns` VALUES (749, 60, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.351', '2024-09-27 15:02:40.351');
+INSERT INTO `gen_columns` VALUES (750, 61, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.374', '2024-09-27 15:02:40.374');
+INSERT INTO `gen_columns` VALUES (751, 61, 'shop_id', '店铺id', 'bigint unsigned', 'uint64', 'ShopId', 'shopId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.386', '2024-09-27 15:02:40.386');
+INSERT INTO `gen_columns` VALUES (752, 61, 'product_no', '商品编号', 'varchar(100)', 'string', 'ProductNo', 'productNo', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.397', '2024-09-27 15:02:40.397');
+INSERT INTO `gen_columns` VALUES (753, 62, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.420', '2024-09-27 15:02:40.420');
+INSERT INTO `gen_columns` VALUES (754, 62, 'mer_id', '商家id', 'int unsigned', 'uint', 'MerId', 'merId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.430', '2024-09-27 15:02:40.430');
+INSERT INTO `gen_columns` VALUES (755, 62, 'type', '店铺类型', 'smallint unsigned', 'uint16', 'Type', 'type', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.442', '2024-09-27 15:02:40.442');
+INSERT INTO `gen_columns` VALUES (756, 62, 'username', '店铺用户名', 'varchar(100)', 'string', 'Username', 'username', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.455', '2024-09-27 15:02:40.455');
+INSERT INTO `gen_columns` VALUES (757, 62, 'password', '店铺密码', 'varchar(256)', 'string', 'Password', 'password', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.465', '2024-09-27 15:02:40.465');
+INSERT INTO `gen_columns` VALUES (758, 62, 'status', '状态', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.478', '2024-09-27 15:02:40.478');
+INSERT INTO `gen_columns` VALUES (759, 62, 'third_status', '三方状态', 'tinyint', 'int8', 'ThirdStatus', 'thirdStatus', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.487', '2024-09-27 15:02:40.487');
+INSERT INTO `gen_columns` VALUES (760, 62, 'created_at', '创建时间', 'datetime', 'time.Time', 'CreatedAt', 'createdAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.496', '2024-09-27 15:02:40.496');
+INSERT INTO `gen_columns` VALUES (761, 62, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.507', '2024-09-27 15:02:40.507');
+INSERT INTO `gen_columns` VALUES (762, 63, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.528', '2024-09-27 15:02:40.528');
+INSERT INTO `gen_columns` VALUES (763, 63, 'shop_id', '店铺id', 'bigint unsigned', 'uint64', 'ShopId', 'shopId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.540', '2024-09-27 15:02:40.540');
+INSERT INTO `gen_columns` VALUES (764, 63, 'product_id', '产品id', 'bigint unsigned', 'uint64', 'ProductId', 'productId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.551', '2024-09-27 15:02:40.551');
+INSERT INTO `gen_columns` VALUES (765, 63, 'task_type', '任务类型 1 下单', 'tinyint unsigned', 'int8', 'TaskType', 'taskType', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.561', '2024-09-27 15:02:40.561');
+INSERT INTO `gen_columns` VALUES (766, 64, 'id', 'di', 'int unsigned', 'uint', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.596', '2024-09-27 15:02:40.596');
+INSERT INTO `gen_columns` VALUES (767, 64, 'type', '类型 1 商家 2代理', 'tinyint unsigned', 'int8', 'Type', 'type', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.606', '2024-09-27 15:02:40.606');
+INSERT INTO `gen_columns` VALUES (768, 64, 'expired', '过期时间', 'bigint', 'int64', 'Expired', 'expired', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.618', '2024-09-27 15:02:40.618');
+INSERT INTO `gen_columns` VALUES (769, 64, 'last_login_ip', '最后登录ip', 'varchar(42)', 'string', 'LastLoginIp', 'lastLoginIp', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.629', '2024-09-27 15:02:40.629');
+INSERT INTO `gen_columns` VALUES (770, 64, 'last_client_id', '最后客户端id', 'varchar(64)', 'string', 'LastClientId', 'lastClientId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.640', '2024-09-27 15:02:40.640');
+INSERT INTO `gen_columns` VALUES (771, 64, 'status', '状态', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.653', '2024-09-27 15:02:40.653');
+INSERT INTO `gen_columns` VALUES (772, 64, 'created_at', '创建时间', 'datetime', 'time.Time', 'CreatedAt', 'createdAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.662', '2024-09-27 15:02:40.662');
+INSERT INTO `gen_columns` VALUES (773, 64, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-09-27 15:02:40.677', '2024-09-27 15:02:40.677');
+INSERT INTO `gen_columns` VALUES (774, 65, 'id', 'id', 'int unsigned', 'uint', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.578', '2024-10-09 17:09:20.578');
+INSERT INTO `gen_columns` VALUES (775, 65, 'type', '类型', 'int unsigned', 'uint', 'Type', 'type', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.594', '2024-10-09 17:09:20.594');
+INSERT INTO `gen_columns` VALUES (776, 65, 'name', '名称', 'varchar(100)', 'string', 'Name', 'name', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.614', '2024-10-09 17:09:20.614');
+INSERT INTO `gen_columns` VALUES (777, 65, 'level', '等级', 'int unsigned', 'uint', 'Level', 'level', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.626', '2024-10-09 17:09:20.626');
+INSERT INTO `gen_columns` VALUES (778, 65, 'list_price', '标价', 'decimal(10,0)', 'float64', 'ListPrice', 'listPrice', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.640', '2024-10-09 17:09:20.640');
+INSERT INTO `gen_columns` VALUES (779, 65, 'price', '真实价格', 'decimal(10,0)', 'float64', 'Price', 'price', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.653', '2024-10-09 17:09:20.653');
+INSERT INTO `gen_columns` VALUES (780, 65, 'status', '状态 1 未审核 3上架 -1 未上架', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.664', '2024-10-09 17:09:20.664');
+INSERT INTO `gen_columns` VALUES (781, 65, 'created_at', '创建时间', 'datetime', 'time.Time', 'CreatedAt', 'createdAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.675', '2024-10-09 17:09:20.675');
+INSERT INTO `gen_columns` VALUES (782, 65, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-09 17:09:20.688', '2024-10-09 17:09:20.688');
+INSERT INTO `gen_columns` VALUES (783, 66, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.206', '2024-10-10 09:49:00.206');
+INSERT INTO `gen_columns` VALUES (784, 66, 'no', '订单编号', 'varchar(20)', 'string', 'No', 'no', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.217', '2024-10-10 09:49:00.217');
+INSERT INTO `gen_columns` VALUES (785, 66, 'buyer', '购买人', 'int unsigned', 'uint', 'Buyer', 'buyer', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.228', '2024-10-10 09:49:00.228');
+INSERT INTO `gen_columns` VALUES (786, 66, 'list_total', '标价总金额', 'decimal(10,0)', 'float64', 'ListTotal', 'listTotal', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.239', '2024-10-10 09:49:00.239');
+INSERT INTO `gen_columns` VALUES (787, 66, 'total', '总金额', 'decimal(10,0)', 'float64', 'Total', 'total', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.252', '2024-10-10 09:49:00.252');
+INSERT INTO `gen_columns` VALUES (788, 66, 'coupon', '优惠券', 'varchar(100)', 'string', 'Coupon', 'coupon', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.262', '2024-10-10 09:49:00.262');
+INSERT INTO `gen_columns` VALUES (789, 66, 'discount', '优惠金额', 'decimal(10,0)', 'float64', 'Discount', 'discount', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.276', '2024-10-10 09:49:00.276');
+INSERT INTO `gen_columns` VALUES (790, 66, 'real_total', '最终金额', 'decimal(10,0)', 'float64', 'RealTotal', 'realTotal', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.287', '2024-10-10 09:49:00.287');
+INSERT INTO `gen_columns` VALUES (791, 66, 'recv_total', '收到金额', 'decimal(10,0)', 'float64', 'RecvTotal', 'recvTotal', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.297', '2024-10-10 09:49:00.297');
+INSERT INTO `gen_columns` VALUES (792, 66, 'pay_type', '支付类型', 'tinyint', 'int8', 'PayType', 'payType', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 10, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.308', '2024-10-10 09:49:00.308');
+INSERT INTO `gen_columns` VALUES (793, 66, 'pay_status', '支付状态 1未支付 2已支付', 'tinyint', 'int8', 'PayStatus', 'payStatus', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 11, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.317', '2024-10-10 09:49:00.317');
+INSERT INTO `gen_columns` VALUES (794, 66, 'status', '订单状态 1 创建  -1 关闭 3完成', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 12, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.328', '2024-10-10 09:49:00.328');
+INSERT INTO `gen_columns` VALUES (795, 66, 'refund', '退款状态 1 正常 2有退款', 'tinyint', 'int8', 'Refund', 'refund', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 13, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.340', '2024-10-10 09:49:00.340');
+INSERT INTO `gen_columns` VALUES (796, 66, 'pay_at', '支付时间', 'datetime', 'time.Time', 'PayAt', 'payAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 14, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.353', '2024-10-10 09:49:00.353');
+INSERT INTO `gen_columns` VALUES (797, 66, 'open_at', '开通时间', 'datetime', 'time.Time', 'OpenAt', 'openAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 15, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.369', '2024-10-10 09:49:00.369');
+INSERT INTO `gen_columns` VALUES (798, 66, 'created_at', '创建时间', 'datetime', 'time.Time', 'CreatedAt', 'createdAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 16, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.379', '2024-10-10 09:49:00.379');
+INSERT INTO `gen_columns` VALUES (799, 66, 'updated_at', '更新时间', 'datetime', 'time.Time', 'UpdatedAt', 'updatedAt', '0', '', '0', '1', '', '1', '', 'EQ', 'datetime', '', 17, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.390', '2024-10-10 09:49:00.390');
+INSERT INTO `gen_columns` VALUES (800, 67, 'id', 'id', 'bigint unsigned', 'uint64', 'Id', 'id', '1', '', '1', '1', '1', '1', '', 'EQ', 'input', '', 1, '', 1, 1, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.414', '2024-10-10 09:49:00.414');
+INSERT INTO `gen_columns` VALUES (801, 67, 'product_id', '产品id', 'int unsigned', 'uint', 'ProductId', 'productId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 2, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.423', '2024-10-10 09:49:00.423');
+INSERT INTO `gen_columns` VALUES (802, 67, 'count', '数量', 'int unsigned', 'uint', 'Count', 'count', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 3, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.435', '2024-10-10 09:49:00.435');
+INSERT INTO `gen_columns` VALUES (803, 67, 'list_price', '标价', 'decimal(10,0)', 'float64', 'ListPrice', 'listPrice', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 4, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.445', '2024-10-10 09:49:00.445');
+INSERT INTO `gen_columns` VALUES (804, 67, 'price', '实价', 'decimal(10,0)', 'float64', 'Price', 'price', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 5, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.458', '2024-10-10 09:49:00.458');
+INSERT INTO `gen_columns` VALUES (805, 67, 'discount', '优惠券', 'decimal(10,0)', 'float64', 'Discount', 'discount', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 6, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.468', '2024-10-10 09:49:00.468');
+INSERT INTO `gen_columns` VALUES (806, 67, 'total', '小计', 'decimal(10,0)', 'float64', 'Total', 'total', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 7, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.480', '2024-10-10 09:49:00.480');
+INSERT INTO `gen_columns` VALUES (807, 67, 'order_id', '订单id', 'bigint unsigned', 'uint64', 'OrderId', 'orderId', '0', '', '0', '1', '1', '1', '', 'EQ', 'input', '', 8, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.493', '2024-10-10 09:49:00.493');
+INSERT INTO `gen_columns` VALUES (808, 67, 'status', '订单条目状态', 'tinyint', 'int8', 'Status', 'status', '0', '', '0', '1', '1', '1', '1', 'EQ', 'input', '', 9, '', 0, 0, 0, 0, 0, 1, 0, 0, '', '', '', '', '', '', 0, 0, '2024-10-10 09:49:00.503', '2024-10-10 09:49:00.503');
 
 -- ----------------------------
 -- Table structure for gen_tables
@@ -562,7 +649,7 @@ CREATE TABLE `gen_tables`  (
   PRIMARY KEY (`table_id`) USING BTREE,
   INDEX `idx_gen_tables_create_by`(`create_by` ASC) USING BTREE,
   INDEX `idx_gen_tables_update_by`(`update_by` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 58 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 68 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of gen_tables
@@ -599,6 +686,47 @@ INSERT INTO `gen_tables` VALUES (54, 'dilu-cms', 'site', '站点', 'Site', 'crud
 INSERT INTO `gen_tables` VALUES (55, 'dilu-cms', 'site_column', '栏目', 'SiteColumn', 'crud', 'cms', 'site-column', '', 'siteColumn', 'SiteColumn', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-03-13 19:57:09.159', '2024-03-13 20:00:48.044', 0, 0);
 INSERT INTO `gen_tables` VALUES (56, 'dilu-cms', 'tag', '标签', 'Tag', 'crud', 'cms', 'tag', '', 'tag', 'Tag', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-03-13 19:57:09.282', '2024-03-13 20:00:36.540', 0, 0);
 INSERT INTO `gen_tables` VALUES (57, 'dilu-cms', 'topic', '主题', 'Topic', 'crud', 'cms', 'topic', '', 'topic', 'Topic', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-03-13 19:57:09.349', '2024-03-13 20:00:29.498', 0, 0);
+INSERT INTO `gen_tables` VALUES (58, 'dilu-db', 'login_log', 'LoginLog', 'LoginLog', 'crud', 'sys', 'login-log', '', 'loginLog', 'LoginLog', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-26 16:35:57.428', '2024-09-26 16:35:57.428', 0, 0);
+INSERT INTO `gen_tables` VALUES (59, 'helper-db', 'cdkey', '兑换码', 'Cdkey', 'crud', 'helper', 'cdkey', '', 'cdkey', '兑换码', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-27 15:02:40.134', '2024-09-27 15:02:40.134', 0, 0);
+INSERT INTO `gen_tables` VALUES (60, 'helper-db', 'mer_buyer_account', '小号', 'MerBuyerAccount', 'crud', 'helper', 'mer-buyer-account', '', 'merBuyerAccount', '小号', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-27 15:02:40.254', '2024-09-27 15:02:40.254', 0, 0);
+INSERT INTO `gen_tables` VALUES (61, 'helper-db', 'mer_product', '商品', 'MerProduct', 'crud', 'helper', 'mer-product', '', 'merProduct', '商品', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-27 15:02:40.364', '2024-09-27 15:02:40.364', 0, 0);
+INSERT INTO `gen_tables` VALUES (62, 'helper-db', 'mer_shop', '店铺', 'MerShop', 'crud', 'helper', 'mer-shop', '', 'merShop', '店铺', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-27 15:02:40.410', '2024-09-27 15:02:40.410', 0, 0);
+INSERT INTO `gen_tables` VALUES (63, 'helper-db', 'mer_task', '任务', 'MerTask', 'crud', 'helper', 'mer-task', '', 'merTask', '任务', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-27 15:02:40.519', '2024-09-27 15:02:40.519', 0, 0);
+INSERT INTO `gen_tables` VALUES (64, 'helper-db', 'merchant', '商户', 'Merchant', 'crud', 'helper', 'merchant', '', 'merchant', '商户', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-09-27 15:02:40.582', '2024-09-27 15:02:40.582', 0, 0);
+INSERT INTO `gen_tables` VALUES (65, 'helper-db', 'product', '产品', 'Product', 'crud', 'helper', 'product', '', 'product', '产品', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-10-09 17:09:20.552', '2024-10-09 17:09:20.552', 0, 0);
+INSERT INTO `gen_tables` VALUES (66, 'helper-db', 'order', '订单', 'Order', 'crud', 'helper', 'order', '', 'order', '订单', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-10-10 09:49:00.185', '2024-10-10 09:49:00.185', 0, 0);
+INSERT INTO `gen_tables` VALUES (67, 'helper-db', 'order_item', '订单条目', 'OrderItem', 'crud', 'helper', 'order-item', '', 'orderItem', '订单条目', 'baowk', 'id', 'Id', 'id', '', '', '', '', 0, 1, '', 1, 2, 1, '1', 1, 'is_del', '2024-10-10 09:49:00.402', '2024-10-10 09:49:00.402', 0, 0);
+
+-- ----------------------------
+-- Table structure for login_log
+-- ----------------------------
+DROP TABLE IF EXISTS `login_log`;
+CREATE TABLE `login_log`  (
+  `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `uid` int UNSIGNED NULL DEFAULT NULL COMMENT '用户id',
+  `method` tinyint NULL DEFAULT NULL COMMENT '登录方式',
+  `ip` varchar(42) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '登录ip',
+  `region` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '地域',
+  `client_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户端',
+  `client_ver` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作系统',
+  `os` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作系统',
+  `os_ver` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '操作系统版本',
+  `updated_at` datetime NULL DEFAULT NULL COMMENT '更新时间',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of login_log
+-- ----------------------------
+INSERT INTO `login_log` VALUES (1, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-09-26 16:35:24');
+INSERT INTO `login_log` VALUES (2, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-09-26 16:54:19');
+INSERT INTO `login_log` VALUES (3, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-09-26 17:02:48');
+INSERT INTO `login_log` VALUES (4, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-09-27 15:00:54');
+INSERT INTO `login_log` VALUES (5, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-10-09 10:26:47');
+INSERT INTO `login_log` VALUES (6, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-10-09 15:04:50');
+INSERT INTO `login_log` VALUES (7, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-10-09 17:09:08');
+INSERT INTO `login_log` VALUES (8, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-10-10 09:48:33');
+INSERT INTO `login_log` VALUES (9, 1, 3, '127.0.0.1', '', '', '', '', '', '2024-10-10 14:00:51');
 
 -- ----------------------------
 -- Table structure for sys_api
@@ -615,7 +743,7 @@ CREATE TABLE `sys_api`  (
   `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '最后更新时间',
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE INDEX `idx_method_path`(`method` ASC, `path` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 167 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '接口' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 217 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '接口' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_api
@@ -655,34 +783,6 @@ INSERT INTO `sys_api` VALUES (32, '根据id获取团队', 'POST', '/api/v1/sys/s
 INSERT INTO `sys_api` VALUES (33, '创建团队', 'POST', '/api/v1/sys/sys-team/create', 3, 3, 0, '2023-09-29 08:40:00.867');
 INSERT INTO `sys_api` VALUES (34, '修改团队', 'POST', '/api/v1/sys/sys-team/update', 3, 3, 0, '2023-09-29 08:40:00.879');
 INSERT INTO `sys_api` VALUES (35, '删除团队', 'POST', '/api/v1/sys/sys-team/del', 3, 3, 0, '2023-09-29 08:40:00.891');
-INSERT INTO `sys_api` VALUES (36, '分页获取账单', 'POST', '/api/v1/dental/bill/page', 3, 3, 0, '2023-09-29 08:45:53.790');
-INSERT INTO `sys_api` VALUES (37, '根据id获取账单', 'POST', '/api/v1/dental/bill/get', 3, 3, 0, '2023-09-29 08:45:53.800');
-INSERT INTO `sys_api` VALUES (38, '创建账单', 'POST', '/api/v1/dental/bill/create', 3, 3, 0, '2023-09-29 08:45:53.814');
-INSERT INTO `sys_api` VALUES (39, '修改账单', 'POST', '/api/v1/dental/bill/update', 3, 3, 0, '2023-09-29 08:45:53.827');
-INSERT INTO `sys_api` VALUES (40, '删除账单', 'POST', '/api/v1/dental/bill/del', 3, 3, 0, '2023-09-29 08:45:53.838');
-INSERT INTO `sys_api` VALUES (41, '分页获取客户', 'POST', '/api/v1/dental/customer/page', 3, 3, 0, '2023-09-29 08:46:25.136');
-INSERT INTO `sys_api` VALUES (42, '根据id获取客户', 'POST', '/api/v1/dental/customer/get', 3, 3, 0, '2023-09-29 08:46:25.149');
-INSERT INTO `sys_api` VALUES (43, '创建客户', 'POST', '/api/v1/dental/customer/create', 3, 3, 0, '2023-09-29 08:46:25.162');
-INSERT INTO `sys_api` VALUES (44, '修改客户', 'POST', '/api/v1/dental/customer/update', 3, 3, 0, '2023-09-29 08:46:25.173');
-INSERT INTO `sys_api` VALUES (45, '删除客户', 'POST', '/api/v1/dental/customer/del', 3, 3, 0, '2023-09-29 08:46:25.184');
-INSERT INTO `sys_api` VALUES (46, '分页获取日统计', 'POST', '/api/v1/dental/event-day-st/page', 3, 3, 0, '2023-09-29 08:46:27.734');
-INSERT INTO `sys_api` VALUES (47, '根据id获取日统计', 'POST', '/api/v1/dental/event-day-st/get', 3, 3, 0, '2023-09-29 08:46:27.768');
-INSERT INTO `sys_api` VALUES (48, '创建日统计', 'POST', '/api/v1/dental/event-day-st/create', 3, 3, 0, '2023-09-29 08:46:27.778');
-INSERT INTO `sys_api` VALUES (49, '修改日统计', 'POST', '/api/v1/dental/event-day-st/update', 3, 3, 0, '2023-09-29 08:46:27.787');
-INSERT INTO `sys_api` VALUES (50, '删除日统计', 'POST', '/api/v1/dental/event-day-st/del', 3, 3, 0, '2023-09-29 08:46:27.798');
-INSERT INTO `sys_api` VALUES (51, '分页获取日总结与计划', 'POST', '/api/v1/dental/summary-plan-day/page', 3, 3, 0, '2023-09-29 08:46:30.205');
-INSERT INTO `sys_api` VALUES (52, '根据id获取日总结与计划', 'POST', '/api/v1/dental/summary-plan-day/get', 3, 3, 0, '2023-09-29 08:46:30.219');
-INSERT INTO `sys_api` VALUES (53, '创建日总结与计划', 'POST', '/api/v1/dental/summary-plan-day/create', 3, 3, 0, '2023-09-29 08:46:30.230');
-INSERT INTO `sys_api` VALUES (54, '修改日总结与计划', 'POST', '/api/v1/dental/summary-plan-day/update', 3, 3, 0, '2023-09-29 08:46:30.241');
-INSERT INTO `sys_api` VALUES (55, '删除日总结与计划', 'POST', '/api/v1/dental/summary-plan-day/del', 3, 3, 0, '2023-09-29 08:46:30.252');
-INSERT INTO `sys_api` VALUES (56, '分页获取任务目标', 'POST', '/api/v1/dental/target-task/page', 3, 3, 0, '2023-09-29 08:46:32.788');
-INSERT INTO `sys_api` VALUES (57, '根据id获取任务目标', 'POST', '/api/v1/dental/target-task/get', 3, 3, 0, '2023-09-29 08:46:32.824');
-INSERT INTO `sys_api` VALUES (58, '创建任务目标', 'POST', '/api/v1/dental/target-task/create', 3, 3, 0, '2023-09-29 08:46:32.834');
-INSERT INTO `sys_api` VALUES (59, '修改任务目标', 'POST', '/api/v1/dental/target-task/update', 3, 3, 0, '2023-09-29 08:46:32.844');
-INSERT INTO `sys_api` VALUES (60, '删除任务目标', 'POST', '/api/v1/dental/target-task/del', 3, 3, 0, '2023-09-29 08:46:32.854');
-INSERT INTO `sys_api` VALUES (61, '账单智能识别', 'POST', '/api/v1/dental/bill/identify', 3, 3, 0, '2023-10-15 10:45:32.000');
-INSERT INTO `sys_api` VALUES (62, '日统计', 'POST', '/api/v1/dental/st/day', 3, 3, 0, '2023-10-16 13:51:54.000');
-INSERT INTO `sys_api` VALUES (63, '月统计', 'POST', '/api/v1/dental/st/month', 3, 3, 0, '2023-10-16 14:30:58.000');
 INSERT INTO `sys_api` VALUES (64, '分页获取GenTables', 'POST', '/api/v1/sys/gen-tables/page', 3, 3, 0, '2023-10-28 16:31:47.687');
 INSERT INTO `sys_api` VALUES (65, '根据id获取GenTables', 'POST', '/api/v1/sys/gen-tables/get', 3, 3, 0, '2023-10-28 16:31:47.701');
 INSERT INTO `sys_api` VALUES (66, '创建GenTables', 'POST', '/api/v1/sys/gen-tables/create', 3, 3, 0, '2023-10-28 16:31:47.710');
@@ -698,7 +798,6 @@ INSERT INTO `sys_api` VALUES (75, '根据id获取接口', 'POST', '/api/v1/sys/s
 INSERT INTO `sys_api` VALUES (76, '创建接口', 'POST', '/api/v1/sys/sys-api/create', 3, 3, 0, '2023-10-28 16:51:44.943');
 INSERT INTO `sys_api` VALUES (77, '修改接口', 'POST', '/api/v1/sys/sys-api/update', 3, 3, 0, '2023-10-28 16:51:44.952');
 INSERT INTO `sys_api` VALUES (78, '删除接口', 'POST', '/api/v1/sys/sys-api/del', 3, 3, 0, '2023-10-28 16:51:44.960');
-INSERT INTO `sys_api` VALUES (79, '账单查询统计', 'POST', '/api/v1/dental/st/query', 3, 3, 0, '2023-10-29 18:56:28.000');
 INSERT INTO `sys_api` VALUES (80, '所有角色', 'POST', '/api/v1/sys/sys-role/list', 3, 3, 0, '2023-11-04 11:51:22.000');
 INSERT INTO `sys_api` VALUES (81, '分页获取配置', 'POST', '/api/v1/sys/sys-cfg/page', 3, 3, 0, '2023-11-08 20:34:50.872');
 INSERT INTO `sys_api` VALUES (82, '根据id获取配置', 'POST', '/api/v1/sys/sys-cfg/get', 3, 3, 0, '2023-11-08 20:34:50.885');
@@ -727,9 +826,51 @@ INSERT INTO `sys_api` VALUES (105, '根据id获取Task', 'POST', '/api/v1/notice
 INSERT INTO `sys_api` VALUES (106, '创建Task', 'POST', '/api/v1/notice/task/create', 3, 3, 0, '2023-11-24 15:39:24.125');
 INSERT INTO `sys_api` VALUES (107, '修改Task', 'POST', '/api/v1/notice/task/update', 3, 3, 0, '2023-11-24 15:39:24.139');
 INSERT INTO `sys_api` VALUES (108, '删除Task', 'POST', '/api/v1/notice/task/del', 3, 3, 0, '2023-11-24 15:39:24.150');
-INSERT INTO `sys_api` VALUES (109, '账单统计导出', 'POST', '/api/v1/dental/st/export', 3, 3, 0, '2023-12-09 11:17:59.000');
-INSERT INTO `sys_api` VALUES (110, '账单导出', 'POST', '/api/v1/dental/bill/export', 3, 3, 0, '2023-12-09 16:57:59.000');
-INSERT INTO `sys_api` VALUES (166, '占比统计导出', 'POST', '/api/v1/dental/st/exportrate', 3, 3, 0, '2023-12-09 11:17:59.000');
+INSERT INTO `sys_api` VALUES (172, '分页获取商户', 'POST', '/api/v1/helper/merchant/page', 3, 3, 0, '2024-09-27 15:03:16.122');
+INSERT INTO `sys_api` VALUES (173, '根据id获取商户', 'POST', '/api/v1/helper/merchant/get', 3, 3, 0, '2024-09-27 15:03:16.150');
+INSERT INTO `sys_api` VALUES (174, '创建商户', 'POST', '/api/v1/helper/merchant/create', 3, 3, 0, '2024-09-27 15:03:16.175');
+INSERT INTO `sys_api` VALUES (175, '修改商户', 'POST', '/api/v1/helper/merchant/update', 3, 3, 0, '2024-09-27 15:03:16.201');
+INSERT INTO `sys_api` VALUES (176, '删除商户', 'POST', '/api/v1/helper/merchant/del', 3, 3, 0, '2024-09-27 15:03:16.227');
+INSERT INTO `sys_api` VALUES (177, '分页获取任务', 'POST', '/api/v1/helper/mer-task/page', 3, 3, 0, '2024-09-27 15:03:17.862');
+INSERT INTO `sys_api` VALUES (178, '根据id获取任务', 'POST', '/api/v1/helper/mer-task/get', 3, 3, 0, '2024-09-27 15:03:17.885');
+INSERT INTO `sys_api` VALUES (179, '创建任务', 'POST', '/api/v1/helper/mer-task/create', 3, 3, 0, '2024-09-27 15:03:17.908');
+INSERT INTO `sys_api` VALUES (180, '修改任务', 'POST', '/api/v1/helper/mer-task/update', 3, 3, 0, '2024-09-27 15:03:17.931');
+INSERT INTO `sys_api` VALUES (181, '删除任务', 'POST', '/api/v1/helper/mer-task/del', 3, 3, 0, '2024-09-27 15:03:17.953');
+INSERT INTO `sys_api` VALUES (182, '分页获取店铺', 'POST', '/api/v1/helper/mer-shop/page', 3, 3, 0, '2024-09-27 15:03:19.351');
+INSERT INTO `sys_api` VALUES (183, '根据id获取店铺', 'POST', '/api/v1/helper/mer-shop/get', 3, 3, 0, '2024-09-27 15:03:19.378');
+INSERT INTO `sys_api` VALUES (184, '创建店铺', 'POST', '/api/v1/helper/mer-shop/create', 3, 3, 0, '2024-09-27 15:03:19.405');
+INSERT INTO `sys_api` VALUES (185, '修改店铺', 'POST', '/api/v1/helper/mer-shop/update', 3, 3, 0, '2024-09-27 15:03:19.430');
+INSERT INTO `sys_api` VALUES (186, '删除店铺', 'POST', '/api/v1/helper/mer-shop/del', 3, 3, 0, '2024-09-27 15:03:19.458');
+INSERT INTO `sys_api` VALUES (187, '分页获取小号', 'POST', '/api/v1/helper/mer-buyer-account/page', 3, 3, 0, '2024-09-27 15:03:22.705');
+INSERT INTO `sys_api` VALUES (188, '根据id获取小号', 'POST', '/api/v1/helper/mer-buyer-account/get', 3, 3, 0, '2024-09-27 15:03:22.729');
+INSERT INTO `sys_api` VALUES (189, '创建小号', 'POST', '/api/v1/helper/mer-buyer-account/create', 3, 3, 0, '2024-09-27 15:03:22.751');
+INSERT INTO `sys_api` VALUES (190, '修改小号', 'POST', '/api/v1/helper/mer-buyer-account/update', 3, 3, 0, '2024-09-27 15:03:22.777');
+INSERT INTO `sys_api` VALUES (191, '删除小号', 'POST', '/api/v1/helper/mer-buyer-account/del', 3, 3, 0, '2024-09-27 15:03:22.799');
+INSERT INTO `sys_api` VALUES (192, '分页获取兑换码', 'POST', '/api/v1/helper/cdkey/page', 3, 3, 0, '2024-09-27 15:03:24.217');
+INSERT INTO `sys_api` VALUES (193, '根据id获取兑换码', 'POST', '/api/v1/helper/cdkey/get', 3, 3, 0, '2024-09-27 15:03:24.243');
+INSERT INTO `sys_api` VALUES (194, '创建兑换码', 'POST', '/api/v1/helper/cdkey/create', 3, 3, 0, '2024-09-27 15:03:24.269');
+INSERT INTO `sys_api` VALUES (195, '修改兑换码', 'POST', '/api/v1/helper/cdkey/update', 3, 3, 0, '2024-09-27 15:03:24.294');
+INSERT INTO `sys_api` VALUES (196, '删除兑换码', 'POST', '/api/v1/helper/cdkey/del', 3, 3, 0, '2024-09-27 15:03:24.316');
+INSERT INTO `sys_api` VALUES (197, '分页获取LoginLog', 'POST', '/api/v1/sys/login-log/page', 3, 3, 0, '2024-09-27 15:03:25.952');
+INSERT INTO `sys_api` VALUES (198, '根据id获取LoginLog', 'POST', '/api/v1/sys/login-log/get', 3, 3, 0, '2024-09-27 15:03:25.978');
+INSERT INTO `sys_api` VALUES (199, '创建LoginLog', 'POST', '/api/v1/sys/login-log/create', 3, 3, 0, '2024-09-27 15:03:26.003');
+INSERT INTO `sys_api` VALUES (200, '修改LoginLog', 'POST', '/api/v1/sys/login-log/update', 3, 3, 0, '2024-09-27 15:03:26.028');
+INSERT INTO `sys_api` VALUES (201, '删除LoginLog', 'POST', '/api/v1/sys/login-log/del', 3, 3, 0, '2024-09-27 15:03:26.055');
+INSERT INTO `sys_api` VALUES (202, '分页获取产品', 'POST', '/api/v1/helper/product/page', 3, 3, 0, '2024-10-09 17:09:34.780');
+INSERT INTO `sys_api` VALUES (203, '根据id获取产品', 'POST', '/api/v1/helper/product/get', 3, 3, 0, '2024-10-09 17:09:34.806');
+INSERT INTO `sys_api` VALUES (204, '创建产品', 'POST', '/api/v1/helper/product/create', 3, 3, 0, '2024-10-09 17:09:34.831');
+INSERT INTO `sys_api` VALUES (205, '修改产品', 'POST', '/api/v1/helper/product/update', 3, 3, 0, '2024-10-09 17:09:34.857');
+INSERT INTO `sys_api` VALUES (206, '删除产品', 'POST', '/api/v1/helper/product/del', 3, 3, 0, '2024-10-09 17:09:34.880');
+INSERT INTO `sys_api` VALUES (207, '分页获取订单', 'POST', '/api/v1/helper/order/page', 3, 3, 0, '2024-10-10 09:49:32.437');
+INSERT INTO `sys_api` VALUES (208, '根据id获取订单', 'POST', '/api/v1/helper/order/get', 3, 3, 0, '2024-10-10 09:49:32.457');
+INSERT INTO `sys_api` VALUES (209, '创建订单', 'POST', '/api/v1/helper/order/create', 3, 3, 0, '2024-10-10 09:49:32.481');
+INSERT INTO `sys_api` VALUES (210, '修改订单', 'POST', '/api/v1/helper/order/update', 3, 3, 0, '2024-10-10 09:49:32.508');
+INSERT INTO `sys_api` VALUES (211, '删除订单', 'POST', '/api/v1/helper/order/del', 3, 3, 0, '2024-10-10 09:49:32.529');
+INSERT INTO `sys_api` VALUES (212, '分页获取订单条目', 'POST', '/api/v1/helper/order-item/page', 3, 3, 0, '2024-10-10 09:49:34.451');
+INSERT INTO `sys_api` VALUES (213, '根据id获取订单条目', 'POST', '/api/v1/helper/order-item/get', 3, 3, 0, '2024-10-10 09:49:34.474');
+INSERT INTO `sys_api` VALUES (214, '创建订单条目', 'POST', '/api/v1/helper/order-item/create', 3, 3, 0, '2024-10-10 09:49:34.500');
+INSERT INTO `sys_api` VALUES (215, '修改订单条目', 'POST', '/api/v1/helper/order-item/update', 3, 3, 0, '2024-10-10 09:49:34.523');
+INSERT INTO `sys_api` VALUES (216, '删除订单条目', 'POST', '/api/v1/helper/order-item/del', 3, 3, 0, '2024-10-10 09:49:34.544');
 
 -- ----------------------------
 -- Table structure for sys_cfg
@@ -928,7 +1069,7 @@ CREATE TABLE `sys_menu`  (
   INDEX `idx_sys_menu_deleted_at`(`deleted_at` ASC) USING BTREE,
   INDEX `idx_sys_menu_create_by`(`create_by` ASC) USING BTREE,
   INDEX `idx_sys_menu_update_by`(`update_by` ASC) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 214 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单' ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 274 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci COMMENT = '菜单' ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of sys_menu
@@ -965,34 +1106,6 @@ INSERT INTO `sys_menu` VALUES (59, '', '成员创建', '', 'sys_member_create', 
 INSERT INTO `sys_menu` VALUES (60, '', '成员修改', '', 'sys_member_update', 2, 3, 'sys:sysMember:edit', 57, 0, '', 0, 0, 1, 1, '2023-09-29 08:44:33.534', '2023-09-29 08:44:33.538', NULL);
 INSERT INTO `sys_menu` VALUES (61, '', '会员删除', '', 'sys_member_del', 2, 3, 'sys:sysMember:remove', 57, 0, '', 0, 0, 1, 1, '2023-09-29 08:44:33.543', '2023-09-29 08:44:33.546', NULL);
 INSERT INTO `sys_menu` VALUES (62, '', '营销管理', 'bill', '/dental', 2, 1, '', 0, 0, 'Layout', 11, 0, 1, 1, '2023-09-29 08:45:53.780', '2024-05-24 22:47:43.544', NULL);
-INSERT INTO `sys_menu` VALUES (63, 'BillManage', '账单管理', 'bill', '/dental/bill', 2, 2, 'dental:bill:list', 62, 0, '/dental/bill/index', 1, 0, 1, 1, '2023-09-29 08:45:53.794', '2024-05-24 23:34:12.073', NULL);
-INSERT INTO `sys_menu` VALUES (64, '', '账单详情', '', 'bill_detail', 2, 3, 'dental:bill:query', 63, 0, '', 0, 0, 1, 1, '2023-09-29 08:45:53.803', '2023-09-29 08:45:53.806', NULL);
-INSERT INTO `sys_menu` VALUES (65, '', '账单创建', '', 'bill_create', 2, 3, 'dental:bill:add', 63, 0, '', 0, 0, 1, 1, '2023-09-29 08:45:53.818', '2023-09-29 08:45:53.821', NULL);
-INSERT INTO `sys_menu` VALUES (66, '', '账单修改', '', 'bill_update', 2, 3, 'dental:bill:edit', 63, 0, '', 0, 0, 1, 1, '2023-09-29 08:45:53.829', '2023-09-29 08:45:53.833', NULL);
-INSERT INTO `sys_menu` VALUES (67, '', '账单删除', '', 'bill_del', 2, 3, 'dental:bill:remove', 63, 0, '', 0, 0, 1, 1, '2023-09-29 08:45:53.840', '2023-09-29 08:45:53.843', NULL);
-INSERT INTO `sys_menu` VALUES (68, 'CustomerManage', '客户管理', 'customer', '/dental/customer', 2, 2, 'dental:customer:list', 62, 0, '/dental/customer/index', 11, 0, 1, 1, '2023-09-29 08:46:25.139', '2024-05-24 23:35:10.258', NULL);
-INSERT INTO `sys_menu` VALUES (69, '', '客户详情', '', 'customer_detail', 2, 3, 'dental:customer:query', 68, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:25.153', '2023-09-29 08:46:25.156', NULL);
-INSERT INTO `sys_menu` VALUES (70, '', '客户创建', '', 'customer_create', 2, 3, 'dental:customer:add', 68, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:25.165', '2023-09-29 08:46:25.168', NULL);
-INSERT INTO `sys_menu` VALUES (71, '', '客户修改', '', 'customer_update', 2, 3, 'dental:customer:edit', 68, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:25.176', '2023-09-29 08:46:25.179', NULL);
-INSERT INTO `sys_menu` VALUES (72, '', '客户删除', '', 'customer_del', 2, 3, 'dental:customer:remove', 68, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:25.187', '2023-09-29 08:46:25.190', NULL);
-INSERT INTO `sys_menu` VALUES (73, 'EventDayStManage', '日统计管理', 'calendarCheck', '/dental/event-day-st', 2, 2, 'dental:eventDaySt:list', 62, 0, '/dental/event-day-st/index', 2, 0, 1, 1, '2023-09-29 08:46:27.736', '2024-05-24 23:34:24.798', NULL);
-INSERT INTO `sys_menu` VALUES (74, '', '日统计详情', '', 'event_day_st_detail', 2, 3, 'dental:eventDaySt:query', 73, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:27.771', '2023-09-29 08:46:27.774', NULL);
-INSERT INTO `sys_menu` VALUES (75, '', '日统计创建', '', 'event_day_st_create', 2, 3, 'dental:eventDaySt:add', 73, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:27.780', '2023-09-29 08:46:27.783', NULL);
-INSERT INTO `sys_menu` VALUES (76, '', '日统计修改', '', 'event_day_st_update', 2, 3, 'dental:eventDaySt:edit', 73, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:27.790', '2023-09-29 08:46:27.794', NULL);
-INSERT INTO `sys_menu` VALUES (77, '', '日统计删除', '', 'event_day_st_del', 2, 3, 'dental:eventDaySt:remove', 73, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:27.801', '2023-09-29 08:46:27.806', NULL);
-INSERT INTO `sys_menu` VALUES (78, 'SummaryPlanDayManage', '日总结与计划管理', 'planet', '/dental/summary-plan-day', 2, 2, 'dental:summaryPlanDay:list', 62, 0, '/dental/summary-plan-day/index', 3, 0, 1, 1, '2023-09-29 08:46:30.209', '2024-05-24 23:34:33.018', NULL);
-INSERT INTO `sys_menu` VALUES (79, '', '日总结与计划详情', '', 'summary_plan_day_detail', 2, 3, 'dental:summaryPlanDay:query', 78, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:30.222', '2023-09-29 08:46:30.225', NULL);
-INSERT INTO `sys_menu` VALUES (80, '', '日总结与计划创建', '', 'summary_plan_day_create', 2, 3, 'dental:summaryPlanDay:add', 78, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:30.233', '2023-09-29 08:46:30.236', NULL);
-INSERT INTO `sys_menu` VALUES (81, '', '日总结与计划修改', '', 'summary_plan_day_update', 2, 3, 'dental:summaryPlanDay:edit', 78, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:30.244', '2023-09-29 08:46:30.247', NULL);
-INSERT INTO `sys_menu` VALUES (82, '', '日总结与计划删除', '', 'summary_plan_day_del', 2, 3, 'dental:summaryPlanDay:remove', 78, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:30.254', '2023-09-29 08:46:30.258', NULL);
-INSERT INTO `sys_menu` VALUES (83, 'TargetTaskManage', '任务目标管理', 'task', '/dental/target-task', 2, 2, 'dental:targetTask:list', 62, 0, '/dental/target-task/index', 5, 0, 1, 1, '2023-09-29 08:46:32.790', '2024-05-24 23:34:58.311', NULL);
-INSERT INTO `sys_menu` VALUES (84, '', '任务目标详情', '', 'target_task_detail', 2, 3, 'dental:targetTask:query', 83, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:32.828', '2023-09-29 08:46:32.830', NULL);
-INSERT INTO `sys_menu` VALUES (85, '', '任务目标创建', '', 'target_task_create', 2, 3, 'dental:targetTask:add', 83, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:32.837', '2023-09-29 08:46:32.840', NULL);
-INSERT INTO `sys_menu` VALUES (86, '', '任务目标修改', '', 'target_task_update', 2, 3, 'dental:targetTask:edit', 83, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:32.847', '2023-09-29 08:46:32.850', NULL);
-INSERT INTO `sys_menu` VALUES (87, '', '任务目标删除', '', 'target_task_del', 2, 3, 'dental:targetTask:remove', 83, 0, '', 0, 0, 1, 1, '2023-09-29 08:46:32.857', '2023-09-29 08:46:32.861', NULL);
-INSERT INTO `sys_menu` VALUES (88, NULL, '账单智能识别', NULL, 'bill_identify', 2, 3, 'dental:bill:identify', 63, 0, '', 0, 0, 1, 1, '2023-10-15 00:00:00.000', '2023-10-15 00:00:00.000', NULL);
-INSERT INTO `sys_menu` VALUES (89, NULL, '日统计', NULL, 'st_day', 2, 3, 'dental:st:day', 108, 0, NULL, 0, 0, 1, 1, '2023-10-16 13:53:40.000', '2023-10-16 13:53:44.000', NULL);
-INSERT INTO `sys_menu` VALUES (90, NULL, '月统计', NULL, 'st_month', 2, 3, 'dental:st:month', 108, 0, NULL, 0, 0, 1, 1, '2023-10-16 14:32:02.000', '2023-10-16 14:32:06.000', NULL);
 INSERT INTO `sys_menu` VALUES (91, '', '工具管理', 'setUp', '/tools', 1, 1, NULL, 0, 0, 'Layout', 111, 0, 1, 1, '2023-10-28 09:41:26.000', '2024-05-24 22:47:52.057', NULL);
 INSERT INTO `sys_menu` VALUES (93, 'GenTablesManage', '代码生成', 'table', '/sys/gen-tables', 1, 2, 'sys:genTables:list', 91, 0, '/tool/gen-tables/index', 0, 0, 1, 1, '2023-10-28 16:31:47.693', '2023-10-28 16:31:47.693', NULL);
 INSERT INTO `sys_menu` VALUES (94, '', 'GenTables详情', '', 'gen_tables_detail', 1, 3, 'sys:genTables:query', 93, 0, '', 0, 0, 1, 1, '2023-10-28 16:31:47.704', '2023-10-28 16:31:47.704', NULL);
@@ -1004,8 +1117,6 @@ INSERT INTO `sys_menu` VALUES (104, '', '接口详情', '', 'sys_api_detail', 1,
 INSERT INTO `sys_menu` VALUES (105, '', '接口创建', '', 'sys_api_create', 1, 3, 'sys:sysApi:add', 103, 0, '', 0, 0, 1, 1, '2023-10-28 16:51:44.947', '2023-10-28 16:51:44.947', NULL);
 INSERT INTO `sys_menu` VALUES (106, '', '接口修改', '', 'sys_api_update', 1, 3, 'sys:sysApi:edit', 103, 0, '', 0, 0, 1, 1, '2023-10-28 16:51:44.955', '2023-10-28 16:51:44.955', NULL);
 INSERT INTO `sys_menu` VALUES (107, '', '接口删除', '', 'sys_api_del', 1, 3, 'sys:sysApi:remove', 103, 0, '', 0, 0, 1, 1, '2023-10-28 16:51:44.964', '2023-10-28 16:51:44.964', NULL);
-INSERT INTO `sys_menu` VALUES (108, 'BillStQuery', '统计查询', 'histogram', '/dental/st', 2, 2, 'dental:st:list', 62, 0, '/dental/billst/index', 4, 0, 1, 1, '2023-10-29 14:34:14.000', '2024-05-24 23:34:47.939', NULL);
-INSERT INTO `sys_menu` VALUES (109, NULL, '查询统计', NULL, 'st_bill_query', 2, 3, 'dental:st:query', 108, 0, NULL, 0, 0, 1, 1, '2023-10-29 18:47:57.000', '2023-10-29 18:48:02.000', NULL);
 INSERT INTO `sys_menu` VALUES (111, 'SysCfgManage', '配置管理', 'operation', '/sys/sys-cfg', 2, 2, 'sys:sysCfg:list', 1, 0, '/sys/sys-cfg/index', 0, 0, 1, 1, '2023-11-08 20:34:50.875', '2023-11-08 20:34:50.875', NULL);
 INSERT INTO `sys_menu` VALUES (112, '', '配置详情', '', 'sys_cfg_detail', 2, 3, 'sys:sysCfg:query', 111, 0, '', 0, 0, 1, 1, '2023-11-08 20:34:50.889', '2023-11-08 20:34:50.889', NULL);
 INSERT INTO `sys_menu` VALUES (113, '', '配置创建', '', 'sys_cfg_create', 2, 3, 'sys:sysCfg:add', 111, 0, '', 0, 0, 1, 1, '2023-11-08 20:34:50.903', '2023-11-08 20:34:50.903', NULL);
@@ -1035,9 +1146,52 @@ INSERT INTO `sys_menu` VALUES (140, '', 'Task创建', '', 'task_create', 2, 3, '
 INSERT INTO `sys_menu` VALUES (141, '', 'Task修改', '', 'task_update', 2, 3, 'notice:task:edit', 138, 0, '', 0, 0, 1, 1, '2023-11-24 15:39:24.142', '2023-11-24 15:39:24.142', NULL);
 INSERT INTO `sys_menu` VALUES (142, '', 'Task删除', '', 'task_del', 2, 3, 'notice:task:remove', 138, 0, '', 0, 0, 1, 1, '2023-11-24 15:39:24.155', '2023-11-24 15:39:24.155', NULL);
 INSERT INTO `sys_menu` VALUES (143, 'AiChat', 'AiChat', 'ai', '/ai/chat', 2, 2, 'ai:chat', 1, 0, '/ai/chat/index', 123, 0, 1, 1, '2023-11-27 21:09:36.000', '2024-05-24 23:20:02.083', NULL);
-INSERT INTO `sys_menu` VALUES (144, NULL, '账单统计导出', NULL, 'st_bill_export', 2, 3, 'st:bill:export', 63, 0, '/st/bill/export', 0, 0, 1, 1, '2023-12-09 11:21:15.000', '2024-05-24 23:36:27.429', NULL);
-INSERT INTO `sys_menu` VALUES (145, NULL, '账单导出', NULL, 'bill_export', 2, 3, 'bill:export', 108, 0, '/bill/export', 0, 0, 1, 1, '2023-12-09 16:58:57.000', '2024-05-24 23:38:17.739', NULL);
-INSERT INTO `sys_menu` VALUES (213, NULL, '占比统计导出', NULL, 'st_bill_exportrate', 2, 3, 'st:bill:exportrate', 108, 0, '/st/bill/exportrate', 0, 0, 1, 1, '2023-12-09 11:21:15.000', '2024-05-24 23:38:41.908', NULL);
+INSERT INTO `sys_menu` VALUES (220, '', '商户', 'planet', '/helper/merchant', 2, 1, '', 0, 0, 'Layout', 0, 0, 1, 1, '2024-09-27 15:03:16.096', '2024-10-09 17:17:57.743', NULL);
+INSERT INTO `sys_menu` VALUES (221, 'MerchantManage', '商户管理', 'planet', '/helper/merchant', 2, 2, 'helper:merchant:list', 220, 0, '/helper/merchant/index', 0, 0, 1, 1, '2024-09-27 15:03:16.135', '2024-09-27 15:03:16.135', NULL);
+INSERT INTO `sys_menu` VALUES (222, '', '商户详情', '', 'merchant_detail', 2, 3, 'helper:merchant:query', 221, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:16.160', '2024-09-27 15:03:16.160', NULL);
+INSERT INTO `sys_menu` VALUES (223, '', '商户创建', '', 'merchant_create', 2, 3, 'helper:merchant:add', 221, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:16.187', '2024-09-27 15:03:16.187', NULL);
+INSERT INTO `sys_menu` VALUES (224, '', '商户修改', '', 'merchant_update', 2, 3, 'helper:merchant:edit', 221, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:16.211', '2024-09-27 15:03:16.211', NULL);
+INSERT INTO `sys_menu` VALUES (225, '', '商户删除', '', 'merchant_del', 2, 3, 'helper:merchant:remove', 221, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:16.238', '2024-09-27 15:03:16.238', NULL);
+INSERT INTO `sys_menu` VALUES (227, 'MerTaskManage', '任务管理', 'task', '/helper/mer-task', 2, 2, 'helper:merTask:list', 220, 0, '/helper/mer-task/index', 0, 0, 1, 1, '2024-09-27 15:03:17.872', '2024-10-09 17:13:16.834', NULL);
+INSERT INTO `sys_menu` VALUES (228, '', '任务详情', '', 'mer_task_detail', 2, 3, 'helper:merTask:query', 227, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:17.895', '2024-09-27 15:03:17.895', NULL);
+INSERT INTO `sys_menu` VALUES (229, '', '任务创建', '', 'mer_task_create', 2, 3, 'helper:merTask:add', 227, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:17.918', '2024-09-27 15:03:17.918', NULL);
+INSERT INTO `sys_menu` VALUES (230, '', '任务修改', '', 'mer_task_update', 2, 3, 'helper:merTask:edit', 227, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:17.940', '2024-09-27 15:03:17.940', NULL);
+INSERT INTO `sys_menu` VALUES (231, '', '任务删除', '', 'mer_task_del', 2, 3, 'helper:merTask:remove', 227, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:17.964', '2024-09-27 15:03:17.964', NULL);
+INSERT INTO `sys_menu` VALUES (233, 'MerShopManage', '店铺管理', 'shop', '/helper/mer-shop', 2, 2, 'helper:merShop:list', 220, 0, '/helper/mer-shop/index', 0, 0, 1, 1, '2024-09-27 15:03:19.365', '2024-10-09 17:13:40.842', NULL);
+INSERT INTO `sys_menu` VALUES (234, '', '店铺详情', '', 'mer_shop_detail', 2, 3, 'helper:merShop:query', 233, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:19.393', '2024-09-27 15:03:19.393', NULL);
+INSERT INTO `sys_menu` VALUES (235, '', '店铺创建', '', 'mer_shop_create', 2, 3, 'helper:merShop:add', 233, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:19.417', '2024-09-27 15:03:19.417', NULL);
+INSERT INTO `sys_menu` VALUES (236, '', '店铺修改', '', 'mer_shop_update', 2, 3, 'helper:merShop:edit', 233, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:19.443', '2024-09-27 15:03:19.443', NULL);
+INSERT INTO `sys_menu` VALUES (237, '', '店铺删除', '', 'mer_shop_del', 2, 3, 'helper:merShop:remove', 233, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:19.469', '2024-09-27 15:03:19.469', NULL);
+INSERT INTO `sys_menu` VALUES (239, 'MerBuyerAccountManage', '小号管理', 'customer', '/helper/mer-buyer-account', 2, 2, 'helper:merBuyerAccount:list', 220, 0, '/helper/mer-buyer-account/index', 0, 0, 1, 1, '2024-09-27 15:03:22.717', '2024-10-09 17:13:56.852', NULL);
+INSERT INTO `sys_menu` VALUES (240, '', '小号详情', '', 'mer_buyer_account_detail', 2, 3, 'helper:merBuyerAccount:query', 239, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:22.739', '2024-09-27 15:03:22.739', NULL);
+INSERT INTO `sys_menu` VALUES (241, '', '小号创建', '', 'mer_buyer_account_create', 2, 3, 'helper:merBuyerAccount:add', 239, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:22.761', '2024-09-27 15:03:22.761', NULL);
+INSERT INTO `sys_menu` VALUES (242, '', '小号修改', '', 'mer_buyer_account_update', 2, 3, 'helper:merBuyerAccount:edit', 239, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:22.788', '2024-09-27 15:03:22.788', NULL);
+INSERT INTO `sys_menu` VALUES (243, '', '小号删除', '', 'mer_buyer_account_del', 2, 3, 'helper:merBuyerAccount:remove', 239, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:22.808', '2024-09-27 15:03:22.808', NULL);
+INSERT INTO `sys_menu` VALUES (245, 'CdkeyManage', '兑换码管理', 'calendarCheck', '/helper/cdkey', 2, 2, 'helper:cdkey:list', 62, 0, '/helper/cdkey/index', 0, 0, 1, 1, '2024-09-27 15:03:24.230', '2024-10-10 09:54:41.061', NULL);
+INSERT INTO `sys_menu` VALUES (246, '', '兑换码详情', '', 'cdkey_detail', 2, 3, 'helper:cdkey:query', 245, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:24.257', '2024-09-27 15:03:24.257', NULL);
+INSERT INTO `sys_menu` VALUES (247, '', '兑换码创建', '', 'cdkey_create', 2, 3, 'helper:cdkey:add', 245, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:24.279', '2024-09-27 15:03:24.279', NULL);
+INSERT INTO `sys_menu` VALUES (248, '', '兑换码修改', '', 'cdkey_update', 2, 3, 'helper:cdkey:edit', 245, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:24.304', '2024-09-27 15:03:24.304', NULL);
+INSERT INTO `sys_menu` VALUES (249, '', '兑换码删除', '', 'cdkey_del', 2, 3, 'helper:cdkey:remove', 245, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:24.327', '2024-09-27 15:03:24.327', NULL);
+INSERT INTO `sys_menu` VALUES (251, 'LoginLogManage', '登录日志', 'documentCopy', '/sys/login-log', 2, 2, 'sys:loginLog:list', 1, 0, '/sys/login-log/index', 0, 0, 1, 1, '2024-09-27 15:03:25.966', '2024-10-09 17:12:22.104', NULL);
+INSERT INTO `sys_menu` VALUES (252, '', 'LoginLog详情', '', 'login_log_detail', 2, 3, 'sys:loginLog:query', 251, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:25.990', '2024-09-27 15:03:25.990', NULL);
+INSERT INTO `sys_menu` VALUES (253, '', 'LoginLog创建', '', 'login_log_create', 2, 3, 'sys:loginLog:add', 251, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:26.014', '2024-09-27 15:03:26.014', NULL);
+INSERT INTO `sys_menu` VALUES (254, '', 'LoginLog修改', '', 'login_log_update', 2, 3, 'sys:loginLog:edit', 251, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:26.041', '2024-09-27 15:03:26.041', NULL);
+INSERT INTO `sys_menu` VALUES (255, '', 'LoginLog删除', '', 'login_log_del', 2, 3, 'sys:loginLog:remove', 251, 0, '', 0, 0, 1, 1, '2024-09-27 15:03:26.069', '2024-09-27 15:03:26.069', NULL);
+INSERT INTO `sys_menu` VALUES (257, 'ProductManage', '产品管理', 'goods', '/helper/product', 2, 2, 'helper:product:list', 62, 0, '/helper/product/index', 0, 0, 1, 1, '2024-10-09 17:09:34.791', '2024-10-10 09:54:50.457', NULL);
+INSERT INTO `sys_menu` VALUES (258, '', '产品详情', '', 'product_detail', 2, 3, 'helper:product:query', 257, 0, '', 0, 0, 1, 1, '2024-10-09 17:09:34.817', '2024-10-09 17:09:34.817', NULL);
+INSERT INTO `sys_menu` VALUES (259, '', '产品创建', '', 'product_create', 2, 3, 'helper:product:add', 257, 0, '', 0, 0, 1, 1, '2024-10-09 17:09:34.843', '2024-10-09 17:09:34.843', NULL);
+INSERT INTO `sys_menu` VALUES (260, '', '产品修改', '', 'product_update', 2, 3, 'helper:product:edit', 257, 0, '', 0, 0, 1, 1, '2024-10-09 17:09:34.868', '2024-10-09 17:09:34.868', NULL);
+INSERT INTO `sys_menu` VALUES (261, '', '产品删除', '', 'product_del', 2, 3, 'helper:product:remove', 257, 0, '', 0, 0, 1, 1, '2024-10-09 17:09:34.890', '2024-10-09 17:09:34.890', NULL);
+INSERT INTO `sys_menu` VALUES (263, 'OrderManage', '订单管理', 'bill', '/helper/order', 2, 2, 'helper:order:list', 62, 0, '/helper/order/index', 0, 0, 1, 1, '2024-10-10 09:49:32.446', '2024-10-10 09:55:01.200', NULL);
+INSERT INTO `sys_menu` VALUES (264, '', '订单详情', '', 'order_detail', 2, 3, 'helper:order:query', 263, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:32.469', '2024-10-10 09:49:32.469', NULL);
+INSERT INTO `sys_menu` VALUES (265, '', '订单创建', '', 'order_create', 2, 3, 'helper:order:add', 263, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:32.495', '2024-10-10 09:49:32.495', NULL);
+INSERT INTO `sys_menu` VALUES (266, '', '订单修改', '', 'order_update', 2, 3, 'helper:order:edit', 263, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:32.518', '2024-10-10 09:49:32.518', NULL);
+INSERT INTO `sys_menu` VALUES (267, '', '订单删除', '', 'order_del', 2, 3, 'helper:order:remove', 263, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:32.540', '2024-10-10 09:49:32.540', NULL);
+INSERT INTO `sys_menu` VALUES (269, 'OrderItemManage', '订单条目管理', 'histogram', '/helper/order-item', 2, 2, 'helper:orderItem:list', 62, 0, '/helper/order-item/index', 0, 0, 1, 1, '2024-10-10 09:49:34.462', '2024-10-10 09:55:10.965', NULL);
+INSERT INTO `sys_menu` VALUES (270, '', '订单条目详情', '', 'order_item_detail', 2, 3, 'helper:orderItem:query', 269, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:34.486', '2024-10-10 09:49:34.486', NULL);
+INSERT INTO `sys_menu` VALUES (271, '', '订单条目创建', '', 'order_item_create', 2, 3, 'helper:orderItem:add', 269, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:34.511', '2024-10-10 09:49:34.511', NULL);
+INSERT INTO `sys_menu` VALUES (272, '', '订单条目修改', '', 'order_item_update', 2, 3, 'helper:orderItem:edit', 269, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:34.533', '2024-10-10 09:49:34.533', NULL);
+INSERT INTO `sys_menu` VALUES (273, '', '订单条目删除', '', 'order_item_del', 2, 3, 'helper:orderItem:remove', 269, 0, '', 0, 0, 1, 1, '2024-10-10 09:49:34.555', '2024-10-10 09:49:34.555', NULL);
 
 -- ----------------------------
 -- Table structure for sys_menu_api_rule
@@ -1085,34 +1239,6 @@ INSERT INTO `sys_menu_api_rule` VALUES (53, 32);
 INSERT INTO `sys_menu_api_rule` VALUES (54, 33);
 INSERT INTO `sys_menu_api_rule` VALUES (55, 34);
 INSERT INTO `sys_menu_api_rule` VALUES (56, 35);
-INSERT INTO `sys_menu_api_rule` VALUES (63, 36);
-INSERT INTO `sys_menu_api_rule` VALUES (64, 37);
-INSERT INTO `sys_menu_api_rule` VALUES (65, 38);
-INSERT INTO `sys_menu_api_rule` VALUES (66, 39);
-INSERT INTO `sys_menu_api_rule` VALUES (67, 40);
-INSERT INTO `sys_menu_api_rule` VALUES (68, 41);
-INSERT INTO `sys_menu_api_rule` VALUES (69, 42);
-INSERT INTO `sys_menu_api_rule` VALUES (70, 43);
-INSERT INTO `sys_menu_api_rule` VALUES (71, 44);
-INSERT INTO `sys_menu_api_rule` VALUES (72, 45);
-INSERT INTO `sys_menu_api_rule` VALUES (73, 46);
-INSERT INTO `sys_menu_api_rule` VALUES (74, 47);
-INSERT INTO `sys_menu_api_rule` VALUES (75, 48);
-INSERT INTO `sys_menu_api_rule` VALUES (76, 49);
-INSERT INTO `sys_menu_api_rule` VALUES (77, 50);
-INSERT INTO `sys_menu_api_rule` VALUES (78, 51);
-INSERT INTO `sys_menu_api_rule` VALUES (79, 52);
-INSERT INTO `sys_menu_api_rule` VALUES (80, 53);
-INSERT INTO `sys_menu_api_rule` VALUES (81, 54);
-INSERT INTO `sys_menu_api_rule` VALUES (82, 55);
-INSERT INTO `sys_menu_api_rule` VALUES (83, 56);
-INSERT INTO `sys_menu_api_rule` VALUES (84, 57);
-INSERT INTO `sys_menu_api_rule` VALUES (85, 58);
-INSERT INTO `sys_menu_api_rule` VALUES (86, 59);
-INSERT INTO `sys_menu_api_rule` VALUES (87, 60);
-INSERT INTO `sys_menu_api_rule` VALUES (88, 61);
-INSERT INTO `sys_menu_api_rule` VALUES (89, 62);
-INSERT INTO `sys_menu_api_rule` VALUES (90, 63);
 INSERT INTO `sys_menu_api_rule` VALUES (93, 64);
 INSERT INTO `sys_menu_api_rule` VALUES (94, 65);
 INSERT INTO `sys_menu_api_rule` VALUES (95, 66);
@@ -1123,7 +1249,6 @@ INSERT INTO `sys_menu_api_rule` VALUES (104, 75);
 INSERT INTO `sys_menu_api_rule` VALUES (105, 76);
 INSERT INTO `sys_menu_api_rule` VALUES (106, 77);
 INSERT INTO `sys_menu_api_rule` VALUES (107, 78);
-INSERT INTO `sys_menu_api_rule` VALUES (109, 79);
 INSERT INTO `sys_menu_api_rule` VALUES (12, 80);
 INSERT INTO `sys_menu_api_rule` VALUES (111, 81);
 INSERT INTO `sys_menu_api_rule` VALUES (112, 82);
@@ -1152,9 +1277,51 @@ INSERT INTO `sys_menu_api_rule` VALUES (139, 105);
 INSERT INTO `sys_menu_api_rule` VALUES (140, 106);
 INSERT INTO `sys_menu_api_rule` VALUES (141, 107);
 INSERT INTO `sys_menu_api_rule` VALUES (142, 108);
-INSERT INTO `sys_menu_api_rule` VALUES (144, 109);
-INSERT INTO `sys_menu_api_rule` VALUES (145, 110);
-INSERT INTO `sys_menu_api_rule` VALUES (213, 166);
+INSERT INTO `sys_menu_api_rule` VALUES (221, 172);
+INSERT INTO `sys_menu_api_rule` VALUES (222, 173);
+INSERT INTO `sys_menu_api_rule` VALUES (223, 174);
+INSERT INTO `sys_menu_api_rule` VALUES (224, 175);
+INSERT INTO `sys_menu_api_rule` VALUES (225, 176);
+INSERT INTO `sys_menu_api_rule` VALUES (227, 177);
+INSERT INTO `sys_menu_api_rule` VALUES (228, 178);
+INSERT INTO `sys_menu_api_rule` VALUES (229, 179);
+INSERT INTO `sys_menu_api_rule` VALUES (230, 180);
+INSERT INTO `sys_menu_api_rule` VALUES (231, 181);
+INSERT INTO `sys_menu_api_rule` VALUES (233, 182);
+INSERT INTO `sys_menu_api_rule` VALUES (234, 183);
+INSERT INTO `sys_menu_api_rule` VALUES (235, 184);
+INSERT INTO `sys_menu_api_rule` VALUES (236, 185);
+INSERT INTO `sys_menu_api_rule` VALUES (237, 186);
+INSERT INTO `sys_menu_api_rule` VALUES (239, 187);
+INSERT INTO `sys_menu_api_rule` VALUES (240, 188);
+INSERT INTO `sys_menu_api_rule` VALUES (241, 189);
+INSERT INTO `sys_menu_api_rule` VALUES (242, 190);
+INSERT INTO `sys_menu_api_rule` VALUES (243, 191);
+INSERT INTO `sys_menu_api_rule` VALUES (245, 192);
+INSERT INTO `sys_menu_api_rule` VALUES (246, 193);
+INSERT INTO `sys_menu_api_rule` VALUES (247, 194);
+INSERT INTO `sys_menu_api_rule` VALUES (248, 195);
+INSERT INTO `sys_menu_api_rule` VALUES (249, 196);
+INSERT INTO `sys_menu_api_rule` VALUES (251, 197);
+INSERT INTO `sys_menu_api_rule` VALUES (252, 198);
+INSERT INTO `sys_menu_api_rule` VALUES (253, 199);
+INSERT INTO `sys_menu_api_rule` VALUES (254, 200);
+INSERT INTO `sys_menu_api_rule` VALUES (255, 201);
+INSERT INTO `sys_menu_api_rule` VALUES (257, 202);
+INSERT INTO `sys_menu_api_rule` VALUES (258, 203);
+INSERT INTO `sys_menu_api_rule` VALUES (259, 204);
+INSERT INTO `sys_menu_api_rule` VALUES (260, 205);
+INSERT INTO `sys_menu_api_rule` VALUES (261, 206);
+INSERT INTO `sys_menu_api_rule` VALUES (263, 207);
+INSERT INTO `sys_menu_api_rule` VALUES (264, 208);
+INSERT INTO `sys_menu_api_rule` VALUES (265, 209);
+INSERT INTO `sys_menu_api_rule` VALUES (266, 210);
+INSERT INTO `sys_menu_api_rule` VALUES (267, 211);
+INSERT INTO `sys_menu_api_rule` VALUES (269, 212);
+INSERT INTO `sys_menu_api_rule` VALUES (270, 213);
+INSERT INTO `sys_menu_api_rule` VALUES (271, 214);
+INSERT INTO `sys_menu_api_rule` VALUES (272, 215);
+INSERT INTO `sys_menu_api_rule` VALUES (273, 216);
 
 -- ----------------------------
 -- Table structure for sys_opera_log
@@ -1379,6 +1546,12 @@ CREATE TABLE `sys_user`  (
   `remark` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '备注',
   `lock_time` datetime(3) NULL DEFAULT NULL COMMENT '锁定结束时间',
   `status` tinyint NULL DEFAULT NULL COMMENT '状态 1正常 ',
+  `src_id` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '来源',
+  `inviter` int UNSIGNED NULL DEFAULT NULL COMMENT '邀请人',
+  `invite_code` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '邀请码',
+  `client_id` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '客户端id',
+  `reg_ip` varchar(42) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL COMMENT '注册ip',
+  `ip_location` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `update_by` int UNSIGNED NULL DEFAULT NULL COMMENT '更新者',
   `created_at` datetime(3) NULL DEFAULT NULL COMMENT '创建时间',
   `updated_at` datetime(3) NULL DEFAULT NULL COMMENT '最后更新时间',
@@ -1389,15 +1562,15 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'dilu', '', NULL, '$2a$10$2OxaPJviu7NMSKMk5c2mPOvvb41Xg5ZiQB0153QpB77THK4sIXF1a', 'dilu', 'dilu', NULL, NULL, NULL, 2, -1, NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (2, 'tangtang', '13800138001', NULL, '$2a$10$hpISaioe30s6d3LYPdFaw.23rm29Yw9a44t8hl9G.tCNYKYoA72iW', '糖糖', '小唐', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, '2023-11-18 20:35:24.140');
-INSERT INTO `sys_user` VALUES (3, 'zcm', NULL, NULL, '$2a$10$8ZbmdrNu22DMnRFDjfBugOwvK0fVOixMX.AAeLFbgOkjS9frXHjVW', '小梅', '小梅', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, '2023-11-12 19:59:39.849');
-INSERT INTO `sys_user` VALUES (4, 'liyanlei', NULL, NULL, '$2a$10$sPJOyDdh/J4OFVa27z4LCuz2xtu3KwhyNegkp27hL.G9D3xMMYoKW', '阿雷', '阿雷', NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, 1, NULL, '2023-11-12 20:03:10.441');
-INSERT INTO `sys_user` VALUES (5, NULL, NULL, NULL, NULL, '小丽', '小丽', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (6, NULL, NULL, NULL, NULL, '小珊', '小珊', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (7, NULL, NULL, NULL, NULL, '大雁', '大雁', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL);
-INSERT INTO `sys_user` VALUES (8, 'dajin', '', '', '$2a$10$hpISaioe30s6d3LYPdFaw.23rm29Yw9a44t8hl9G.tCNYKYoA72iW', '大金', '大金', '', NULL, NULL, 2, 0, '', NULL, 1, 0, '2023-11-30 22:54:28.914', '2023-11-30 22:54:28.914');
-INSERT INTO `sys_user` VALUES (9, 'xiaoqi', NULL, NULL, NULL, '小琪', '小琪', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (1, 'dilu', '', NULL, '$2a$10$2OxaPJviu7NMSKMk5c2mPOvvb41Xg5ZiQB0153QpB77THK4sIXF1a', 'dilu', 'dilu', NULL, NULL, NULL, 2, -1, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (2, 'tangtang', '13800138001', NULL, '$2a$10$hpISaioe30s6d3LYPdFaw.23rm29Yw9a44t8hl9G.tCNYKYoA72iW', '糖糖', '小唐', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-11-18 20:35:24.140');
+INSERT INTO `sys_user` VALUES (3, 'zcm', NULL, NULL, '$2a$10$8ZbmdrNu22DMnRFDjfBugOwvK0fVOixMX.AAeLFbgOkjS9frXHjVW', '小梅', '小梅', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '2023-11-12 19:59:39.849');
+INSERT INTO `sys_user` VALUES (4, 'liyanlei', NULL, NULL, '$2a$10$sPJOyDdh/J4OFVa27z4LCuz2xtu3KwhyNegkp27hL.G9D3xMMYoKW', '阿雷', '阿雷', NULL, NULL, NULL, 1, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, '2023-11-12 20:03:10.441');
+INSERT INTO `sys_user` VALUES (5, NULL, NULL, NULL, NULL, '小丽', '小丽', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (6, NULL, NULL, NULL, NULL, '小珊', '小珊', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (7, NULL, NULL, NULL, NULL, '大雁', '大雁', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+INSERT INTO `sys_user` VALUES (8, 'dajin', '', '', '$2a$10$hpISaioe30s6d3LYPdFaw.23rm29Yw9a44t8hl9G.tCNYKYoA72iW', '大金', '大金', '', NULL, NULL, 2, 0, '', NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2023-11-30 22:54:28.914', '2023-11-30 22:54:28.914');
+INSERT INTO `sys_user` VALUES (9, 'xiaoqi', NULL, NULL, NULL, '小琪', '小琪', NULL, NULL, NULL, 2, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
 
 -- ----------------------------
 -- Table structure for third_login

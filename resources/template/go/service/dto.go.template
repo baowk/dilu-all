@@ -32,7 +32,7 @@ type {{.ClassName}}GetPageReq struct {
     {{- range .Columns -}}
     {{$z := .IsQuery}}
     {{- if ($z) -}}
-    {{.GoField}} {{.GoType}} `json:"{{.JsonField}}" form:"{{.JsonField}}" query:"column:{{.ColumnName}}"` //{{.ColumnComment}}
+    {{.GoField}} {{.GoType}} `json:"{{.JsonField}}" query:"column:{{.ColumnName}}"` //{{.ColumnComment}}
     {{- end }}
     {{- $x := .Pk -}}
     {{ if ($x) }}

@@ -111,7 +111,7 @@ func (s *BillService) CreateBill(reqId string, bill dto.IdentifyBillDto, dbill *
 	if bill.CustomerId < 1 {
 		var customers []models.Customer
 		if err := SerCustomer.GetByUserIdAndName(bill.UserId, 0, bill.CustomerName, &customers); err != nil {
-			core.Log.Error("获取客户错误", err)
+			core.Log.Error("获取客户错误", "", err)
 		}
 		if len(customers) > 0 {
 			bill.CustomerId = customers[0].Id
@@ -220,7 +220,7 @@ func (s *BillService) UpdateBill(reqId string, bill dto.IdentifyBillDto, dbill *
 	if bill.CustomerId < 1 {
 		var customers []models.Customer
 		if err := SerCustomer.GetByUserIdAndName(bill.UserId, 0, bill.CustomerName, &customers); err != nil {
-			core.Log.Error("获取客户错误", err)
+			core.Log.Error("获取客户错误", "", err)
 		}
 		if len(customers) > 0 {
 			bill.CustomerId = customers[0].Id
@@ -431,6 +431,9 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 		for _, key := range enums.CustomerName {
 			if strings.Contains(v, key) {
 				custName = getVal(v)
+				if custName == "" {
+					custName = getKeyVal(key, v)
+				}
 				break
 			}
 		}
@@ -566,7 +569,7 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 
 	var members []smodels.SysMember
 	if err := service.SerSysMember.GetMembers(req.TeamId, 0, "", bill.Name, 0, &members); err != nil {
-		core.Log.Error("获取咨询师错误", err)
+		core.Log.Error("获取咨询师错误", "err", err)
 		return errs.Err(codes.FAILURE, "", err)
 	}
 	if len(members) > 0 {
@@ -575,7 +578,7 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 
 	var customers []models.Customer
 	if err := SerCustomer.GetByUserIdAndName(bill.UserId, 0, custName, &customers); err != nil {
-		core.Log.Error("获取客户错误", err)
+		core.Log.Error("获取客户错误", "err", err)
 	}
 	for _, c := range customers {
 		op := dto.Option{
@@ -629,11 +632,21 @@ func (s *BillService) GetBill(userId, customerId int, bill *models.Bill) error {
 
 func getVal(data string) string {
 	data = strings.ReplaceAll(data, "：", ":")
+	if !strings.Contains(data, ":") {
+		if strings.Contains(data, " ") {
+			data = strings.ReplaceAll(data, " ", ":")
+		}
+	}
 	arr := strings.Split(data, ":")
 	if len(arr) == 2 {
 		return strings.Trim(arr[1], " ")
 	}
 	return ""
+}
+
+func getKeyVal(key, data string) string {
+	data = strings.ReplaceAll(data, key, "")
+	return strings.Trim(strings.Trim(data, " "), ":")
 }
 
 func getDate(tmpD string) string {
@@ -1293,6 +1306,8 @@ func (s *BillService) BillExcel(month int, name string, list []models.Bill, memb
 		source := "转介绍"
 		if v.Source == 1 {
 			source = "场地"
+		} else if v.Source == 3 {
+			source = "加班"
 		}
 		f.SetCellValue("Sheet1", fmt.Sprintf("M%d", i+3), source)
 		diagnosisType := ""
@@ -2073,7 +2088,7 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 	var tmDeal, tPaid, tbDebt, tRefund, deal, paid, bdebt, refund decimal.Decimal
 	var dealCnt, dCnt, iCnt, tdCnt, tiCnt int
 
-	var tNc, tFirD, tFuD, tSecD, tDeal int                  //总 数
+	var tNc, tFirD, tFuD, tSecD, tDeal, tFir int            //总 数
 	var dayNc, dayFirD, dayFuD, daySecD, dayDeal, dayIv int //今日 数
 
 	for _, b := range list {
@@ -2084,6 +2099,7 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 		if b.TradeType == int(enums.TradeDeal) {
 			tDeal++
 			if b.DiagnosisType == int(enums.DiagnosisFirst) {
+				tFir++
 				tFirD++
 			} else if b.DiagnosisType == int(enums.DiagnosisFurther) {
 				tFuD++
@@ -2186,9 +2202,9 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 			for _, m := range members {
 				if m.UserId == ed.UserId {
 					if ed.Rest == 2 {
-						stDay.Append(fmt.Sprintf("%s：留存%d初诊%d复诊%d成交%d休息\n", m.Name, ed.NewCustomerCnt, ed.FirstDiagnosis, ed.FurtherDiagnosis, ed.Deal))
+						stDay.Append(fmt.Sprintf("%s：留存%d初诊%d复诊%d复查%d成交%d休息\n", m.Name, ed.NewCustomerCnt, ed.FirstDiagnosis, ed.FurtherDiagnosis, ed.Recheck, ed.Deal))
 					} else {
-						stDay.Append(fmt.Sprintf("%s：留存%d初诊%d复诊%d成交%d\n", m.Name, ed.NewCustomerCnt, ed.FirstDiagnosis, ed.FurtherDiagnosis, ed.Deal))
+						stDay.Append(fmt.Sprintf("%s：留存%d初诊%d复诊%d复查%d成交%d\n", m.Name, ed.NewCustomerCnt, ed.FirstDiagnosis, ed.FurtherDiagnosis, ed.Recheck, ed.Deal))
 					}
 					break
 				}
@@ -2218,7 +2234,7 @@ func (s *BillService) StMonth(teamId, userId int, deptPath string, day time.Time
 	if tFirD == 0 {
 		texts.Append("本月患者成交率：0%\n")
 	} else {
-		f := fmt.Sprintf("%d%%", tDeal*100/tFirD)
+		f := fmt.Sprintf("%d%%", tFir*100/tFirD)
 		texts.Append(fmt.Sprintf("本月患者成交率：%s\n", f))
 	}
 
