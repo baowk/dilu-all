@@ -5,7 +5,7 @@ const (
 )
 
 const (
-	ApiRoot = "/api/v1"
+	ApiRoot = "/api/"
 	DB_CRM  = "dental"
 )
 
