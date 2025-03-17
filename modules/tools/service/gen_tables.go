@@ -231,12 +231,12 @@ func (s *GenTablesService) GenTableInit(dbname string, tableName string, force b
 			column.IsEdit = "1"
 			column.IsList = "1"
 		} else if strings.Contains(column.ColumnType, "bigint unsigned") {
-			column.GoType = "uint64"
+			column.GoType = "uint"
 			column.HtmlType = "input"
 			column.IsEdit = "1"
 			column.IsList = "1"
 		} else if strings.Contains(column.ColumnType, "bigint") {
-			column.GoType = "int64"
+			column.GoType = "int"
 			column.HtmlType = "input"
 			column.IsEdit = "1"
 			column.IsList = "1"
