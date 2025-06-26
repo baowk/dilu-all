@@ -5,7 +5,7 @@ go 1.23.0
 toolchain go1.24.4
 
 require (
-	github.com/baowk/dilu-core v1.0.18
+	github.com/baowk/dilu-core v1.0.19
 	github.com/baowk/dilu-plugin v1.0.0
 	github.com/baowk/dilu-rd v1.0.0
 	github.com/fsnotify/fsnotify v1.7.0
@@ -29,6 +29,8 @@ require (
 	google.golang.org/grpc v1.59.0
 	gorm.io/gorm v1.30.0
 )
+
+//replace github.com/baowk/dilu-core => ../dilu-core
 
 require (
 	cloud.google.com/go v0.110.10 // indirect
