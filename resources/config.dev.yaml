@@ -20,6 +20,11 @@ logger:             # 日志配置
   #max-age: 7                         # 日志留存时间 默认7天
   show-line: true # 显示行
   log-in-console: true # 输出控制台
+  debug-file: dilu.log
+  info-file: dilu.log
+  warn-file: dilu.log
+  error-file: dilu.log
+  sql-file: dilu.log
 access-limit: #访问频率限制
   enable: true #是否访问限制
   duration: 5s #时长
