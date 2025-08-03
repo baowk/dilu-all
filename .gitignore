@@ -16,3 +16,4 @@ vendor
 go.sum
 resources/config.local.yaml
 resources/config.help.yaml
+.devcontainer
