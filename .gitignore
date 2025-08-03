@@ -1,5 +1,6 @@
 .idea
 .vscode
+.devcontainer
 */.DS_Store
 static/uploadfile
 main.exe

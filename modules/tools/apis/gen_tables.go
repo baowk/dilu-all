@@ -519,7 +519,11 @@ func (e *GenTablesApi) GenCode(c *gin.Context) {
 	for i, v := range tab.Columns {
 		tab.Columns[i].TsType = TypeGo2Ts(v.GoType)
 	}
-	service.SerGenTables.NOMethodsGen(tab, req.Force)
+	err := service.SerGenTables.NOMethodsGen(tab, req.Force)
+	if err != nil {
+		e.Error(c, err)
+		return
+	}
 	e.Ok(c, "Code generated successfully！")
 }
 

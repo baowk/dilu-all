@@ -49,7 +49,7 @@ defineExpose({ getRef });
     {{- else -}}
     <el-form-item label="{{.ColumnComment}}" prop="{{.JsonField}}">
       <el-input
-        v-model{{- if eq .GoType "int" }}.number{{- end }}="newFormInline.{{.JsonField}}"
+        v-model{{- if eq .TsType "number" }}.number{{- end }}="newFormInline.{{.JsonField}}"
         clearable
         placeholder="请输入{{.ColumnComment}}"
       />
