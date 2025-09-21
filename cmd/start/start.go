@@ -4,6 +4,7 @@ import (
 	"dilu/common/codes"
 	"dilu/common/config"
 	"dilu/common/middleware"
+	"dilu/common/utils"
 	"fmt"
 	"time"
 
@@ -158,6 +159,7 @@ func mergeCfg(local, remote *coreCfg.AppCfg) {
 		core.Cfg.Server.Name = local.Server.Name
 		core.Cfg.Server.Port = local.Server.Port
 		core.Cfg.Server.Host = local.Server.Host
+		core.Cfg.Server.Node = local.Server.Node
 	} else {
 		core.Cfg = *local
 	}
@@ -169,6 +171,7 @@ func startedInit() {
 		grpcInit()
 	}
 	rdInit()
+	utils.Setup(core.Cfg.Server.Node)
 	core.Log.Debug("服务启动，初始化执行完成")
 }
 

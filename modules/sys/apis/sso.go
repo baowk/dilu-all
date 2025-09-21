@@ -226,7 +226,7 @@ func (e *SSO) Login(c *gin.Context) {
 		}
 	}
 	if logOk, err := service.SerSysUser.LoginCode(&req, ip); err != nil {
-		core.Log.Error("sso", err)
+		core.Log.Error("sso", "err", err)
 		e.Err(c, err)
 		return
 	} else {

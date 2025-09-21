@@ -5,9 +5,10 @@ go 1.23.0
 toolchain go1.24.4
 
 require (
-	github.com/baowk/dilu-core v1.0.21
+	github.com/baowk/dilu-core v1.0.23
 	github.com/baowk/dilu-plugin v1.0.0
 	github.com/baowk/dilu-rd v1.0.0
+	github.com/bwmarrin/snowflake v0.3.0
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gin-gonic/gin v1.10.1
 	github.com/golang-jwt/jwt/v5 v5.2.0
@@ -17,7 +18,7 @@ require (
 	github.com/mozillazg/go-pinyin v0.20.0
 	github.com/pkg/errors v0.9.1
 	github.com/shirou/gopsutil/v3 v3.23.12
-	github.com/shopspring/decimal v1.3.1
+	github.com/shopspring/decimal v1.4.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.2
 	github.com/swaggo/files v1.0.1
