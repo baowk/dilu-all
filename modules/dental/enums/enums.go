@@ -4,7 +4,7 @@ type DentalBrand struct {
 	Name   string   `json:"name"`   //名称
 	Alias  []string `json:"alias"`  //别名
 	Origin string   `json:"origin"` //产地
-	Id     int      `json:"id"`     //编号id
+	Id     uint8    `json:"id"`     //编号id
 }
 
 var DentalBrands = []DentalBrand{
