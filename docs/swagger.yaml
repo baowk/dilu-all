@@ -4932,7 +4932,32 @@ paths:
       summary: 用户登录
       tags:
       - sys-sso
-  /api/v1/sys/login-log/create:
+  /api/v1/sys/loginDing:
+    post:
+      consumes:
+      - application/json
+      description: 钉钉登录
+      parameters:
+      - description: data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.LoginDingReq'
+      responses:
+        "200":
+          description: '{"code": 200, "data": [...]}'
+          schema:
+            allOf:
+            - $ref: '#/definitions/base.Resp'
+            - properties:
+                data:
+                  $ref: '#/definitions/dto.LoginOK'
+              type: object
+      summary: 钉钉
+      tags:
+      - sys-sso ding
+  /api/v1/sys/logslogin/create:
     post:
       consumes:
       - application/json
@@ -4962,7 +4987,7 @@ paths:
       summary: 创建LoginLog
       tags:
       - sys-LoginLog
-  /api/v1/sys/login-log/del:
+  /api/v1/sys/logslogin/del:
     post:
       consumes:
       - application/json
@@ -4992,7 +5017,7 @@ paths:
       summary: 删除LoginLog
       tags:
       - sys-LoginLog
-  /api/v1/sys/login-log/get:
+  /api/v1/sys/logslogin/get:
     post:
       consumes:
       - application/json
@@ -5022,7 +5047,7 @@ paths:
       summary: 获取LoginLog
       tags:
       - sys-LoginLog
-  /api/v1/sys/login-log/page:
+  /api/v1/sys/logslogin/page:
     post:
       consumes:
       - application/json
@@ -5059,7 +5084,7 @@ paths:
       summary: 获取LoginLog列表
       tags:
       - sys-LoginLog
-  /api/v1/sys/login-log/update:
+  /api/v1/sys/logslogin/update:
     post:
       consumes:
       - application/json
@@ -5089,31 +5114,6 @@ paths:
       summary: 更新LoginLog
       tags:
       - sys-LoginLog
-  /api/v1/sys/loginDing:
-    post:
-      consumes:
-      - application/json
-      description: 钉钉登录
-      parameters:
-      - description: data
-        in: body
-        name: data
-        required: true
-        schema:
-          $ref: '#/definitions/dto.LoginDingReq'
-      responses:
-        "200":
-          description: '{"code": 200, "data": [...]}'
-          schema:
-            allOf:
-            - $ref: '#/definitions/base.Resp'
-            - properties:
-                data:
-                  $ref: '#/definitions/dto.LoginOK'
-              type: object
-      summary: 钉钉
-      tags:
-      - sys-sso ding
   /api/v1/sys/mp/callback:
     get:
       consumes:

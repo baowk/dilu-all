@@ -3206,7 +3206,50 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/sys/login-log/create": {
+        "/api/v1/sys/loginDing": {
+            "post": {
+                "description": "钉钉登录",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sys-sso ding"
+                ],
+                "summary": "钉钉",
+                "parameters": [
+                    {
+                        "description": "data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.LoginDingReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{\"code\": 200, \"data\": [...]}",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/base.Resp"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/definitions/dto.LoginOK"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/sys/logslogin/create": {
             "post": {
                 "security": [
                     {
@@ -3259,7 +3302,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/sys/login-log/del": {
+        "/api/v1/sys/logslogin/del": {
             "post": {
                 "security": [
                     {
@@ -3312,7 +3355,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/sys/login-log/get": {
+        "/api/v1/sys/logslogin/get": {
             "post": {
                 "security": [
                     {
@@ -3365,7 +3408,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/sys/login-log/page": {
+        "/api/v1/sys/logslogin/page": {
             "post": {
                 "security": [
                     {
@@ -3433,7 +3476,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/sys/login-log/update": {
+        "/api/v1/sys/logslogin/update": {
             "post": {
                 "security": [
                     {
@@ -3477,49 +3520,6 @@ const docTemplate = `{
                                     "properties": {
                                         "data": {
                                             "$ref": "#/definitions/models.LoginLog"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/sys/loginDing": {
-            "post": {
-                "description": "钉钉登录",
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "sys-sso ding"
-                ],
-                "summary": "钉钉",
-                "parameters": [
-                    {
-                        "description": "data",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.LoginDingReq"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{\"code\": 200, \"data\": [...]}",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/base.Resp"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/dto.LoginOK"
                                         }
                                     }
                                 }

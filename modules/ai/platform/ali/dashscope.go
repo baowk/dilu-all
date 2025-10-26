@@ -1,11 +1,11 @@
 package ali
 
 import (
+	"dilu/common/utils/https"
 	"dilu/modules/ai/service/dto"
 	"encoding/json"
 	"fmt"
 
-	"github.com/baowk/dilu-core/common/utils/https"
 	"github.com/baowk/dilu-core/core"
 )
 

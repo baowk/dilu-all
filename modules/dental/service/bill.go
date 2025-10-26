@@ -1510,21 +1510,21 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 
 		f.SetCellValue("Sheet1", fmt.Sprintf("A%d", i+3), i+1)
 		f.SetCellValue("Sheet1", fmt.Sprintf("B%d", i+3), v.Name)
-		f.SetCellInt("Sheet1", fmt.Sprintf("C%d", i+3), v.TargetNew)
-		f.SetCellInt("Sheet1", fmt.Sprintf("D%d", i+3), v.NewCustomerCnt)
+		f.SetCellInt("Sheet1", fmt.Sprintf("C%d", i+3), int64(v.TargetNew))
+		f.SetCellInt("Sheet1", fmt.Sprintf("D%d", i+3), int64(v.NewCustomerCnt))
 		if v.TargetNew == 0 {
 			f.SetCellValue("Sheet1", fmt.Sprintf("E%d", i+3), "0%")
 		} else {
 			f.SetCellValue("Sheet1", fmt.Sprintf("E%d", i+3), fmt.Sprintf("%.f%%", float64(v.NewCustomerCnt)*100.0/float64(v.TargetNew)))
 		}
-		f.SetCellInt("Sheet1", fmt.Sprintf("F%d", i+3), v.TargetFirst)
-		f.SetCellInt("Sheet1", fmt.Sprintf("G%d", i+3), v.FirstDiagnosis)
+		f.SetCellInt("Sheet1", fmt.Sprintf("F%d", i+3), int64(v.TargetFirst))
+		f.SetCellInt("Sheet1", fmt.Sprintf("G%d", i+3), int64(v.FirstDiagnosis))
 		if v.TargetFirst == 0 {
 			f.SetCellValue("Sheet1", fmt.Sprintf("H%d", i+3), "0%")
 		} else {
 			f.SetCellValue("Sheet1", fmt.Sprintf("H%d", i+3), fmt.Sprintf("%.f%%", float64(v.FirstDiagnosis)*100.0/float64(v.TargetFirst)))
 		}
-		f.SetCellInt("Sheet1", fmt.Sprintf("I%d", i+3), v.DealCnt)
+		f.SetCellInt("Sheet1", fmt.Sprintf("I%d", i+3), int64(v.DealCnt))
 		if v.FirstDiagnosis == 0 {
 			f.SetCellValue("Sheet1", fmt.Sprintf("J%d", i+3), "0%")
 		} else {
@@ -1546,8 +1546,8 @@ func (s *BillService) StExcel(month int, name string, list []dto.BillUserStDto) 
 		} else {
 			f.SetCellValue("Sheet1", fmt.Sprintf("P%d", i+3), fmt.Sprintf("%s%%", v.Total.Mul(decimal.New(100, 0)).Div(v.Target).StringFixed(0)))
 		}
-		f.SetCellInt("Sheet1", fmt.Sprintf("Q%d", i+3), v.FurtherDiagnosis)
-		f.SetCellInt("Sheet1", fmt.Sprintf("R%d", i+3), v.SecondDiagnosis)
+		f.SetCellInt("Sheet1", fmt.Sprintf("Q%d", i+3), int64(v.FurtherDiagnosis))
+		f.SetCellInt("Sheet1", fmt.Sprintf("R%d", i+3), int64(v.SecondDiagnosis))
 		f.SetCellValue("Sheet1", fmt.Sprintf("S%d", i+3), "")
 
 	}
@@ -1836,21 +1836,21 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 
 	f.SetSheetRow(sheet, "A2", &[]string{"项目", "初诊人次", "初诊成交", "初诊成交率", "复诊成交人次", "新诊（二开）成交人次"})
 	f.SetSheetCol(sheet, "A3", &[]string{"合计", "场地", "转介绍", "场地占比", "转介绍占比"})
-	f.SetCellInt(sheet, "B3", firLocalCnt+firRefCnt)
-	f.SetCellInt(sheet, "B4", firLocalCnt)
-	f.SetCellInt(sheet, "B5", firRefCnt)
+	f.SetCellInt(sheet, "B3", int64(firLocalCnt+firRefCnt))
+	f.SetCellInt(sheet, "B4", int64(firLocalCnt))
+	f.SetCellInt(sheet, "B5", int64(firRefCnt))
 
-	f.SetCellInt(sheet, "C3", firLocalDealCnt+firRefDealCnt)
-	f.SetCellInt(sheet, "C4", firLocalDealCnt)
-	f.SetCellInt(sheet, "C5", firRefDealCnt)
+	f.SetCellInt(sheet, "C3", int64(firLocalDealCnt+firRefDealCnt))
+	f.SetCellInt(sheet, "C4", int64(firLocalDealCnt))
+	f.SetCellInt(sheet, "C5", int64(firRefDealCnt))
 
-	f.SetCellInt(sheet, "E3", furtherLocalDealCnt+furtherRefDealCnt)
-	f.SetCellInt(sheet, "E4", furtherLocalDealCnt)
-	f.SetCellInt(sheet, "E5", furtherRefDealCnt)
+	f.SetCellInt(sheet, "E3", int64(furtherLocalDealCnt+furtherRefDealCnt))
+	f.SetCellInt(sheet, "E4", int64(furtherLocalDealCnt))
+	f.SetCellInt(sheet, "E5", int64(furtherRefDealCnt))
 
-	f.SetCellInt(sheet, "F3", secLocalDealCnt+secRefDealCnt)
-	f.SetCellInt(sheet, "F4", secLocalDealCnt)
-	f.SetCellInt(sheet, "F5", secRefDealCnt)
+	f.SetCellInt(sheet, "F3", int64(secLocalDealCnt+secRefDealCnt))
+	f.SetCellInt(sheet, "F4", int64(secLocalDealCnt))
+	f.SetCellInt(sheet, "F5", int64(secRefDealCnt))
 
 	f.SetCellFormula(sheet, "D3", "=C3/B3")
 	f.SetCellFormula(sheet, "D4", "=C4/B4")
@@ -1892,29 +1892,29 @@ func (s *BillService) StMonthRateExcel(curTime time.Time, teamId, userId int, de
 	f.SetSheetRow(sheet, "A12", &[]string{"项目", "初诊成交额", "初诊实收金额", "初诊实收率", "复诊成交额", "复诊实收金额", "新诊成交额", "新诊实收金额", "收回往期欠款", "本月实收合计", "初诊实收占比", "复诊实收占比", "新诊实收占比"})
 	f.SetSheetCol(sheet, "A13", &[]string{"合计", "场地", "转介绍", "场地占比", "转介绍占比"})
 
-	f.SetCellInt(sheet, "B13", int(firLocal.Add(firRef).IntPart()))
-	f.SetCellInt(sheet, "B14", int(firLocal.IntPart()))
-	f.SetCellInt(sheet, "B15", int(firRef.IntPart()))
+	f.SetCellInt(sheet, "B13", firLocal.Add(firRef).IntPart())
+	f.SetCellInt(sheet, "B14", firLocal.IntPart())
+	f.SetCellInt(sheet, "B15", firRef.IntPart())
 
-	f.SetCellInt(sheet, "C13", int(firlocalReal.Add(firRefReal).IntPart()))
-	f.SetCellInt(sheet, "C14", int(firlocalReal.IntPart()))
-	f.SetCellInt(sheet, "C15", int(firRefReal.IntPart()))
+	f.SetCellInt(sheet, "C13", firlocalReal.Add(firRefReal).IntPart())
+	f.SetCellInt(sheet, "C14", firlocalReal.IntPart())
+	f.SetCellInt(sheet, "C15", firRefReal.IntPart())
 
-	f.SetCellInt(sheet, "E13", int(furtherLocal.Add(furtherRef).IntPart()))
-	f.SetCellInt(sheet, "E14", int(furtherLocal.IntPart()))
-	f.SetCellInt(sheet, "E15", int(furtherRef.IntPart()))
-	f.SetCellInt(sheet, "F13", int(furtherLocalReal.Add(furtherRefReal).IntPart()))
-	f.SetCellInt(sheet, "F14", int(furtherLocalReal.IntPart()))
-	f.SetCellInt(sheet, "F15", int(furtherRefReal.IntPart()))
+	f.SetCellInt(sheet, "E13", furtherLocal.Add(furtherRef).IntPart())
+	f.SetCellInt(sheet, "E14", furtherLocal.IntPart())
+	f.SetCellInt(sheet, "E15", furtherRef.IntPart())
+	f.SetCellInt(sheet, "F13", furtherLocalReal.Add(furtherRefReal).IntPart())
+	f.SetCellInt(sheet, "F14", furtherLocalReal.IntPart())
+	f.SetCellInt(sheet, "F15", furtherRefReal.IntPart())
 
-	f.SetCellInt(sheet, "G13", int(secLocal.Add(secRef).IntPart()))
-	f.SetCellInt(sheet, "G14", int(secLocal.IntPart()))
-	f.SetCellInt(sheet, "G15", int(secRef.IntPart()))
-	f.SetCellInt(sheet, "H13", int(secLocalReal.Add(secRefReal).IntPart()))
-	f.SetCellInt(sheet, "H14", int(secLocalReal.IntPart()))
-	f.SetCellInt(sheet, "H15", int(secRefReal.IntPart()))
+	f.SetCellInt(sheet, "G13", secLocal.Add(secRef).IntPart())
+	f.SetCellInt(sheet, "G14", secLocal.IntPart())
+	f.SetCellInt(sheet, "G15", secRef.IntPart())
+	f.SetCellInt(sheet, "H13", secLocalReal.Add(secRefReal).IntPart())
+	f.SetCellInt(sheet, "H14", secLocalReal.IntPart())
+	f.SetCellInt(sheet, "H15", secRefReal.IntPart())
 
-	f.SetCellInt(sheet, "I13", int(backReal.IntPart()))
+	f.SetCellInt(sheet, "I13", backReal.IntPart())
 
 	f.SetCellFormula(sheet, "J13", "=SUM(C13,F13,H13,I13)")
 

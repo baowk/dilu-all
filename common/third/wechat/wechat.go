@@ -2,6 +2,7 @@ package wechat
 
 import (
 	"crypto/sha1"
+	"dilu/common/utils/https"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -9,8 +10,6 @@ import (
 	"sort"
 	"strings"
 	"time"
-
-	"github.com/baowk/dilu-core/common/utils/https"
 )
 
 const (
