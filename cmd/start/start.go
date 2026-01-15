@@ -6,9 +6,11 @@ import (
 	"dilu/common/middleware"
 	"dilu/common/utils"
 	"fmt"
+	"os"
 	"time"
 
 	coreCfg "github.com/baowk/dilu-core/config"
+	"github.com/hashicorp/consul/api"
 
 	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/i18n"
@@ -56,6 +58,9 @@ func run() {
 	}
 
 	if cfg.Server.RemoteEnable {
+		if cfg.Remote.Provider == "consul" && cfg.Remote.Token != "" {
+			os.Setenv(api.HTTPTokenEnvName, cfg.Remote.Token)
+		}
 		rviper := viper.New()
 		if cfg.Remote.SecretKeyring == "" {
 			err = rviper.AddRemoteProvider(cfg.Remote.Provider, cfg.Remote.Endpoint, cfg.Remote.Path)
