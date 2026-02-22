@@ -1,6 +1,7 @@
 package apis
 
 import (
+	"dilu/common/config"
 	cons "dilu/common/consts"
 	"dilu/modules/tools/models"
 	"dilu/modules/tools/models/tools"
@@ -42,7 +43,7 @@ func (e *GenTablesApi) GetDBTableList(c *gin.Context) {
 		return
 	}
 
-	if core.Cfg.DBCfg.Driver == "sqlite3" || core.Cfg.DBCfg.Driver == "postgres" {
+	if config.Get().DBCfg.Driver == "sqlite3" || config.Get().DBCfg.Driver == "postgres" {
 		err = errors.New("对不起，sqlite3 或 postgres 不支持代码生成！")
 		e.Error(c, err)
 		return
@@ -94,7 +95,7 @@ func (e *GenTablesApi) QueryPage(c *gin.Context) {
 // @Success 200 {object} base.Resp{data=models.GenTables} "{"code": 200, "data": [...]}"
 // @Router /api/v1/tools/gen/del [post]
 func (e *GenTablesApi) Del(c *gin.Context) {
-	if !core.Cfg.Gen.Enable {
+	if !config.Get().Gen.Enable {
 		e.Error(c, errors.New("当前生成表已关闭"))
 		return
 	}
@@ -133,7 +134,7 @@ func (e *GenTablesApi) GetDBS(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
 // @Router /api/v1/tools/gen/add [post]
 func (e *GenTablesApi) Insert(c *gin.Context) {
-	if !core.Cfg.Gen.Enable {
+	if !config.Get().Gen.Enable {
 		e.Error(c, errors.New("添加表结构已关闭"))
 		return
 	}
@@ -146,13 +147,13 @@ func (e *GenTablesApi) Insert(c *gin.Context) {
 		fmt.Println(tableName)
 		data, err := service.SerGenTables.GenTableInit(req.DbName, tableName, false)
 		if err != nil {
-			core.Log.Error("Gen", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			e.Error(c, err)
 			return
 		}
 		err = service.SerGenTables.Create(&data)
 		if err != nil {
-			core.Log.Error("Gen", err)
+			core.GetApp().GetLogger().Error("Gen", "app", err)
 			e.Error(c, err)
 			return
 		}
@@ -172,7 +173,7 @@ func (e *GenTablesApi) Insert(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
 // @Router /api/v1/tools/gen/update [POST]
 func (e *GenTablesApi) Update(c *gin.Context) {
-	if !core.Cfg.Gen.Enable {
+	if !config.Get().Gen.Enable {
 		e.Error(c, errors.New("修改表结构已关闭"))
 		return
 	}
@@ -184,7 +185,7 @@ func (e *GenTablesApi) Update(c *gin.Context) {
 	data.UpdateBy = 0
 	err := service.SerGenTables.Update(&data)
 	if err != nil {
-		core.Log.Error("Gen", err)
+		core.GetApp().GetLogger().Error("Gen", err)
 		e.Error(c, err)
 		return
 	}
@@ -202,7 +203,7 @@ func (e *GenTablesApi) Update(c *gin.Context) {
 // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
 // @Router /api/v1/tools/gen/menu [post]
 func (e *GenTablesApi) GenMenuAndApi(c *gin.Context) {
-	if !core.Cfg.Gen.Enable {
+	if !config.Get().Gen.Enable {
 		e.Error(c, errors.New("api和菜单已关闭"))
 		return
 	}
@@ -377,118 +378,6 @@ func (e *GenTablesApi) GenMenuAndApi(c *gin.Context) {
 	e.Ok(c, "数据生成成功！")
 }
 
-// // Preview
-// // @Summary 生成预览
-// // @Description 生成预览
-// // @Tags 工具 / 生成工具
-// // @Accept  application/json
-// // @Product application/json
-// // @Param tableId path int true "tableId"
-// // @Success 200 {string} string	"{"code": 200, "message": "添加成功"}"
-// // @Success 200 {string} string	"{"code": -1, "message": "添加失败"}"
-// // @Router /api/tools/gen/preview/{tableId} [get]
-// func (e *GenTablesApi) Preview(c *gin.Context) {
-// 	table := models.GenTables{}
-// 	id, err := strconv.Atoi(c.Param("tableId"))
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	table.TableId = id
-// 	t1, err := template.ParseFiles("resources/template/go/service/model.go.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	t2, err := template.ParseFiles("resources/template/go/service/apis.go.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	t3, err := template.ParseFiles("resources/template/vue/api/api.ts.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	t4, err := template.ParseFiles("resources/template/vue/views/index.vue.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	t5, err := template.ParseFiles("resources/template/go/service/router_no_check_role.go.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	t6, err := template.ParseFiles("resources/template/go/service/dto.go.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	t7, err := template.ParseFiles("resources/template/go/service/service.go.template")
-// 	if err != nil {
-// 		core.Log.Error("Gen", err)
-// 		e.Error(c, err)
-// 		return
-// 	}
-
-// 	db, _, _ := GetDb(consts.DB_DEF)
-
-// 	tab, _ := table.Get(db, false)
-// 	var b1 bytes.Buffer
-// 	err = t1.Execute(&b1, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-// 	var b2 bytes.Buffer
-// 	err = t2.Execute(&b2, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-// 	var b3 bytes.Buffer
-// 	err = t3.Execute(&b3, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-// 	var b4 bytes.Buffer
-// 	err = t4.Execute(&b4, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-// 	var b5 bytes.Buffer
-// 	err = t5.Execute(&b5, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-// 	var b6 bytes.Buffer
-// 	err = t6.Execute(&b6, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-// 	var b7 bytes.Buffer
-// 	err = t7.Execute(&b7, tab)
-// 	if err != nil {
-// 		core.Log.Error("gen err", err)
-// 	}
-
-// 	mp := make(map[string]interface{})
-// 	mp["model.go.template"] = b1.String()
-// 	mp["api.go.template"] = b2.String()
-// 	mp["router.go.template"] = b5.String()
-// 	mp["dto.go.template"] = b6.String()
-// 	mp["service.go.template"] = b7.String()
-// 	mp["js.go.template"] = b3.String()
-// 	mp["vue.go.template"] = b4.String()
-// 	e.Ok(c, mp)
-// }
-
 // GenCode
 // @Summary 生成代码
 // @Description 生成代码
@@ -499,7 +388,7 @@ func (e *GenTablesApi) GenMenuAndApi(c *gin.Context) {
 // @Success 200 {string} string	"{"code": 200, "message": "添加成功"}"
 // @Router /api/v1/tools/gen/code [post]
 func (e *GenTablesApi) GenCode(c *gin.Context) {
-	if !core.Cfg.Gen.Enable {
+	if !config.Get().Gen.Enable {
 		e.Error(c, errors.New("生成代码已关闭"))
 		return
 	}
@@ -540,27 +429,3 @@ func TypeGo2Ts(t string) string {
 		return t
 	}
 }
-
-// // Get 获取GenTables
-// // @Summary 获取GenTables
-// // @Tags sys-GenTables
-// // @Accept application/json
-// // @Product application/json
-// // @Param teamId header int false "团队id"
-// // @Param data body base.ReqId true "body"
-// // @Success 200 {object} base.Resp{data=models.GenTables} "{"code": 200, "data": [...]}"
-// // @Router /api/v1/sys/gen-tables/get [post]
-// // @Security Bearer
-// func (e *GenTablesApi) Get(c *gin.Context) {
-// 	var req base.ReqId
-// 	if err := c.ShouldBind(&req); err != nil {
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	var data models.GenTables
-// 	if err := service.SerGenTables.Get(req.Id, &data); err != nil {
-// 		e.Error(c, err)
-// 		return
-// 	}
-// 	e.Ok(c, data)
-// }

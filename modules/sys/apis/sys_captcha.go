@@ -3,9 +3,9 @@ package apis
 import (
 	"dilu/common/codes"
 	"dilu/modules/sys/service"
+	"log/slog"
 	"time"
 
-	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/baowk/dilu-core/core/errs"
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,7 @@ type CaptchaApi struct {
 func (e CaptchaApi) GenerateCaptchaHandler(c *gin.Context) {
 	id, b64s, _, err := service.DriverDigitFunc()
 	if err != nil {
-		core.Log.Error("生成验证码失败", err)
+		slog.Error("生成验证码失败", err)
 		e.Err(c, errs.Err(codes.CaptchaErr, e.GetReqId(c), err))
 		return
 	}

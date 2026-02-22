@@ -15,7 +15,7 @@ var (
 
 // InitRouter 路由初始化
 func InitRouter() {
-	r := core.GetGinEngine()
+	r := core.GetApp().GetGinEngine()
 	noCheckRoleRouter(r)
 }
 

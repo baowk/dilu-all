@@ -9,6 +9,7 @@ import (
 	"strings"
 	"text/template"
 
+	"dilu/common/config"
 	"dilu/common/utils/files"
 
 	"github.com/baowk/dilu-core/common/consts"
@@ -83,14 +84,14 @@ func (s *GenTablesService) Create(m *models.GenTables) error {
 
 func (s *GenTablesService) GetDbs() []dto.DbOption {
 	var dbs []dto.DbOption
-	if core.Cfg.DBCfg.DSN != "" {
+	if config.Get().DBCfg.DSN != "" {
 		db := dto.DbOption{
 			Lable: consts.DB_DEF,
 		}
-		db.Value = ParseDsn(core.Cfg.DBCfg.DSN)
+		db.Value = ParseDsn(config.Get().DBCfg.DSN)
 		dbs = append(dbs, db)
 	}
-	for key, dbc := range core.Cfg.DBCfg.DBS {
+	for key, dbc := range config.Get().DBCfg.DBS {
 		if !dbc.Disable {
 			db := dto.DbOption{
 				Lable: key,
@@ -317,8 +318,8 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 
 	basePath := "resources/template/"
 
-	if core.Cfg.Gen.FrontPath != "" {
-		frontPath = core.Cfg.Gen.FrontPath
+	if config.Get().Gen.FrontPath != "" {
+		frontPath = config.Get().Gen.FrontPath
 	}
 
 	_ = files.PathCreate(ROOT + tab.PackageName + "/apis/")
@@ -328,7 +329,7 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	_ = files.PathCreate(frontPath + "/api/" + tab.PackageName + "/")
 	err := files.PathCreate(frontPath + "/views/" + tab.PackageName + "/" + tab.MLTBName + "/utils")
 	if err != nil {
-		core.Log.Error("Gen", "err", err)
+		core.GetApp().GetLogger().Error("Gen", "err", err)
 		return err
 	}
 
@@ -340,13 +341,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(cmdApi) || force {
 		rt1, err := template.ParseFiles(basePath + "go/router/cmd_api.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 
 		}
 		var rb1 bytes.Buffer
 		if err = rt1.Execute(&rb1, m); err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		files.FileCreate(rb1, cmdApi)
@@ -356,12 +357,12 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(baseRouter) || force {
 		rt2, err := template.ParseFiles(basePath + "go/router/router.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 		}
 		var rb2 bytes.Buffer
 		err = rt2.Execute(&rb2, m)
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		files.FileCreate(rb2, baseRouter)
@@ -373,13 +374,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(modelgo) || force {
 		t1, err := template.ParseFiles(basePath + "go/service/model.go.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b1 bytes.Buffer
 		err = t1.Execute(&b1, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b1, modelgo)
@@ -389,13 +390,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(apigo) || force {
 		t2, err := template.ParseFiles(basePath + "go/service/apis.go.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b2 bytes.Buffer
 		err = t2.Execute(&b2, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b2, apigo)
@@ -406,13 +407,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 		routerFile := basePath + "go/service/router_no_check_role.go.template"
 		t3, err := template.ParseFiles(routerFile)
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b3 bytes.Buffer
 		err = t3.Execute(&b3, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b3, routergo)
@@ -422,13 +423,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(dto) || force {
 		t6, err := template.ParseFiles(basePath + "go/service/dto.go.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b6 bytes.Buffer
 		err = t6.Execute(&b6, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b6, dto)
@@ -438,13 +439,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(service) || force {
 		t7, err := template.ParseFiles(basePath + "go/service/service.go.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b7 bytes.Buffer
 		err = t7.Execute(&b7, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b7, service)
@@ -455,13 +456,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(js) || force {
 		t4, err := template.ParseFiles(basePath + "vue/api/api.ts.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b4 bytes.Buffer
 		err = t4.Execute(&b4, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b4, js)
@@ -471,14 +472,14 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	// if files.CheckExist(types) || force {
 	// 	t5, err := template.ParseFiles(basePath + "vue/api/types.ts.template")
 	// 	if err != nil {
-	// 		core.Log.Error("Gen","err", err)
+	// 		core.GetApp().GetLogger().Error("Gen","err", err)
 	// 		e.Error(c,"err", err)
 	// 		return
 	// 	}
 	// 	var b5 bytes.Buffer
 	// 	err = t5.Execute(&b5, tab)
 	// 	if err != nil {
-	// 		core.Log.Error("gen err","err", err)
+	// 		core.GetApp().GetLogger().Error("gen err","err", err)
 	// 	}
 	// 	files.FileCreate(b5, types)
 	// }
@@ -487,13 +488,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(vue) || force {
 		t5, err := template.ParseFiles(basePath + "vue/views/index.vue.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b5 bytes.Buffer
 		err = t5.Execute(&b5, tab)
 		if err != nil {
-			core.Log.Error("gen", "err", err)
+			core.GetApp().GetLogger().Error("gen", "err", err)
 			return err
 		}
 		files.FileCreate(b5, vue)
@@ -503,13 +504,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(form) || force {
 		t5, err := template.ParseFiles(basePath + "vue/views/form.vue.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b5 bytes.Buffer
 		err = t5.Execute(&b5, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b5, form)
@@ -519,13 +520,13 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	if files.CheckExist(hook) || force {
 		t5, err := template.ParseFiles(basePath + "vue/views/utils/hook.tsx.template")
 		if err != nil {
-			core.Log.Error("Gen", "err", err)
+			core.GetApp().GetLogger().Error("Gen", "err", err)
 			return err
 		}
 		var b5 bytes.Buffer
 		err = t5.Execute(&b5, tab)
 		if err != nil {
-			core.Log.Error("gen err", "err", err)
+			core.GetApp().GetLogger().Error("gen err", "err", err)
 			return err
 		}
 		files.FileCreate(b5, hook)
@@ -535,14 +536,14 @@ func (s *GenTablesService) NOMethodsGen(tab models.GenTables, force bool) error 
 	// if files.CheckExist(rule) || force {
 	// 	t5, err := template.ParseFiles(basePath + "vue/views/utils/rule.ts.template")
 	// 	if err != nil {
-	// 		core.Log.Error("Gen","err", err)
+	// 		core.GetApp().GetLogger().Error("Gen","err", err)
 	// 		e.Error(c,"err", err)
 	// 		return
 	// 	}
 	// 	var b5 bytes.Buffer
 	// 	err = t5.Execute(&b5, tab)
 	// 	if err != nil {
-	// 		core.Log.Error("gen err","err", err)
+	// 		core.GetApp().GetLogger().Error("gen err","err", err)
 	// 	}
 	// 	files.FileCreate(b5, rule)
 	// }
@@ -637,14 +638,14 @@ func ParsePgsqlDsn(dsn string) string {
 }
 
 func GetDb(dbname string) (db *gorm.DB, mdb string, sdb, driver string) {
-	mdsn := core.Cfg.DBCfg.DSN
+	mdsn := config.Get().DBCfg.DSN
 	mdb = ParseDsn(mdsn)
 	if dbname != consts.DB_DEF {
-		gdsn, ok := core.Cfg.DBCfg.DBS[dbname]
+		gdsn, ok := config.Get().DBCfg.DBS[dbname]
 		if !ok {
 			return
 		}
-		core.Log.Debug("driver", "test", gdsn.Driver)
+		core.GetApp().GetLogger().Debug("driver", "test", gdsn.Driver)
 		if gdsn.Driver == "pgsql" {
 			sdb = ParsePgsqlDsn(gdsn.DSN)
 		} else {
@@ -654,12 +655,12 @@ func GetDb(dbname string) (db *gorm.DB, mdb string, sdb, driver string) {
 		if gdsn.Driver != "" {
 			driver = gdsn.Driver
 		} else {
-			driver = core.Cfg.DBCfg.Driver
+			driver = config.Get().DBCfg.Driver
 		}
 	} else {
-		driver = core.Cfg.DBCfg.Driver
+		driver = config.Get().DBCfg.Driver
 		sdb = mdb
 	}
-	db = core.Db(dbname)
+	db = core.GetApp().Db(dbname)
 	return
 }

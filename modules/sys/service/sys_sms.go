@@ -1,6 +1,7 @@
 package service
 
 import (
+	"dilu/common/config"
 	"dilu/common/third/sms"
 	"dilu/modules/sys/models"
 	"time"
@@ -41,7 +42,7 @@ func (e *SysSms) Send(phone string, tempId string) error {
 
 // 验证
 func (e *SysSms) Verify(phone, code string) bool {
-	if core.Cfg.Server.Mode == "dev" && code == "666666" {
+	if config.Get().Server.Mode == "dev" && code == "666666" {
 		return true
 	}
 	var err error

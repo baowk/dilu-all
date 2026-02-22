@@ -19,59 +19,6 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/v1/ai/chat": {
-            "post": {
-                "security": [
-                    {
-                        "Bearer": []
-                    }
-                ],
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Ai"
-                ],
-                "summary": "ai接口",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "团队id",
-                        "name": "teamId",
-                        "in": "header"
-                    },
-                    {
-                        "description": "body",
-                        "name": "data",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.AiMsg"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "{\"code\": 200, \"data\": [...]}",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/base.Resp"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/dental/bill/create": {
             "post": {
                 "security": [
@@ -7391,23 +7338,6 @@ const docTemplate = `{
                 }
             }
         },
-        "dto.AiMsg": {
-            "type": "object",
-            "properties": {
-                "messages": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/dto.Message"
-                    }
-                },
-                "modelName": {
-                    "type": "string"
-                },
-                "platform": {
-                    "type": "string"
-                }
-            }
-        },
         "dto.BillDto": {
             "type": "object",
             "properties": {
@@ -8384,17 +8314,6 @@ const docTemplate = `{
                 },
                 "redirect": {
                     "description": "路由重定向 可选",
-                    "type": "string"
-                }
-            }
-        },
-        "dto.Message": {
-            "type": "object",
-            "properties": {
-                "content": {
-                    "type": "string"
-                },
-                "role": {
                     "type": "string"
                 }
             }

@@ -33,7 +33,7 @@ func (e *Init) DoInit(c *gin.Context) {
 	// service.ImportSql("resources/dbs/dental-db.sql", "dental")
 
 	result := "执行成功"
-	if err := core.DB().AutoMigrate(
+	if err := core.GetApp().Db("sys").AutoMigrate(
 		&models.SysEmail{},
 		&models.SysSms{},
 		&models.SysApi{},
@@ -56,7 +56,7 @@ func (e *Init) DoInit(c *gin.Context) {
 		result = "sys执行失败"
 	}
 
-	if err := core.Db("notice").AutoMigrate(
+	if err := core.GetApp().Db("notice").AutoMigrate(
 		&nm.PubNotice{},
 		&nm.UserNotice{},
 		&nm.Task{},

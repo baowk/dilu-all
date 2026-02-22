@@ -3,9 +3,8 @@ package router
 import (
 	"dilu/common/consts"
 
-	"github.com/gin-gonic/gin"
-
 	"github.com/baowk/dilu-core/core"
+	"github.com/gin-gonic/gin"
 )
 
 var (
@@ -15,7 +14,7 @@ var (
 
 // InitRouter 路由初始化
 func InitRouter() {
-	r := core.GetGinEngine()
+	r := core.GetApp().GetGinEngine()
 	noCheckRoleRouter(r)
 }
 

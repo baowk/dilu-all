@@ -58,13 +58,13 @@ func (s *CacheStore) GetExpiration() time.Duration {
 }
 
 func (s *CacheStore) Set(id string, value string) error {
-	return core.Cache.Set("captcha:"+id, value, s.GetExpiration())
+	return core.GetCache().Set("captcha:"+id, value, s.GetExpiration())
 }
 
 func (s *CacheStore) Get(id string, clear bool) (value string) {
-	str, err := core.Cache.Get("captcha:" + id)
+	str, err := core.GetApp().GetCache().Get("captcha:" + id)
 	if clear {
-		defer core.Cache.Del("captcha:" + id)
+		defer core.GetCache().Del("captcha:" + id)
 	}
 	if err != nil {
 		return ""

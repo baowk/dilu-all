@@ -1,6 +1,7 @@
 package service
 
 import (
+	"dilu/common/config"
 	"dilu/modules/sys/models"
 	"fmt"
 	"time"
@@ -46,7 +47,7 @@ func (e *SysEmail) Send(mail string) error {
 
 // 验证
 func (e *SysEmail) Verify(mail, code string) bool {
-	if core.Cfg.Server.Mode == "dev" && code == "666666" {
+	if config.Get().Server.Mode == "dev" && code == "666666" {
 		return true
 	}
 	var err error

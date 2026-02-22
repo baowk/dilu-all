@@ -13,13 +13,13 @@ import (
 	"fmt"
 	"html/template"
 	"io"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/gin-gonic/gin"
 )
@@ -88,7 +88,7 @@ func (e Ding) LoginByDing(c *gin.Context) {
 	if err != nil {
 		userId, err = LoginByQRcode(req.Code)
 		if err != nil {
-			core.Log.Error("ding login", err)
+			slog.Error("ding login", err)
 			e.Error(c, err)
 			return
 		}
@@ -105,7 +105,7 @@ func (e Ding) LoginByDing(c *gin.Context) {
 // 调用钉钉auth
 func SnsAuthorize(state string, code string) {
 	url := "https://oapi.dingtalk.com/connect/oauth2/sns_authorize?" +
-		"appid=" + config.Ext.Ding.AppKey +
+		"appid=" + config.Get().Ding.AppKey +
 		"&response_type=code" +
 		"&scope=snsapi_login" +
 		"&state=" + state +
@@ -125,8 +125,8 @@ func LoginByQRcode(code string) (userid string, err error) {
 	var resp *http.Response
 	//fmt.Println("AppKey,AppSecret", AppKey, AppSecret)
 	//服务端通过临时授权码获取授权用户的个人信息
-	appKey := config.Ext.Ding.AppKey
-	appSecret := config.Ext.Ding.AppSecret
+	appKey := config.Get().Ding.AppKey
+	appSecret := config.Get().Ding.AppSecret
 	timestamp := strconv.FormatInt(time.Now().UnixNano()/1000000, 10) // 毫秒时间戳
 	signature := EncodeSHA256(timestamp, appSecret)                   // 加密签名  加密算法见我另一个函数
 	url2 := fmt.Sprintf(
@@ -194,7 +194,7 @@ func GetAccesstoken() (accesstoken string, err error) {
 	var resp *http.Response
 	//var AppKey, AppSecret string
 	//获取access_token
-	url := fmt.Sprintf("https://oapi.dingtalk.com/gettoken?appkey=%s&appsecret=%s", config.Ext.Ding.AppKey, config.Ext.Ding.AppSecret)
+	url := fmt.Sprintf("https://oapi.dingtalk.com/gettoken?appkey=%s&appsecret=%s", config.Get().Ding.AppKey, config.Get().Ding.AppSecret)
 	resp, err = http.Get(url)
 	if err != nil {
 		return "", err
@@ -232,7 +232,7 @@ func EncodeSHA256(message, secret string) string {
 func DingTmpHtml(c *gin.Context) {
 	t1, err := template.ParseFiles("app/sso/apis/ding.html")
 	if err != nil {
-		core.Log.Error("template err", err)
+		slog.Error("template err", err)
 	}
 	t1.Execute(c.Writer, "")
 }

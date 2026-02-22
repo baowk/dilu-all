@@ -3,11 +3,13 @@ package service
 import (
 	"errors"
 	"fmt"
+	"log/slog"
 	"strconv"
 	"strings"
 	"time"
 
 	"dilu/common/codes"
+	"dilu/common/config"
 	"dilu/common/consts"
 	"dilu/common/utils"
 	"dilu/modules/sys/enums"
@@ -154,7 +156,7 @@ func (e *SysUser) UpdatePwd(id int, oldPassword, newPassword string) errs.IError
 	}
 	if db.RowsAffected == 0 {
 		err = errors.New("set password error")
-		core.Log.Warn("db update error")
+		slog.Warn("db update error")
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -217,7 +219,7 @@ func (e *SysUser) Register(loginType enums.LoginType, c *dto.RegisterReq, ip str
 	}
 	err := core.DB().Create(&model).Error
 	if err != nil {
-		core.Log.Error("UserService", "Create", err)
+		slog.Error("UserService", "Create", err)
 		return lok, codes.ErrSys(err)
 	}
 	return e.loginOK(&model, 0, loginType, ip, "", c.ClientVer, c.Os, c.OsVer)
@@ -233,12 +235,12 @@ func (e *SysUser) GetByInviteCode(inviteCode string) (*models.SysUser, errs.IErr
 }
 
 func (e *SysUser) loginOK(u *models.SysUser, need int, loginType enums.LoginType, ip, location, clientVer, os, osVer string) (dto.LoginOK, errs.IError) {
-	exp := time.Now().Add(time.Duration(core.Cfg.JWT.Expires) * time.Minute)
-	claims := utils.NewClaims(u.Id, exp, core.Cfg.JWT.Issuer, core.Cfg.JWT.Subject)
+	exp := time.Now().Add(time.Duration(config.Get().JWT.Expires) * time.Minute)
+	claims := utils.NewClaims(u.Id, exp, config.Get().JWT.Issuer, config.Get().JWT.Subject)
 	claims.Phone = u.Phone
 	claims.Nickname = u.Nickname
 	claims.RoleId = u.PlatformRoleId
-	token, err := utils.Generate(claims, core.Cfg.JWT.SignKey)
+	token, err := utils.Generate(claims, config.Get().JWT.SignKey)
 	lok := dto.LoginOK{}
 	if err != nil {
 		return lok, errs.Err(codes.FAILURE, "", err)
@@ -260,7 +262,7 @@ func (e *SysUser) loginOK(u *models.SysUser, need int, loginType enums.LoginType
 		lok.Username = u.Email
 	}
 	claims.ExpiresAt(exp.Add(time.Hour * 24 * 7))
-	refT, _ := utils.Generate(claims, core.Cfg.JWT.SignKey)
+	refT, _ := utils.Generate(claims, config.Get().JWT.SignKey)
 	lok.RefreshToken = refT
 
 	// 记录登录日志
@@ -365,7 +367,7 @@ func (e *SysUser) LoginCode(c *dto.LoginReq, ip string) (dto.LoginOK, errs.IErro
 		}
 		err := core.DB().Create(&model).Error
 		if err != nil {
-			core.Log.Error("sysuser", "create", err)
+			slog.Error("sysuser", "create", err)
 			return lok, codes.ErrSys(err)
 		}
 		if c.UUID != "" {
@@ -451,7 +453,7 @@ func (e *SysUser) ChangePwd(mobile, email, password string) errs.IError {
 	updates.UpdatedAt = time.Now()
 	db := core.DB().Model(&user).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("sysuser", "update", err)
+		slog.Error("sysuser", "update", err)
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -543,11 +545,11 @@ func (e *SysUser) GetByUsername(username string, model *models.SysUser) errs.IEr
 	err := core.DB().Model(&data).Where("username = ?", username).First(model).Error
 	if err != nil && errors.Is(err, gorm.ErrRecordNotFound) {
 		berr := errs.Err(codes.ErrUserExist, "", err)
-		core.Log.Error("sysuser", "get", berr)
+		slog.Error("sysuser", "get", berr)
 		return berr
 	}
 	if err != nil {
-		core.Log.Error("sysuser", "err", err)
+		slog.Error("sysuser", "err", err)
 		return codes.ErrSys(err)
 	}
 	// if err := core.Cache.Set("username:"+username, model, time.Hour); err == nil {
@@ -591,7 +593,7 @@ func (e *SysUser) ChangePwdByOld(id int, oldPwd, newPwd, inviteCode string) errs
 	}
 	db := core.DB().Model(user).Updates(updates)
 	if err = db.Error; err != nil {
-		core.Log.Error("UserService", "update", err)
+		slog.Error("UserService", "update", err)
 		return codes.ErrSys(err)
 	}
 	return nil
@@ -632,7 +634,7 @@ func (e *SysUser) Bind(id int, c *dto.BindReq) error {
 
 	db := core.DB().Model(user).Updates(updates)
 	if err := db.Error; err != nil {
-		core.Log.Error("UserService", "update", err)
+		slog.Error("UserService", "update", err)
 		return err
 	}
 	return nil
@@ -650,7 +652,7 @@ func (e *SysUser) ChangeUserinfo(userId int, user models.SysUser) error {
 	user.UpdateBy = userId
 	err := e.UpdateById(user)
 	if err != nil {
-		core.Log.Error("UserService", "update", err)
+		slog.Error("UserService", "update", err)
 		return err
 	}
 	return nil

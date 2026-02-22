@@ -29,7 +29,7 @@ func GetUserId(c *gin.Context) int {
 
 func EncodeTeamId(teamId int) (string, error) {
 	msg := fmt.Sprintf("%d-%d", teamId, time.Now().Unix())
-	en, err := cryptos.AesEncryptCBC([]byte(msg), []byte(config.Ext.AesKey))
+	en, err := cryptos.AesEncryptCBC([]byte(msg), []byte(config.Get().AesKey))
 	if err != nil {
 		return "", err
 	}
@@ -49,7 +49,7 @@ func GetTeamId(c *gin.Context) int {
 		if err != nil {
 			return 0
 		}
-		de, err := cryptos.AesDecryptCBC(data, []byte(config.Ext.AesKey))
+		de, err := cryptos.AesDecryptCBC(data, []byte(config.Get().AesKey))
 		if err != nil {
 			return 0
 		}

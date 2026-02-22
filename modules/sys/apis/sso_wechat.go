@@ -37,7 +37,7 @@ func (e *Wechat) MPCallback(c *gin.Context) {
 	nonce := c.Query("nonce")
 	echostr := c.Query("echostr")
 
-	if wechat.MPCheckSign(timestamp, nonce, signature, config.Ext.WechatMp.WxToken) {
+	if wechat.MPCheckSign(timestamp, nonce, signature, config.Get().WechatMp.WxToken) {
 		if echostr != "" {
 			c.String(http.StatusOK, echostr)
 		} else {
@@ -77,7 +77,7 @@ func (e *Wechat) MPCallback(c *gin.Context) {
 // @Success 200 {object} base.Resp{data=wechat.QrCodeResp} "{"code": 200, "data": [...]}"
 // @Router /api/v1/sys/mp/qrCode [post]
 func (e *Wechat) GetMpQrcode(c *gin.Context) {
-	accT, err := getAccessToken(config.Ext.WechatMp.AppId, config.Ext.WechatMp.AppSecret)
+	accT, err := getAccessToken(config.Get().WechatMp.AppId, config.Get().WechatMp.AppSecret)
 	if err != nil {
 		e.Error(c, err)
 		return

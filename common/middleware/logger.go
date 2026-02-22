@@ -3,6 +3,7 @@ package middleware
 import (
 	"bufio"
 	"bytes"
+	"dilu/common/config"
 	"io"
 	"log/slog"
 	"net/http"
@@ -63,14 +64,14 @@ func writeLog(startTime time.Time, body string, c *gin.Context) {
 	cost := time.Since(startTime)
 
 	if cost.Milliseconds() < 200 {
-		core.Log.Info("request", "ip", ips.GetIP(c), "method", c.Request.Method, "path", c.Request.RequestURI,
+		core.GetApp().GetLogger().Info("request", "ip", ips.GetIP(c), "method", c.Request.Method, "path", c.Request.RequestURI,
 			"cost", cost, "userAgent", c.Request.UserAgent(), "query", c.Request.URL.RawQuery,
-			"body", body, "source", core.Cfg.Server.Name, "reqId", utils.GetReqId(c))
+			"body", body, "source", config.Get().Server.Name, "reqId", utils.GetReqId(c))
 		//,"error", strings.TrimRight(c.Errors.ByType(gin.ErrorTypePrivate).String(, "\n")))
 	} else {
-		core.Log.Warn("request", "ip", ips.GetIP(c), "method", c.Request.Method, "path", c.Request.RequestURI,
+		core.GetApp().GetLogger().Warn("request", "ip", ips.GetIP(c), "method", c.Request.Method, "path", c.Request.RequestURI,
 			"cost", cost, "userAgent", c.Request.UserAgent(), "query", c.Request.URL.RawQuery,
-			"body", body, "source", core.Cfg.Server.Name, "reqId", utils.GetReqId(c))
+			"body", body, "source", config.Get().Server.Name, "reqId", utils.GetReqId(c))
 		//,"error", strings.TrimRight(c.Errors.ByType(gin.ErrorTypePrivate).String(, "\n")))
 	}
 }

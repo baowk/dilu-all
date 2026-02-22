@@ -1,17 +1,15 @@
 module dilu
 
-go 1.25
+go 1.26
 
 require (
-	github.com/baowk/dilu-core v1.0.27
+	github.com/baowk/dilu-core v1.1.0
 	github.com/baowk/dilu-plugin v1.0.0
 	github.com/baowk/dilu-rd v1.0.0
-	github.com/bwmarrin/snowflake v0.3.0
 	github.com/fsnotify/fsnotify v1.7.0
 	github.com/gin-gonic/gin v1.11.0
 	github.com/golang-jwt/jwt/v5 v5.2.0
 	github.com/google/uuid v1.6.0
-	github.com/hashicorp/consul/api v1.27.0
 	github.com/jinzhu/copier v0.4.0
 	github.com/mojocn/base64Captcha v1.3.6
 	github.com/mozillazg/go-pinyin v0.20.0
@@ -46,6 +44,7 @@ require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
 	github.com/armon/go-metrics v0.4.1 // indirect
 	github.com/bsm/redislock v0.9.4 // indirect
+	github.com/bwmarrin/snowflake v0.3.0 // indirect
 	github.com/bytedance/sonic v1.14.0 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
@@ -79,6 +78,7 @@ require (
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.0 // indirect
+	github.com/hashicorp/consul/api v1.27.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-hclog v1.5.0 // indirect

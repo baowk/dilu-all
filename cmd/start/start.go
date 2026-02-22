@@ -4,13 +4,9 @@ import (
 	"dilu/common/codes"
 	"dilu/common/config"
 	"dilu/common/middleware"
-	"dilu/common/utils"
 	"fmt"
-	"os"
+	"log/slog"
 	"time"
-
-	coreCfg "github.com/baowk/dilu-core/config"
-	"github.com/hashicorp/consul/api"
 
 	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/i18n"
@@ -23,7 +19,6 @@ import (
 
 var (
 	configYml string
-	syncApi   bool
 	StartCmd  = &cobra.Command{
 		Use:     "start",
 		Short:   "Get Application config info",
@@ -36,7 +31,6 @@ var (
 
 func init() {
 	StartCmd.PersistentFlags().StringVarP(&configYml, "config", "c", "resources/config.dev.yaml", "Start server with provided configuration file")
-	StartCmd.PersistentFlags().BoolVarP(&syncApi, "api", "a", false, "Start server with sync api")
 }
 
 func run() {
@@ -51,16 +45,13 @@ func run() {
 		panic(fmt.Sprintf("Fatal error config file: %v \n", err))
 	}
 
-	var cfg coreCfg.AppCfg
+	var cfg config.Config // 修改为使用Extend结构体
 
 	if err = v.Unmarshal(&cfg); err != nil {
 		fmt.Println(err)
 	}
 
 	if cfg.Server.RemoteEnable {
-		if cfg.Remote.Provider == "consul" && cfg.Remote.Token != "" {
-			os.Setenv(api.HTTPTokenEnvName, cfg.Remote.Token)
-		}
 		rviper := viper.New()
 		if cfg.Remote.SecretKeyring == "" {
 			err = rviper.AddRemoteProvider(cfg.Remote.Provider, cfg.Remote.Endpoint, cfg.Remote.Path)
@@ -75,15 +66,10 @@ func run() {
 		if err != nil {
 			panic(fmt.Sprintf("Fatal error remote config : %v \n", err))
 		}
-		var remoteCfg coreCfg.AppCfg
+		var remoteCfg config.Config // 修改为使用Extend结构体
 		rviper.Unmarshal(&remoteCfg)
 
-		mergeCfg(&cfg, &remoteCfg)
-
-		extend := rviper.Sub("extend")
-		if extend != nil {
-			extend.Unmarshal(config.Ext)
-		}
+		config.SaveConfig(&cfg, &remoteCfg)
 		go func() {
 			for {
 				time.Sleep(time.Second * 5) // delay after each request
@@ -94,97 +80,65 @@ func run() {
 				}
 				rviper.Unmarshal(&remoteCfg)
 
-				mergeCfg(&cfg, &remoteCfg)
-
-				extend := rviper.Sub("extend")
-				if extend != nil {
-					extend.Unmarshal(config.Ext)
-				}
+				config.SaveConfig(&cfg, &remoteCfg)
 			}
 		}()
 	} else {
-		mergeCfg(&cfg, nil)
-		v.Sub("extend").Unmarshal(config.Ext)
+		config.SaveConfig(&cfg, nil)
 		v.WatchConfig()
 		v.OnConfigChange(func(e fsnotify.Event) {
 			fmt.Println("config file changed:", e.String())
 			if err = v.Unmarshal(&cfg); err != nil {
 				fmt.Println(err)
 			}
-			mergeCfg(&cfg, nil)
-			extend := v.Sub("extend")
-			if extend != nil {
-				extend.Unmarshal(config.Ext)
-			}
+			config.SaveConfig(&cfg, nil)
 		})
 	}
 
-	core.Init()
+	if err := core.Init(&cfg); err != nil {
+		panic(err)
+	}
 
 	i18n.Register(&codes.Code{
-		EnableI18N: core.Cfg.Server.I18n,
-		Lang:       core.Cfg.Server.Lang,
+		EnableI18N: config.Get().Server.I18n,
+		Lang:       config.Get().Server.Lang,
 	})
 
 	//初始化gin
-	r := core.GetGinEngine()
-
-	middleware.InitMiddleware(r, &core.Cfg)
-
+	r := core.GetApp().GetGinEngine()
+	middleware.InitMiddleware(r, config.Get())
 	//初始化路由
 	for _, f := range AppRouters {
 		f()
 	}
-
 	go func() { //主服务启动后回调
-		<-core.Started
+		<-core.GetApp().WaitForStart()
 		startedInit()
-		if syncApi {
-			syncApiFn(r)
-		}
 	}()
 
 	go func() { //服务关闭释放资源
-		<-core.ToClose
+		<-core.GetApp().WaitForClose()
 		toClose()
 
 	}()
-	core.Run()
-
-	core.Log.Info("Server exited")
-}
-
-func mergeCfg(local, remote *coreCfg.AppCfg) {
-	if remote != nil {
-		core.Cfg = *local
-		core.Cfg = *remote
-		core.Cfg.Server.Mode = local.Server.Mode
-		core.Cfg.Server.RemoteEnable = local.Server.RemoteEnable
-		core.Cfg.Remote = local.Remote
-		core.Cfg.Server.Name = local.Server.Name
-		core.Cfg.Server.Port = local.Server.Port
-		core.Cfg.Server.Host = local.Server.Host
-		core.Cfg.Server.Node = local.Server.Node
-	} else {
-		core.Cfg = *local
-	}
+	core.GetApp().Run()
+	slog.Info("Server exited")
 }
 
 // 服务启动后要初始化的资源
 func startedInit() {
-	if core.Cfg.GrpcServer.Enable {
+	if config.Get().GrpcServer.Enable {
 		grpcInit()
 	}
 	rdInit()
-	utils.Setup(core.Cfg.Server.Node)
-	core.Log.Debug("服务启动，初始化执行完成")
+	slog.Debug("服务启动，初始化执行完成")
 }
 
 // 服务关闭要释放的资源
 func toClose() {
-	if core.Cfg.GrpcServer.Enable {
+	if config.Get().GrpcServer.Enable {
 		closeGrpc()
 	}
 	rdRelease()
-	core.Log.Debug("服务关闭需要释放的资源")
+	slog.Debug("服务关闭需要释放的资源")
 }

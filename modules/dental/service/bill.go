@@ -17,7 +17,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/baowk/dilu-core/core/errs"
 	"github.com/jinzhu/copier"
@@ -111,7 +110,7 @@ func (s *BillService) CreateBill(reqId string, bill dto.IdentifyBillDto, dbill *
 	if bill.CustomerId < 1 {
 		var customers []models.Customer
 		if err := SerCustomer.GetByUserIdAndName(bill.UserId, 0, bill.CustomerName, &customers); err != nil {
-			core.Log.Error("获取客户错误", "", err)
+			slog.Error("获取客户错误", "", err)
 		}
 		if len(customers) > 0 {
 			bill.CustomerId = customers[0].Id
@@ -220,7 +219,7 @@ func (s *BillService) UpdateBill(reqId string, bill dto.IdentifyBillDto, dbill *
 	if bill.CustomerId < 1 {
 		var customers []models.Customer
 		if err := SerCustomer.GetByUserIdAndName(bill.UserId, 0, bill.CustomerName, &customers); err != nil {
-			core.Log.Error("获取客户错误", "", err)
+			slog.Error("获取客户错误", "", err)
 		}
 		if len(customers) > 0 {
 			bill.CustomerId = customers[0].Id
@@ -569,7 +568,7 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 
 	var members []smodels.SysMember
 	if err := service.SerSysMember.GetMembers(req.TeamId, 0, "", bill.Name, 0, &members); err != nil {
-		core.Log.Error("获取咨询师错误", "err", err)
+		slog.Error("获取咨询师错误", "err", err)
 		return errs.Err(codes.FAILURE, "", err)
 	}
 	if len(members) > 0 {
@@ -578,7 +577,7 @@ func (s *BillService) Identify(req dto.BillTmplReq, bill *dto.IdentifyBillDto) e
 
 	var customers []models.Customer
 	if err := SerCustomer.GetByUserIdAndName(bill.UserId, 0, custName, &customers); err != nil {
-		core.Log.Error("获取客户错误", "err", err)
+		slog.Error("获取客户错误", "err", err)
 	}
 	for _, c := range customers {
 		op := dto.Option{

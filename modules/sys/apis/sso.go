@@ -8,11 +8,11 @@ import (
 	"dilu/modules/sys/service"
 	"dilu/modules/sys/service/dto"
 	"errors"
+	"log/slog"
 
 	"dilu/common/utils/regexps"
 
 	"github.com/baowk/dilu-core/common/utils/ips"
-	"github.com/baowk/dilu-core/core"
 	"github.com/baowk/dilu-core/core/base"
 	"github.com/baowk/dilu-core/core/errs"
 	"github.com/gin-gonic/gin"
@@ -128,7 +128,7 @@ func (e *SSO) Register(c *gin.Context) {
 
 	ip := ips.GetIP(c)
 	if logOk, err := service.SerSysUser.Register(loginType, &req, ip); err != nil {
-		core.Log.Error("sso", "register", err)
+		slog.Error("sso", "register", err)
 		e.Error(c, err)
 		return
 	} else {
@@ -210,7 +210,7 @@ func (e *SSO) Login(c *gin.Context) {
 		}
 	} else {
 		if logOk, err := service.SerSysUser.LoginPwd(&req, ip); err != nil {
-			core.Log.Error("sso", err)
+			slog.Error("sso", err)
 			if err != nil {
 				if errors.Is(err, gorm.ErrRecordNotFound) {
 					e.Code(c, codes.UserNotExist)
@@ -227,7 +227,7 @@ func (e *SSO) Login(c *gin.Context) {
 		}
 	}
 	if logOk, err := service.SerSysUser.LoginCode(&req, ip); err != nil {
-		core.Log.Error("sso", "err", err)
+		slog.Error("sso", "err", err)
 		e.Err(c, err)
 		return
 	} else {
@@ -280,7 +280,7 @@ func (e *SSO) ForgetPwd(c *gin.Context) {
 		return
 	}
 	if err := service.SerSysUser.ChangePwd(mobile, email, req.Password); err != nil {
-		core.Log.Error("sso", err)
+		slog.Error("sso", err)
 		e.Error(c, err)
 		return
 	} else {
@@ -307,13 +307,13 @@ func (e *SSO) GetUserInfo(c *gin.Context) {
 
 	err := service.SerSysUser.Get(req.Id, &object)
 	if err != nil {
-		core.Log.Error("sso", err)
+		slog.Error("sso", err)
 		e.Error(c, err)
 		return
 	}
 	resp := dto.UserinfoResp{}
 	if err := copier.Copy(&resp, object); err != nil {
-		core.Log.Error("sso", err)
+		slog.Error("sso", err)
 		e.Error(c, err)
 		return
 	}
@@ -504,7 +504,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 		Bind(&req).MakeService(&s.Service).
 // 		Errors
 // 	if err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, err.Error())
 // 		return
 // 	}
@@ -512,7 +512,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 	ip := common.GetClientIP(c)
 
 // 	if logOk, err := s.LoginWechat(&req, ip); err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, fmt.Sprintf("登录失败，\r\n失败信息 %s", err.Error()))
 // 		return
 // 	} else {
@@ -531,7 +531,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 	err := e.MakeContext(c).MakeOrm().
 // 		Errors
 // 	if err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, err.Error())
 // 		return
 // 	}
@@ -558,7 +558,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 		Bind(&req).MakeService(&s.Service).
 // 		Errors
 // 	if err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, err.Error())
 // 		return
 // 	}
@@ -566,7 +566,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 	ip := common.GetClientIP(c)
 
 // 	if logOk, err := s.LoginDing(&req, ip); err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, fmt.Sprintf("登录失败，\r\n失败信息 %s", err.Error()))
 // 		return
 // 	} else {
@@ -595,7 +595,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 		MakeService(&s.Service).
 // 		Errors
 // 	if err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, err.Error())
 // 		return
 // 	}
@@ -631,7 +631,7 @@ func (e *SSO) Logout(c *gin.Context) {
 // 		MakeService(&s.Service).
 // 		Errors
 // 	if err != nil {
-// 		core.Log.Error(err)
+// 		slog.Error(err)
 // 		e.Code(500, err, err.Error())
 // 		return
 // 	}
