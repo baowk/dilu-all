@@ -7,7 +7,7 @@
 <h3 align="center">Enterprise-Grade Full-Stack Web Development Solution</h3>
 
 <p align="center">
-  <a href="../README_zh.md">🇨🇳 中文版本</a>
+  <a href="./README.md">🇨🇳 中文版本</a> • 🇺🇸 English
 </p>
 
 <p align="center">
