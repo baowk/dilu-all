@@ -7,6 +7,10 @@
 <h3 align="center">Enterprise-Grade Full-Stack Web Development Solution</h3>
 
 <p align="center">
+  <a href="../README_zh.md">🇨🇳 中文版本</a>
+</p>
+
+<p align="center">
   <a href="https://github.com/baowk/dilu-all/stargazers">
     <img src="https://img.shields.io/github/stars/baowk/dilu-all" alt="GitHub stars">
   </a>
