@@ -103,7 +103,7 @@ func rdInit() {
 		var err error
 		rdclient, err = rd.NewRDClient(&rdcfg)
 		if err != nil {
-			core.GetApp().GetLogger().Error("注册中心连接失败", err)
+			core.GetApp().GetLogger().Error("注册中心连接失败", "err", err)
 		}
 	}
 }

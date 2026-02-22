@@ -31,7 +31,7 @@ type CaptchaApi struct {
 func (e CaptchaApi) GenerateCaptchaHandler(c *gin.Context) {
 	id, b64s, _, err := service.DriverDigitFunc()
 	if err != nil {
-		slog.Error("生成验证码失败", err)
+		slog.Error("生成验证码失败", "err", err)
 		e.Err(c, errs.Err(codes.CaptchaErr, e.GetReqId(c), err))
 		return
 	}

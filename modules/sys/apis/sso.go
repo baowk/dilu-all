@@ -210,17 +210,13 @@ func (e *SSO) Login(c *gin.Context) {
 		}
 	} else {
 		if logOk, err := service.SerSysUser.LoginPwd(&req, ip); err != nil {
-			slog.Error("sso", err)
-			if err != nil {
-				if errors.Is(err, gorm.ErrRecordNotFound) {
-					e.Code(c, codes.UserNotExist)
-					return
-				} else {
-					e.Err(c, err)
-					return
-				}
+			if errors.Is(err, gorm.ErrRecordNotFound) {
+				e.Code(c, codes.UserNotExist)
+				return
+			} else {
+				e.Err(c, err)
+				return
 			}
-			return
 		} else {
 			e.Ok(c, logOk)
 			return
@@ -280,7 +276,6 @@ func (e *SSO) ForgetPwd(c *gin.Context) {
 		return
 	}
 	if err := service.SerSysUser.ChangePwd(mobile, email, req.Password); err != nil {
-		slog.Error("sso", err)
 		e.Error(c, err)
 		return
 	} else {
@@ -307,13 +302,11 @@ func (e *SSO) GetUserInfo(c *gin.Context) {
 
 	err := service.SerSysUser.Get(req.Id, &object)
 	if err != nil {
-		slog.Error("sso", err)
 		e.Error(c, err)
 		return
 	}
 	resp := dto.UserinfoResp{}
 	if err := copier.Copy(&resp, object); err != nil {
-		slog.Error("sso", err)
 		e.Error(c, err)
 		return
 	}

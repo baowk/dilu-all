@@ -185,7 +185,7 @@ func (e *GenTablesApi) Update(c *gin.Context) {
 	data.UpdateBy = 0
 	err := service.SerGenTables.Update(&data)
 	if err != nil {
-		core.GetApp().GetLogger().Error("Gen", err)
+		core.GetApp().GetLogger().Error("Gen", "err", err)
 		e.Error(c, err)
 		return
 	}

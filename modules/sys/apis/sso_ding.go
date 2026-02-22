@@ -88,7 +88,7 @@ func (e Ding) LoginByDing(c *gin.Context) {
 	if err != nil {
 		userId, err = LoginByQRcode(req.Code)
 		if err != nil {
-			slog.Error("ding login", err)
+			slog.Error("ding login", "err", err)
 			e.Error(c, err)
 			return
 		}
@@ -232,7 +232,7 @@ func EncodeSHA256(message, secret string) string {
 func DingTmpHtml(c *gin.Context) {
 	t1, err := template.ParseFiles("app/sso/apis/ding.html")
 	if err != nil {
-		slog.Error("template err", err)
+		slog.Error("template parse", "err", err)
 	}
 	t1.Execute(c.Writer, "")
 }
