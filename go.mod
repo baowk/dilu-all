@@ -3,7 +3,7 @@ module dilu
 go 1.25
 
 require (
-	github.com/baowk/dilu-core v1.0.26
+	github.com/baowk/dilu-core v1.0.27
 	github.com/baowk/dilu-plugin v1.0.0
 	github.com/baowk/dilu-rd v1.0.0
 	github.com/bwmarrin/snowflake v0.3.0
