@@ -14,7 +14,7 @@ func init() {
 func register{{.ClassName}}Router(v1 *gin.RouterGroup) {
 	r := v1.Group("{{.ModuleName}}").Use(middleware.JwtHandler()).Use(middleware.PermHandler())
 	{
-		r.GET("/get", apis.Api{{.ClassName}}.Get)
+		r.GET("/:id", apis.Api{{.ClassName}}.Get)
 		r.POST("/create", apis.Api{{.ClassName}}.Create)
 		r.POST("/update", apis.Api{{.ClassName}}.Update)
 		r.POST("/page", apis.Api{{.ClassName}}.QueryPage)
