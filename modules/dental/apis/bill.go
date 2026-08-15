@@ -116,7 +116,7 @@ func (e *BillApi) Update(c *gin.Context) {
 		return
 	}
 	var data models.Bill
-	copier.Copy(&data, req)
+	copier.CopyWithOption(&data, &req, copier.Option{SkipEmpty: true})
 	data.UpdateBy = utils.GetUserId(c)
 	if err := service.SerBill.UpdateBill(e.GetReqId(c), req, &data, utils.GetUserId(c)); err != nil {
 		e.Error(c, err)
